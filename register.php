@@ -63,7 +63,7 @@
   										</div>
   										<div class="col-lg-6 col-md-6">
   											<div class="form-group">
-                          <div class="select_buttonnn">
+                          <div class="select_buttonnn center-align">
                             <label class="center-align"><input type="radio" name="accSelect" value="2"><span style="width:500px;" class="btn btn-outline-theme btn-rounded center-align">Teacher</span></label>
                           </div>
   											</div>
