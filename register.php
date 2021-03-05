@@ -29,11 +29,11 @@
 						</div>
 						<div class="nav-menus-wrapper" style="transition-property: none;">
               <ul class="nav-menu nav-menu-social align-to-right">
-								<li class="login_click bg-red">
-									<a href="login.php">Sign up</a>
-								</li>
 								<li class="login_click light">
 									<a href="login.php">Sign in</a>
+								</li>
+								<li class="login_click bg-red">
+									<a href="login.php">Sign up</a>
 								</li>
 							</ul>
 						</div>
