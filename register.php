@@ -99,8 +99,8 @@
 										<div class="social-login mb-3">
 											<ul>
 												<li class="right">
-                          <label for="reg" class="checkbox-custom-label">Don't have an account?</label>
-                          <a href="#" class="theme-cl">Sign Up</a>
+                          <label for="reg" class="checkbox-custom-label">Already have an account?</label>
+                          <a href="login.php" class="theme-cl">Log in</a>
                         </li>
 											</ul>
 										</div>
