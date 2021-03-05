@@ -7,6 +7,7 @@
         <title>!Hajimaaa Elearning System</title>
         <!-- Custom CSS -->
         <link href="assets/css/styles.css" rel="stylesheet">
+        <link href="assets/css/styles2.css" rel="stylesheet">
 		<!-- Custom Color Option -->
 		<link href="assets/css/colors.css" rel="stylesheet">
     </head>
@@ -21,7 +22,7 @@
 				<div class="container">
 					<nav id="navigation" class="navigation navigation-landscape">
 						<div class="nav-header">
-							<a class="nav-brand" href="#">
+							<a class="nav-brand" href="landing.php">
 								<img src="assets/img/hajima_full_logo_black.png" class="logo" alt="" />
 							</a>
 							<div class="nav-toggle"></div>
@@ -29,10 +30,10 @@
 						<div class="nav-menus-wrapper" style="transition-property: none;">
               <ul class="nav-menu nav-menu-social align-to-right">
 								<li class="login_click bg-red">
-									<a href="login.php">Sign in</a>
+									<a href="login.php">Sign up</a>
 								</li>
 								<li class="login_click light">
-									<a href="register.php">Sign up</a>
+									<a href="login.php">Sign in</a>
 								</li>
 							</ul>
 						</div>
@@ -44,20 +45,55 @@
 			<!-- Top header  -->
 			<section>
 				<div class="container">
-					<div class="row justify-content-center">
-						<div class="col-lg-6 col-md-9 col-sm-12">
+					<div class="">
+						<div class="">
 							<div class="log_wrap">
-                <br><br>
-								<h4>Sign In</h4>
+                <br><br><br>
+								<h4>Register an Account</h4>
 								<div class="login-form">
                   <br><br><br>
 									<form>
-										<div class="form-group">
+                    <div class="row">
+  										<div class="col-lg-6 col-md-6">
+  											<div class="form-group">
+                          <div class="select_buttonnn center-align">
+                            <label class="center-align"><input type="radio" name="accSelect" value="1"><span style="width:500px;" class="btn btn-outline-theme btn-rounded center-align">Student</span></label>
+                          </div>
+  											</div>
+  										</div>
+  										<div class="col-lg-6 col-md-6">
+  											<div class="form-group">
+                          <div class="select_buttonnn">
+                            <label class="center-align"><input type="radio" name="accSelect" value="2"><span style="width:500px;" class="btn btn-outline-theme btn-rounded center-align">Teacher</span></label>
+                          </div>
+  											</div>
+  										</div>
+  									</div>
+                    <br>
+                    <div class="row">
+  										<div class="col-lg-6 col-md-6">
+  											<div class="form-group">
+  												<label>First Name</label>
+  												<input type="text" class="form-control">
+  											</div>
+  										</div>
+  										<div class="col-lg-6 col-md-6">
+  											<div class="form-group">
+  												<label>Last Name</label>
+  												<input type="email" class="form-control">
+  											</div>
+  										</div>
+  									</div>
+                    <div class="form-group">
 											<label>Username</label>
 											<input type="text" class="form-control">
 										</div>
 										<div class="form-group">
 											<label>Password</label>
+											<input type="password" class="form-control">
+										</div>
+                    <div class="form-group">
+											<label>Confirm password</label>
 											<input type="password" class="form-control">
 										</div>
 										<div class="social-login mb-3">
@@ -80,6 +116,7 @@
 			</section>
 			<!-- ========================== End of Login Section =============================== -->
 
+      <footer></footer>
 		</div>
 		<!-- End Wrapper -->
 		<!-- All Jquery -->
