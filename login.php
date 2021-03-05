@@ -64,7 +64,7 @@
 											<ul>
 												<li class="right">
                           <label for="reg" class="checkbox-custom-label">Don't have an account?</label>
-                          <a href="#" class="theme-cl">Sign Up</a>
+                          <a href="register.php" class="theme-cl">Sign Up</a>
                         </li>
 											</ul>
 										</div>
