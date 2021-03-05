@@ -1,0 +1,16 @@
+.select_buttonnn input[type="radio"] {
+  display: none;
+}
+
+.select_buttonnn input[type="radio"]:checked + span {
+  background-color: #da0b4e;
+  color: white;
+}
+
+.larger-log-wrap {
+  width: 500px;
+}
+
+.center-align {
+  align-content: center;
+}
