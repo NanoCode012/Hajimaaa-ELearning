@@ -1,6 +1,9 @@
 ## Ignore template folder
 template
 
+## Ignore conf file
+config/conf.php
+
 ## Ignore Mac files
 # General
 .DS_Store
