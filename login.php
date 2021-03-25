@@ -79,7 +79,6 @@
 				</div>
 			</section>
 			<!-- ========================== End of Login Section =============================== -->
-
 		</div>
 		<!-- End Wrapper -->
 		<!-- All Jquery -->
