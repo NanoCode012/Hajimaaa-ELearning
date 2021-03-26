@@ -94,7 +94,7 @@
                                             <li class="right">
                                                 <label for="reg" class="checkbox-custom-label">Already have an
                                                     account?</label>
-                                                <a href="?p=login" class="theme-cl">Log in</a>
+                                                <a href="?p=login" class="theme-cl">Register</a>
                                             </li>
                                         </ul>
                                     </div>
