@@ -94,12 +94,12 @@
                                             <li class="right">
                                                 <label for="reg" class="checkbox-custom-label">Already have an
                                                     account?</label>
-                                                <a href="?p=login" class="theme-cl">Register</a>
+                                                <a href="?p=login" class="theme-cl">Login</a>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-md full-width pop-login">Login</button>
+                                        <button type="submit" class="btn btn-md full-width pop-login">Register</button>
                                     </div>
                                 </form>
                             </div>
