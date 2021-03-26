@@ -1,7 +1,7 @@
 <?php
 if (file_exists('pages/' . $page . '.php')) {
     // To sync url with page
-    if ($_GET['p'] != $page) {
+    if (!isset($_GET['p']) || $_GET['p'] != $page) {
         header('Location: index.php?p=' . $page);
     } else {
         include 'pages/' . $page . '.php';
