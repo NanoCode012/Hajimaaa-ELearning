@@ -114,7 +114,7 @@
 
 												<div class="clearfix"></div>
 											<p>"Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris."</p>
-<br><img src="trash.svg" width="20" height="20" style="float:right">
+<br><img src="assets/img/trash.svg" width="20" height="20" style="float:right">
 										</div>
 									</div>
 									<!--reviews-comments-item end-->
@@ -129,7 +129,7 @@
 
 											<div class="clearfix"></div>
 											<p>"Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris."</p>
-<br><img src="trash.svg" width="20" height="20" style="float:right">
+<br><img src="assets/img/trash.svg" width="20" height="20" style="float:right">
 										</div>
 									</div>
 									<!--reviews-comments-item end-->
@@ -144,7 +144,7 @@
 
 											<div class="clearfix"></div>
 											<p>"Commodo est luctus eget. Proin in nunc laoreet justo volutpat blandit enim. Sem felis, ullamcorper vel aliquam non, varius eget justo. Duis quis nunc tellus sollicitudin mauris."</p><br>
-	<br><img src="trash.svg" width="20" height="20" style="float:right">
+	<br><img src="assets/img/trash.svg" width="20" height="20" style="float:right">
 										</div>
 									</div>
 									<!--reviews-comments-item end-->
