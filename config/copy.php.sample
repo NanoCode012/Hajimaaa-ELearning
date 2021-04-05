@@ -1,0 +1,9 @@
+<?php
+
+# 1 or a pool of databases in master-slave conf to connect to
+$pool = array('localhost',);
+
+# Database name and credentials
+$db = 'elearning';
+$user = 'root';
+$pass = '';
