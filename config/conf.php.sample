@@ -6,4 +6,4 @@ $pool = array('localhost',);
 # Database name and credentials
 $db = 'elearning';
 $user = 'root';
-$pass = '';
+$pass = 'root';
