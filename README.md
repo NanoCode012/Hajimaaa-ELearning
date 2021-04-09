@@ -17,6 +17,13 @@ An e-learning platform built for both centralized and distributed solutions.
 1. Make changes to the branch if necessary
 1. When the branch has been merged, delete that branch and start over from Step 1
 
+## Prettier
+
+```bash
+npm install --save-dev
+npm run prettier
+```
+
 ## License
 
 Do not share to others without permission!
