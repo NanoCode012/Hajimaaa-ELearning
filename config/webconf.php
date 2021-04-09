@@ -12,7 +12,13 @@ if (isset($_SESSION['user_id'])) {
 else {
     if (
         isset($_GET['p']) &&
-        in_array($_GET['p'], ['login', 'logout', 'register', 'landing', 'accountmanager'])
+        in_array($_GET['p'], [
+            'login',
+            'logout',
+            'register',
+            'landing',
+            'accountmanager',
+        ])
     ) {
         $page = $_GET['p'];
     } else {

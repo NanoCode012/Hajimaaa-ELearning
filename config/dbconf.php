@@ -15,13 +15,15 @@ function &getPDO($host, $db, $user, $pass, $charset)
         $pdo = new PDO($dsn, $user, $pass, $options);
         return $pdo;
     } catch (\PDOException $e) {
-        throw new \PDOException($e->getMessage(), (int)$e->getCode());
+        throw new \PDOException($e->getMessage(), (int) $e->getCode());
     }
 }
 
 function getRole($pdo, $host)
 {
-    $stmt = $pdo->prepare('SELECT * FROM performance_schema.replication_group_members WHERE MEMBER_HOST = ? LIMIT 1');
+    $stmt = $pdo->prepare(
+        'SELECT * FROM performance_schema.replication_group_members WHERE MEMBER_HOST = ? LIMIT 1',
+    );
     $stmt->execute([$host]);
     $row = $stmt->fetch();
     return $row['MEMBER_ROLE'];
@@ -29,7 +31,9 @@ function getRole($pdo, $host)
 
 function getMaster($pdo)
 {
-    $stmt = $pdo->query('SELECT * FROM performance_schema.replication_group_members WHERE MEMBER_ROLE = "PRIMARY" LIMIT 1');
+    $stmt = $pdo->query(
+        'SELECT * FROM performance_schema.replication_group_members WHERE MEMBER_ROLE = "PRIMARY" LIMIT 1',
+    );
     $row = $stmt->fetch();
     return $row['MEMBER_HOST'];
 }
@@ -54,7 +58,6 @@ if (count($pool) > 1) {
     $db_r = &getPDO($host, $db, $user, $pass, $charset);
     $db_w = $db_r;
 }
-
 
 if (!(isset($db_r) && isset($db_w))) {
     throw new Exception('Connections failed');

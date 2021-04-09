@@ -1,7 +1,8 @@
 # Hajimaaa-ELearning
+
 An e-learning platform built for both centralized and distributed solutions.
 
-## Setup 
+## Setup
 
 1. Copy `conf.php.sample` to `conf.php` and modify the values
 1. Import the `elearning.sql` inside the `sql` directory
@@ -17,4 +18,5 @@ An e-learning platform built for both centralized and distributed solutions.
 1. When the branch has been merged, delete that branch and start over from Step 1
 
 ## License
+
 Do not share to others without permission!

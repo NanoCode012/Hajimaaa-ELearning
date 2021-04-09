@@ -1,6 +1,5 @@
 <?php
-include 'utils/messages.php';
-?>
+include 'utils/messages.php'; ?>
 
 <!doctype html>
 <html lang="en">
