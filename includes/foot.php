@@ -15,6 +15,9 @@
 
 </html>
 
-<?php $db_r = null;
+<?php
+$db_r = null;
 $db_w = null;
+
+
 ?>
