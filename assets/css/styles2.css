@@ -1,8 +1,8 @@
-.select_buttonnn input[type="radio"] {
+.select_buttonnn input[type='radio'] {
   display: none;
 }
 
-.select_buttonnn input[type="radio"]:checked + span {
+.select_buttonnn input[type='radio']:checked + span {
   background-color: #da0b4e;
   color: white;
 }
@@ -13,4 +13,9 @@
 
 .center-align {
   align-content: center;
+}
+
+.fixed-pos {
+  position: fixed;
+  height: 100%;
 }
