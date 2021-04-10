@@ -41,7 +41,7 @@
                             <h4>Register an Account</h4>
                             <div class="login-form">
                                 <br><br><br>
-                                <form>
+                                <form action="?p=create_account" method="post">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
