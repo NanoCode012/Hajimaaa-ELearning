@@ -2,7 +2,7 @@
   display: none;
 }
 
-.select_buttonnn input[type="radio"]:checked + span {
+.select_buttonnn input[type="radio"]:checked+span {
   background-color: #da0b4e;
   color: white;
 }
@@ -13,4 +13,128 @@
 
 .center-align {
   align-content: center;
+}
+
+.tabs {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* css for tabs */
+.tabs .tab-header {
+  height: auto;
+  display: flex;
+  align-items: center;
+}
+
+.tabs .tab-header>div {
+  width: calc(100% / 3);
+  text-align: center;
+  color: #888;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  text-transform: uppercase;
+  outline: none;
+}
+
+.tabs .tab-header>div>i {
+  display: block;
+}
+
+.tabs .tab-header>div.active {
+  color: #da0b4e;
+}
+
+.tabs .tab-indicator {
+  position: relative;
+  width: calc(100% / 3);
+  height: 5px;
+  background: #da0b4e;
+  margin-top: 10px;
+  left: 0px;
+  border-radius: 5px;
+  transition: all 500ms ease-in-out;
+}
+
+.tabs .tab-body {
+  position: relative;
+  height: calc(100%);
+}
+
+.tabs .tab-body>div {
+  position: relative;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 500ms ease-in-out 0ms,
+    transform 500ms ease-in-out 0ms;
+}
+
+.tabs .tab-body>div.active {
+  top: 0px;
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* css for sidebar */
+@media only screen and (min-width: 768px) {
+  .dashboard-navbar, .dashboard-wraper {
+    position: fixed;
+    height: 100%;
+    width: 25%;
+    z-index: 1;
+    overflow-y: scroll;
+    top: 0;
+    bottom: 0;
+  }
+}
+
+.brand img {
+  width: 140px;
+}
+
+/* css for scrollbar */
+::-webkit-scrollbar {
+  width: 17px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #da0b4e;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #da0b4e;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #da0b4e;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #a8bbbf;
+}
+
+/* css buttons inside assignments */
+.ass-buttons {
+  display: flex;
+}
+
+.ass-buttons a {
+  border-radius: 0.3rem;
+  margin-right: 10px;
+  margin-bottom: 5px;
+}
+
+/* style for profile img */
+
+.edu_cat_icons img{
+    max-width: 80px;
+    height: 80px;
+    border-radius: 100%;
 }
