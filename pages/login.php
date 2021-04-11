@@ -1,3 +1,54 @@
+<?php
+
+// Define variables and initialize with empty values
+$username = $password = "";
+$username_err = $password_err = "";
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    // Check if username is empty
+    if(empty(trim($_POST["username"]))){
+        $username_err = "Please enter username.";
+    } else{
+        $username = trim($_POST["username"]);
+    }
+
+    // Check if password is empty
+    if(empty(trim($_POST["password"]))){
+        $password_err = "Please enter your password.";
+    } else{
+        $password = trim($_POST["password"]);
+    }
+
+    $sql = "SELECT `user_id`, `username`, password FROM user WHERE `username`= ?";
+    $stmt = $db_r->prepare($sql)->execute([$username]);
+
+    if($stmt->fetchColumn() == 1) {
+
+      while ($row = $stmt->fetch()) {
+          $user_id = $row["user_id"];
+          $password_hash = $row["password"];
+          $db_username = $row["username"];
+      }
+
+      if (password_verify($password, $password_hash)) {
+          session_destroy();
+          session_start();
+          $_SESSION["loggedin"] = true;
+          $_SESSION["user_id"] = $user_id;
+          $_SESSION["logged_in_username"] = $username;
+          header("Location: ?p=profile");
+      }
+    }
+    else {
+      //invalid username or password
+    }
+}
+
+?>
+
+
 <body class="red-skin gray">
     <!-- Preloader - style you can find in spinners.css -->
     <div id="preloader">
