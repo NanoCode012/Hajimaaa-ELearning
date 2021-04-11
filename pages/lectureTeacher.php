@@ -78,7 +78,7 @@
                                                     Lecture Notes
                                                 </div>
                                             </div>
-                                            <div class="tab-indicator"></div>
+                                            <div class="tab-indicator" style="left: calc(66.6667%);"></div>
 
                                             <div class="tab-body">
                                                 <div class="active">
