@@ -20,23 +20,6 @@
   height: 100%;
 }
 
-.select_buttonnn input[type='radio'] {
-  display: none;
-}
-
-.select_buttonnn input[type='radio']:checked + span {
-  background-color: #da0b4e;
-  color: white;
-}
-
-.larger-log-wrap {
-  width: 500px;
-}
-
-.center-align {
-  align-content: center;
-}
-
 .tabs {
   position: relative;
   width: 100%;
@@ -151,6 +134,80 @@
   border-radius: 0.3rem;
   margin-right: 10px;
   margin-bottom: 5px;
+}
+
+/* css for assignments hover effect */
+.ass_hover_effect {
+  border-left: 2px solid #da0b4e;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.ass_hover_effect:hover {
+  border-radius: 10px;
+  animation-name: example;
+  animation-duration: 0.25s;
+  border-left: 4px solid #da0b4e;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+@keyframes example {
+  0% {
+    border-left: 2px solid #ffffff;
+  }
+
+  25% {
+    border-left: 3px solid #ffe6e6;
+  }
+
+  50% {
+    border-left: 4px solid #ff8080;
+  }
+
+  100% {
+    border-left: 5px solid #da0b4e;
+  }
+}
+
+/* /css for assignments hover effect */
+/* css for popup */
+.popupform {
+  border-radius: 10px;
+}
+
+.popupbtn {
+  border-radius: 5px;
+}
+
+.popuptarea {
+  border-radius: 5px;
+}
+
+.choose_file label {
+  display: block;
+  border: 0.5px solid #a8bbbf;
+  border-radius: 10px;
+  padding: 10px;
+  width: calc(100% - 10px);
+  margin: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.choose_file #choose_file {
+  outline: none;
+  opacity: 0;
+  width: 0;
+}
+
+.choose_file span {
+  font-size: 14px;
+  color: #888;
+}
+
+.choose_file label:hover span {
+  color: #da0b4e;
 }
 
 .removeStuff {
