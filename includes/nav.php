@@ -14,19 +14,13 @@
                     <li><a href="#">Home<span class="submenu-indicator"></span></a>
                     </li>
 
-                    <li class="active"><a href="#">Classes<span class="submenu-indicator"></span></a>
-                    </li>
-
-                    <li><a href="#">Timetable<span class="submenu-indicator"></span></a>
-                    </li>
-
-                    <li><a href="contact.html">Profile</a></li>
+                    <li><a href="?p=profile">Profile</a></li>
 
                 </ul>
 
                 <ul class="nav-menu nav-menu-social align-to-right">
                     <li class="login_click theme-bg">
-                        <a href="register.html">Log Out</a>
+                        <a href="?p=logout">Log Out</a>
                     </li>
                 </ul>
             </div>
