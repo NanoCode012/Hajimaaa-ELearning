@@ -1,8 +1,8 @@
-.select_buttonnn input[type="radio"] {
+.select_buttonnn input[type='radio'] {
   display: none;
 }
 
-.select_buttonnn input[type="radio"]:checked+span {
+.select_buttonnn input[type='radio']:checked + span {
   background-color: #da0b4e;
   color: white;
 }
@@ -34,7 +34,7 @@
   align-items: center;
 }
 
-.tabs .tab-header>div {
+.tabs .tab-header > div {
   width: calc(100% / 3);
   text-align: center;
   color: #888;
@@ -45,11 +45,11 @@
   outline: none;
 }
 
-.tabs .tab-header>div>i {
+.tabs .tab-header > div > i {
   display: block;
 }
 
-.tabs .tab-header>div.active {
+.tabs .tab-header > div.active {
   color: #da0b4e;
 }
 
@@ -69,15 +69,14 @@
   height: calc(100%);
 }
 
-.tabs .tab-body>div {
+.tabs .tab-body > div {
   position: relative;
   opacity: 0;
   transform: scale(0.9);
-  transition: opacity 500ms ease-in-out 0ms,
-    transform 500ms ease-in-out 0ms;
+  transition: opacity 500ms ease-in-out 0ms, transform 500ms ease-in-out 0ms;
 }
 
-.tabs .tab-body>div.active {
+.tabs .tab-body > div.active {
   top: 0px;
   opacity: 1;
   transform: scale(1);
@@ -85,7 +84,8 @@
 
 /* css for sidebar */
 @media only screen and (min-width: 768px) {
-  .dashboard-navbar, .dashboard-wraper {
+  .dashboard-navbar,
+  .dashboard-wraper {
     position: fixed;
     height: 100%;
     width: 25%;
@@ -208,4 +208,20 @@
 
 .choose_file label:hover span {
   color: #da0b4e;
+}
+
+.removeStuff {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.lectureControl {
+  float: right;
+}
+
+#Create-Assignment{
+  position:relative;
+  Left:90%;
+  margin-top:-2%;
 }
