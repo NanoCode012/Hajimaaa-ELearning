@@ -162,3 +162,9 @@
 .lectureControl {
   float: right;
 }
+
+#Create-Assignment{
+  position:relative;
+  Left:90%;
+  margin-top:-2%;
+}
