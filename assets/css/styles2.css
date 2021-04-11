@@ -15,6 +15,11 @@
   align-content: center;
 }
 
+.fixed-pos {
+  position: fixed;
+  height: 100%;
+}
+
 .select_buttonnn input[type='radio'] {
   display: none;
 }
