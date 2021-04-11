@@ -35,16 +35,16 @@
 
                             <div class="tabs">
                                 <div class="tab-header">
+                                    <div>
+                                        <a href="?p=now-teacher">Now</a>
+                                    </div>
                                     <div class="active">
-                                        Now
+                                        <a href="?p=ass-teacher">Assignments</a>
                                     </div>
                                     <div>
-                                        Assignments
+                                        <a href="?p=lectureteacher">Lecture Notes</a>
                                     </div>
-                                    <div>
-                                        Lecture Notes
                                     </div>
-                                </div>
                                 <div class="tab-indicator"></div>
                                 <div class="tab-body">
                                     <div class="active">
