@@ -3,7 +3,7 @@
     <div class="container">
         <nav id="navigation" class="navigation navigation-landscape">
             <div class="nav-header">
-                <a class="nav-brand" href="?p=landing">
+                <a class="nav-brand" href="#">
                     <img src="assets/img/hajima_full_logo_black.png" class="logo" alt="" />
                 </a>
                 <div class="nav-toggle"></div>
