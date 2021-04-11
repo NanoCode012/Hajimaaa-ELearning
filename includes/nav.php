@@ -20,7 +20,7 @@
                     <li><a href="#">Timetable<span class="submenu-indicator"></span></a>
                     </li>
 
-                    <li><a href="contact.html">Settings</a></li>
+                    <li><a href="contact.html">Profile</a></li>
 
                 </ul>
 

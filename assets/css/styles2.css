@@ -15,6 +15,11 @@
   align-content: center;
 }
 
+.fixed-pos {
+  position: fixed;
+  height: 100%;
+}
+
 .tabs {
   position: relative;
   width: 100%;
@@ -204,5 +209,3 @@
 .choose_file label:hover span {
   color: #da0b4e;
 }
-
-/* /css for popup */
