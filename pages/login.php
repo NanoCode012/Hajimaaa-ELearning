@@ -21,18 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-    $sql = "SELECT COUNT(*) FROM user WHERE `username`= ?";
-    $stmt = $db_r->prepare($sql)->execute([$username]);
-
-    if ($stmt->fetchColumn() == 1) {
-
-        $sql = "SELECT `user_id`, `username`, password FROM user WHERE `username`= ?";
-        $stmt = $db_r->prepare($sql)->execute([$username]);
-        while ($row = $stmt->fetch()) {
-            $user_id = $row["user_id"];
-            $password_hash = $row["password"];
-            $db_username = $row["username"];
-        }
+    $sql = 'SELECT user_id, username, password FROM users WHERE username=?';
+    $stmt = $db_r->prepare($sql);
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+    if ($user) {
+        $user_id = $user["user_id"];
+        $password_hash = $user["password"];
+        $db_username = $user["username"];
 
         if (password_verify($password, $password_hash)) {
             session_destroy();
@@ -93,14 +89,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <h4>Sign In</h4>
                             <div class="login-form">
                                 <br><br><br>
-                                <form action="?p=accountmanager" method="post">
+                                <form action="?p=login" method="post">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input type="text" class="form-control">
+                                        <input name="username" type="text" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" class="form-control">
+                                        <input name="password" type="password" class="form-control">
                                     </div>
                                     <div class="social-login mb-3">
                                         <ul>
