@@ -5,44 +5,45 @@ $username = $password = "";
 $username_err = $password_err = "";
 
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if username is empty
-    if(empty(trim($_POST["username"]))){
+    if (empty(trim($_POST["username"]))) {
         $username_err = "Please enter username.";
-    } else{
+    } else {
         $username = trim($_POST["username"]);
     }
 
     // Check if password is empty
-    if(empty(trim($_POST["password"]))){
+    if (empty(trim($_POST["password"]))) {
         $password_err = "Please enter your password.";
-    } else{
+    } else {
         $password = trim($_POST["password"]);
     }
 
-    $sql = "SELECT `user_id`, `username`, password FROM user WHERE `username`= ?";
+    $sql = "SELECT COUNT(*) FROM user WHERE `username`= ?";
     $stmt = $db_r->prepare($sql)->execute([$username]);
 
-    if($stmt->fetchColumn() == 1) {
+    if ($stmt->fetchColumn() == 1) {
 
-      while ($row = $stmt->fetch()) {
-          $user_id = $row["user_id"];
-          $password_hash = $row["password"];
-          $db_username = $row["username"];
-      }
+        $sql = "SELECT `user_id`, `username`, password FROM user WHERE `username`= ?";
+        $stmt = $db_r->prepare($sql)->execute([$username]);
+        while ($row = $stmt->fetch()) {
+            $user_id = $row["user_id"];
+            $password_hash = $row["password"];
+            $db_username = $row["username"];
+        }
 
-      if (password_verify($password, $password_hash)) {
-          session_destroy();
-          session_start();
-          $_SESSION["loggedin"] = true;
-          $_SESSION["user_id"] = $user_id;
-          $_SESSION["logged_in_username"] = $username;
-          header("Location: ?p=profile");
-      }
-    }
-    else {
-      //invalid username or password
+        if (password_verify($password, $password_hash)) {
+            session_destroy();
+            session_start();
+            $_SESSION["loggedin"] = true;
+            $_SESSION["user_id"] = $user_id;
+            $_SESSION["logged_in_username"] = $username;
+            header("Location: ?p=profile");
+        }
+    } else {
+        //invalid username or password
     }
 }
 
