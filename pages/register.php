@@ -41,13 +41,13 @@
                             <h4>Register an Account</h4>
                             <div class="login-form">
                                 <br><br><br>
-                                <form>
+                                <form action="?p=create_account" method="post">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
                                                 <div class="select_buttonnn center-align">
-                                                    <label class="center-align"><input type="radio" name="accSelect"
-                                                            value="1"><span style="width:500px;"
+                                                    <label class="center-align"><input type="radio" name="accSel"
+                                                            value="0"><span style="width:500px;"
                                                             class="btn btn-outline-theme btn-rounded center-align">Student</span></label>
                                                 </div>
                                             </div>
@@ -55,8 +55,8 @@
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
                                                 <div class="select_buttonnn center-align">
-                                                    <label class="center-align"><input type="radio" name="accSelect"
-                                                            value="2"><span style="width:500px;"
+                                                    <label class="center-align"><input type="radio" name="accSel"
+                                                            value="1"><span style="width:500px;"
                                                             class="btn btn-outline-theme btn-rounded center-align">Teacher</span></label>
                                                 </div>
                                             </div>
@@ -67,27 +67,27 @@
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
                                                 <label>First Name</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" name="firstname" class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="form-group">
                                                 <label>Last Name</label>
-                                                <input type="email" class="form-control">
+                                                <input type="text" name="lastname" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input type="text" class="form-control">
+                                        <input type="text" name="username" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="password" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>Confirm password</label>
-                                        <input type="password" class="form-control">
+                                        <input type="password" name="cpassword" class="form-control">
                                     </div>
                                     <div class="social-login mb-3">
                                         <ul>
