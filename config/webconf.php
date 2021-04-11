@@ -18,8 +18,7 @@ else {
         'register',
         'landing',
         'accountmanager',
-        'create_account',
-        'profile'])
+        'create_account'])
     ) {
         $page = $_GET['p'];
     } else {
