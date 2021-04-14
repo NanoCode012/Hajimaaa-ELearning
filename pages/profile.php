@@ -3,26 +3,21 @@
         <div class="preloader"><span></span><span></span></div>
     </div>
     <div id="main-wrapper">
-        <!-- ============================================================== -->
-        <!-- Top header  -->
-        <!-- ============================================================== -->
+
         <!-- Start Navigation -->
         <?php include 'includes/nav.php'; ?>
         <!-- End Navigation -->
         <div class="clearfix"></div>
-        <!-- ============================================================== -->
-        <!-- Top header  -->
-        <!-- ============================================================== -->
 
 
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
-            <div class="container-fluid">
+            <div class="container">
 
                 <!-- Row -->
                 <div class="row">
 
-                    <div class="col-lg-10" style="margin: auto; width: 50%;">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
 
                         <!-- Row -->
                         <div class="row">
