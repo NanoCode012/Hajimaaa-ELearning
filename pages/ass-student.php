@@ -62,13 +62,13 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    Now
+                                                    <a href="?p=now-student">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    Assignments
+                                                    <a href="?p=ass-student">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    Lecture Notes
+                                                    <a href="?p=lecturestudent">Lecture Notes</a>
                                                 </div>
 
                                             </div>

@@ -69,15 +69,15 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    Now
-                                                </div>
-                                                <div>
-                                                    Assignments
+                                                    <a href="?p=now-teacher">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    Lecture Notes
+                                                    <a href="?p=ass-teacher">Assignments</a>
                                                 </div>
-                                            </div>
+                                                <div>
+                                                    <a href="?p=lectureteacher">Lecture Notes</a>
+                                                </div>
+                                                </div>
                                             <div class="tab-indicator" style="left: calc(66.6667%);"></div>
 
                                             <div class="tab-body">

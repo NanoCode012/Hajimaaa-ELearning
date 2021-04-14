@@ -36,13 +36,13 @@
                             <div class="tabs">
                                 <div class="tab-header">
                                     <div class="active">
-                                        Now
+                                        <a href="?p=now-student">Now</a>
                                     </div>
                                     <div>
-                                        Assignments
+                                        <a href="?p=ass-student">Assignments</a>
                                     </div>
                                     <div>
-                                        Lecture Notes
+                                        <a href="?p=lecturestudent">Lecture Notes</a>
                                     </div>
                                 </div>
                                 <div class="tab-indicator"></div>
@@ -97,7 +97,7 @@
                                     <div class="dashboard_single_course_progress">
                                         <div class="dashboard_single_course_progress_1">
                                             <div class="ass-buttons">
-                                                <a href="#" class="btn btn-theme-2">View</a>
+                                                <a href="?p=view-post" class="btn btn-theme-2">View</a>
                                             </div>
 
                                         </div>
@@ -133,7 +133,7 @@
                                     <div class="dashboard_single_course_progress">
                                         <div class="dashboard_single_course_progress_1">
                                             <div class="ass-buttons">
-                                                <a href="#" class="btn btn-theme-2">View</a>
+                                                <a href="?p=view-post" class="btn btn-theme-2">View</a>
                                             </div>
 
                                         </div>
@@ -166,7 +166,7 @@
                                     <div class="dashboard_single_course_progress">
                                         <div class="dashboard_single_course_progress_1">
                                             <div class="ass-buttons">
-                                                <a href="#" class="btn btn-theme-2">View</a>
+                                                <a href="?p=view-post" class="btn btn-theme-2">View</a>
                                             </div>
 
                                         </div>
