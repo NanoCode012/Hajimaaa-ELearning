@@ -18,7 +18,9 @@ else {
         'register',
         'landing',
         'accountmanager',
-        'create_account'])
+        'create_account',
+        'courseListStudent',
+        'courseListTeacher'])
     ) {
         $page = $_GET['p'];
     } else {
