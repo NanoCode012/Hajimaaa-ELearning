@@ -138,4 +138,5 @@
 <!-- End Wrapper -->
 <!-- ============================================================== -->
 
+<script src="assets/js/dropzone.js"></script>
 </body>
