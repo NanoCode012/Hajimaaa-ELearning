@@ -3,7 +3,7 @@
 session_start();
 $current_user_id = $_SESSION['user_id'];
 
-$sql = 'SELECT user_type FROM users WHERE user_id=?';
+$sql = 'SELECT user FROM users WHERE user_id=?';
 $stmt = $db_r->prepare($sql);
 $stmt->execute([$current_user_id]);
 $user = $stmt->fetch();
