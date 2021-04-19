@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 19, 2021 at 08:29 AM
+-- Generation Time: Apr 19, 2021 at 01:42 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -29,16 +29,13 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
+-- Creation: Apr 19, 2021 at 01:40 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
-CREATE TABLE IF NOT EXISTS `assignments` (
-  `assignment_id` int(11) NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`assignment_id`),
-  KEY `post_id` (`post_id`)
+CREATE TABLE `assignments` (
+  `assignment_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -56,12 +53,11 @@ CREATE TABLE IF NOT EXISTS `assignments` (
 --
 
 DROP TABLE IF EXISTS `class`;
-CREATE TABLE IF NOT EXISTS `class` (
-  `class_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class` (
+  `class_id` int(11) NOT NULL,
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
-  `class_instructor` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`class_id`)
+  `class_instructor` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -77,13 +73,10 @@ CREATE TABLE IF NOT EXISTS `class` (
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
-CREATE TABLE IF NOT EXISTS `class_enrolled` (
-  `enrollment_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_enrolled` (
+  `enrollment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `class_id` int(11) NOT NULL,
-  PRIMARY KEY (`enrollment_id`),
-  KEY `class_id` (`class_id`),
-  KEY `user_id` (`user_id`)
+  `class_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -103,13 +96,11 @@ CREATE TABLE IF NOT EXISTS `class_enrolled` (
 --
 
 DROP TABLE IF EXISTS `files`;
-CREATE TABLE IF NOT EXISTS `files` (
-  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `files` (
+  `file_id` int(11) NOT NULL,
   `assignments_id` int(11) NOT NULL,
   `file_path` text NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`file_id`),
-  KEY `assignments_id` (`assignments_id`)
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -123,16 +114,13 @@ CREATE TABLE IF NOT EXISTS `files` (
 --
 -- Table structure for table `lectures`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
+-- Creation: Apr 19, 2021 at 01:41 PM
 --
 
 DROP TABLE IF EXISTS `lectures`;
-CREATE TABLE IF NOT EXISTS `lectures` (
-  `lecture_id` int(11) NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`lecture_id`),
-  KEY `post_id` (`post_id`)
+CREATE TABLE `lectures` (
+  `lecture_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -150,15 +138,13 @@ CREATE TABLE IF NOT EXISTS `lectures` (
 --
 
 DROP TABLE IF EXISTS `posts`;
-CREATE TABLE IF NOT EXISTS `posts` (
-  `post_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `post_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
   `post_type` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`post_id`),
-  KEY `class_id` (`class_id`)
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -176,15 +162,12 @@ CREATE TABLE IF NOT EXISTS `posts` (
 --
 
 DROP TABLE IF EXISTS `student_files`;
-CREATE TABLE IF NOT EXISTS `student_files` (
-  `student_file_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `student_files` (
+  `student_file_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `assignment_id` int(11) NOT NULL,
   `file_path` text NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`student_file_id`),
-  KEY `student_id` (`student_id`),
-  KEY `assignment_id` (`assignment_id`)
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -204,8 +187,8 @@ CREATE TABLE IF NOT EXISTS `student_files` (
 --
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `user_id` int(255) NOT NULL,
   `user_type` int(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
@@ -218,13 +201,124 @@ CREATE TABLE IF NOT EXISTS `users` (
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
-  `about` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  `about` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONSHIPS FOR TABLE `users`:
 --
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD PRIMARY KEY (`assignment_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
+-- Indexes for table `class`
+--
+ALTER TABLE `class`
+  ADD PRIMARY KEY (`class_id`);
+
+--
+-- Indexes for table `class_enrolled`
+--
+ALTER TABLE `class_enrolled`
+  ADD PRIMARY KEY (`enrollment_id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`file_id`),
+  ADD KEY `assignments_id` (`assignments_id`);
+
+--
+-- Indexes for table `lectures`
+--
+ALTER TABLE `lectures`
+  ADD PRIMARY KEY (`lecture_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`post_id`),
+  ADD KEY `class_id` (`class_id`);
+
+--
+-- Indexes for table `student_files`
+--
+ALTER TABLE `student_files`
+  ADD PRIMARY KEY (`student_file_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `assignment_id` (`assignment_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `assignments`
+--
+ALTER TABLE `assignments`
+  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `class`
+--
+ALTER TABLE `class`
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `class_enrolled`
+--
+ALTER TABLE `class_enrolled`
+  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `files`
+--
+ALTER TABLE `files`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lectures`
+--
+ALTER TABLE `lectures`
+  MODIFY `lecture_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `student_files`
+--
+ALTER TABLE `student_files`
+  MODIFY `student_file_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
