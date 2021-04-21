@@ -42,7 +42,7 @@
                             <div class=".dashboard_fl_1">
                               <?php
                               $post_id =$_GET['post_id']??"";
-                                $sql= "select * from posts where post_id='$post_id';";
+                                $sql= "select * from posts where post_id=$post_id;";
                                 $query = $db_r -> prepare($sql);
                                 $query->execute();
                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
