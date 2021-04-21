@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 <body class="red-skin">
     <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
     <div id="main-wrapper">
@@ -50,125 +57,65 @@
                 </div>
                 <div class="dashboard_container_body">
 
-                  <!-- Single Course -->
-                  <div class="dashboard_single_course">
-                    <div class="dashboard_single_course_thumb">
-                      <img src="https://via.placeholder.com/700x500" class="img-fluid" alt="" />
-                      <div class="dashboard_action">
-                        <a href="#" class="btn btn-ect">Delete</a>
-                        <a href="#" class="btn btn-ect">View</a>
-                      </div>
-                    </div>
-                    <div class="dashboard_single_course_caption">
-                      <div class="dashboard_single_course_head">
-                        <div class="dashboard_single_course_head_flex">
-                          <span class="dashboard_instructor">Adam Wilson</span>
-                          <h4 class="dashboard_course_title">Introduction Web Design with HTML</h4>
-                        </div>
-                      </div>
-                      <div class="dashboard_single_course_des">
-                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                      </div>
-                      <div class="dashboard_single_course_progress">
-                        <div class="dashboard_single_course_progress_2">
-                          <ul class="m-0">
-                            <li class="list-inline-item"><i class="ti-user mr-1"></i>4512 Enrolled</li>
-                            <li class="list-inline-item"><i class="ti-comment-alt mr-1"></i>3 Assignments Remaining</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
+                <?php
+                $sql = "SELECT class_name, class_code, class_instructor,class_des,class_count,class_ass from class where class_id IN (SELECT class_id FROM class_enrolled WHERE user_id =2)";
+                $query = $db_r->prepare($sql);
+                $query->execute();
+                $rows = $query->fetchAll();
+                foreach($rows as $row) {
+                  ?>
+                  
                   <!-- Single Course -->
                   <div class="dashboard_single_course">
                     <div class="dashboard_single_course_thumb">
-                      <img src="https://via.placeholder.com/700x500" class="img-fluid" alt="" />
+                      <img src="https://miro.medium.com/max/3960/0*HICLyAdNSIyT0ODU.jpg" class="img-fluid" alt="" />
                       <div class="dashboard_action">
-                        <a href="#" class="btn btn-ect">Delete</a>
-                        <a href="#" class="btn btn-ect">View</a>
+                        <a href="#" 
+                        <?php
+                        
+                        
+                        
+                        ?>
+                        class="btn btn-ect">Delete</a>
+                        <a href="ass-student.php" class="btn btn-ect">View</a>
                       </div>
                     </div>
                     <div class="dashboard_single_course_caption">
                       <div class="dashboard_single_course_head">
                         <div class="dashboard_single_course_head_flex">
-                          <span class="dashboard_instructor">Adam Wilson</span>
-                          <h4 class="dashboard_course_title">Introduction Web Design with HTML</h4>
+                          <span class="dashboard_instructor"><?php  echo $row['class_instructor']; ?></span>
+                          <h4 class="dashboard_course_title"><?php  echo $row['class_name']; ?></h4> 
                         </div>
                       </div>
                       <div class="dashboard_single_course_des">
-                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
+                        <p><?php echo $row['class_des']; ?></p>
                       </div>
                       <div class="dashboard_single_course_progress">
                         <div class="dashboard_single_course_progress_2">
                           <ul class="m-0">
-                            <li class="list-inline-item"><i class="ti-user mr-1"></i>4512 Enrolled</li>
-                            <li class="list-inline-item"><i class="ti-comment-alt mr-1"></i>3 Assignments Remaining</li>
+                            <li class="list-inline-item"><i class="ti-user mr-1"></i><?php  echo $row['class_count']; ?> Enrolled</li>
+                            <li class="list-inline-item"><i class="ti-comment-alt mr-1"></i><?php  echo $row['class_ass']; ?> Assignments Remaining</li>
                           </ul>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <?php }  ?>
 
-                  <!-- Single Course -->
-                  <div class="dashboard_single_course">
-                    <div class="dashboard_single_course_thumb">
-                      <img src="https://via.placeholder.com/700x500" class="img-fluid" alt="" />
-                      <div class="dashboard_action">
-                        <a href="#" class="btn btn-ect">Delete</a>
-                        <a href="#" class="btn btn-ect">View</a>
-                      </div>
-                    </div>
-                    <div class="dashboard_single_course_caption">
-                      <div class="dashboard_single_course_head">
-                        <div class="dashboard_single_course_head_flex">
-                          <span class="dashboard_instructor">Adam Wilson</span>
-                          <h4 class="dashboard_course_title">Introduction Web Design with HTML</h4>
-                        </div>
-                      </div>
-                      <div class="dashboard_single_course_des">
-                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                      </div>
-                      <div class="dashboard_single_course_progress">
-                        <div class="dashboard_single_course_progress_2">
-                          <ul class="m-0">
-                            <li class="list-inline-item"><i class="ti-user mr-1"></i>4512 Enrolled</li>
-                            <li class="list-inline-item"><i class="ti-comment-alt mr-1"></i>3 Assignments Remaining</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                 
 
-                  <!-- Single Course -->
-                  <div class="dashboard_single_course">
-                    <div class="dashboard_single_course_thumb">
-                      <img src="https://via.placeholder.com/700x500" class="img-fluid" alt="" />
-                      <div class="dashboard_action">
-                        <a href="#" class="btn btn-ect">Delete</a>
-                        <a href="#" class="btn btn-ect">View</a>
-                      </div>
-                    </div>
-                    <div class="dashboard_single_course_caption">
-                      <div class="dashboard_single_course_head">
-                        <div class="dashboard_single_course_head_flex">
-                          <span class="dashboard_instructor">Adam Wilson</span>
-                          <h4 class="dashboard_course_title">Introduction Web Design with HTML</h4>
-                        </div>
-                      </div>
-                      <div class="dashboard_single_course_des">
-                        <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                      </div>
-                      <div class="dashboard_single_course_progress">
-                        <div class="dashboard_single_course_progress_2">
-                          <ul class="m-0">
-                            <li class="list-inline-item"><i class="ti-user mr-1"></i>4512 Enrolled</li>
-                            <li class="list-inline-item"><i class="ti-comment-alt mr-1"></i>3 Assignments Remaining</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
+                  
+
 
                 </div>
               </div>
