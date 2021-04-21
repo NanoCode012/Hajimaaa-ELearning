@@ -18,7 +18,7 @@
 							<div class="text-center">
 
 								<img src="assets/img/404.png" class="img-fluid" alt="">
-								<p>Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper</p>
+								<p>PAGE NOT FOUND BRO. RECHECK UR FRIGGIN URL</p>
 								<a class="btn btn-theme" href="?p=main">Back To Home</a>
 
 							</div>
