@@ -1,5 +1,4 @@
 <body class="red-skin">
-
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -41,7 +40,10 @@
                         <div class="dashboard_container_header">
                             <div class=".dashboard_fl_1">
                               <?php
+
+
                               $post_id =$_GET['post_id']??"";
+                              $_SESSION['post_id'] = $post_id;
                                 $sql= "select * from posts where post_id=$post_id;";
                                 $query = $db_r -> prepare($sql);
                                 $query->execute();

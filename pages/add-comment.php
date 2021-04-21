@@ -1,6 +1,6 @@
 <?php
 if(isset($_POST['submit'])){
-  $pid=9;
+  $pid=$_SESSION['post_id'];
   $comment=$_POST['comment']??"";
   $uid=$_SESSION['user_id'];
   $q0="INSERT INTO `comments` (`pid`,`comment`,`uid`) VALUES (?,?,?)";
