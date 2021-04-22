@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 11, 2021 at 10:58 AM
+-- Generation Time: Apr 22, 2021 at 04:11 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -29,20 +29,19 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 11, 2021 at 10:28 AM
+-- Creation: Apr 19, 2021 at 01:40 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
 CREATE TABLE `assignments` (
   `assignment_id` int(11) NOT NULL,
-  `class_id` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `post_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONSHIPS FOR TABLE `assignments`:
+--   `post_id`
+--       `posts` -> `post_id`
 --
 
 -- --------------------------------------------------------
@@ -50,7 +49,8 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 11, 2021 at 10:16 AM
+-- Creation: Apr 19, 2021 at 08:27 AM
+-- Last update: Apr 22, 2021 at 03:33 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -70,7 +70,7 @@ CREATE TABLE `class` (
 --
 -- Table structure for table `class_enrolled`
 --
--- Creation: Apr 11, 2021 at 10:17 AM
+-- Creation: Apr 19, 2021 at 08:27 AM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -91,9 +91,35 @@ CREATE TABLE `class_enrolled` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comments`
+--
+-- Creation: Apr 22, 2021 at 03:28 PM
+-- Last update: Apr 22, 2021 at 04:08 PM
+--
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments` (
+  `comment_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONSHIPS FOR TABLE `comments`:
+--   `post_id`
+--       `posts` -> `post_id`
+--   `user_id`
+--       `users` -> `user_id`
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `files`
 --
--- Creation: Apr 11, 2021 at 10:22 AM
+-- Creation: Apr 19, 2021 at 08:27 AM
 --
 
 DROP TABLE IF EXISTS `files`;
@@ -106,6 +132,28 @@ CREATE TABLE `files` (
 
 --
 -- RELATIONSHIPS FOR TABLE `files`:
+--   `assignments_id`
+--       `assignments` -> `assignment_id`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `lectures`
+--
+-- Creation: Apr 19, 2021 at 01:41 PM
+--
+
+DROP TABLE IF EXISTS `lectures`;
+CREATE TABLE `lectures` (
+  `lecture_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONSHIPS FOR TABLE `lectures`:
+--   `post_id`
+--       `posts` -> `post_id`
 --
 
 -- --------------------------------------------------------
@@ -113,13 +161,16 @@ CREATE TABLE `files` (
 --
 -- Table structure for table `posts`
 --
--- Creation: Apr 11, 2021 at 10:21 AM
+-- Creation: Apr 22, 2021 at 03:38 PM
+-- Last update: Apr 22, 2021 at 03:38 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
 CREATE TABLE `posts` (
   `post_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `post_type` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -127,6 +178,10 @@ CREATE TABLE `posts` (
 
 --
 -- RELATIONSHIPS FOR TABLE `posts`:
+--   `class_id`
+--       `class` -> `class_id`
+--   `user_id`
+--       `users` -> `user_id`
 --
 
 -- --------------------------------------------------------
@@ -134,7 +189,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `student_files`
 --
--- Creation: Apr 11, 2021 at 10:27 AM
+-- Creation: Apr 19, 2021 at 08:27 AM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -159,8 +214,7 @@ CREATE TABLE `student_files` (
 --
 -- Table structure for table `users`
 --
--- Creation: Apr 11, 2021 at 09:32 AM
--- Last update: Apr 11, 2021 at 09:32 AM
+-- Creation: Apr 19, 2021 at 08:27 AM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -178,12 +232,8 @@ CREATE TABLE `users` (
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
-  `about` varchar(255) DEFAULT NULL,
-  `fb` varchar(255) DEFAULT NULL,
-  `twitter` varchar(255) DEFAULT NULL,
-  `linkedin` varchar(255) DEFAULT NULL,
-  `googleplus` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `about` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONSHIPS FOR TABLE `users`:
@@ -197,7 +247,8 @@ CREATE TABLE `users` (
 -- Indexes for table `assignments`
 --
 ALTER TABLE `assignments`
-  ADD PRIMARY KEY (`assignment_id`);
+  ADD PRIMARY KEY (`assignment_id`),
+  ADD KEY `post_id` (`post_id`);
 
 --
 -- Indexes for table `class`
@@ -214,16 +265,34 @@ ALTER TABLE `class_enrolled`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `files`
 --
 ALTER TABLE `files`
-  ADD PRIMARY KEY (`file_id`);
+  ADD PRIMARY KEY (`file_id`),
+  ADD KEY `assignments_id` (`assignments_id`);
+
+--
+-- Indexes for table `lectures`
+--
+ALTER TABLE `lectures`
+  ADD PRIMARY KEY (`lecture_id`),
+  ADD KEY `post_id` (`post_id`);
 
 --
 -- Indexes for table `posts`
 --
 ALTER TABLE `posts`
-  ADD PRIMARY KEY (`post_id`);
+  ADD PRIMARY KEY (`post_id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `student_files`
@@ -262,10 +331,22 @@ ALTER TABLE `class_enrolled`
   MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `files`
 --
 ALTER TABLE `files`
   MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lectures`
+--
+ALTER TABLE `lectures`
+  MODIFY `lecture_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -290,11 +371,43 @@ ALTER TABLE `users`
 --
 
 --
+-- Constraints for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+
+--
 -- Constraints for table `class_enrolled`
 --
 ALTER TABLE `class_enrolled`
   ADD CONSTRAINT `class_enrolled_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
   ADD CONSTRAINT `class_enrolled_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `files`
+--
+ALTER TABLE `files`
+  ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`assignments_id`) REFERENCES `assignments` (`assignment_id`);
+
+--
+-- Constraints for table `lectures`
+--
+ALTER TABLE `lectures`
+  ADD CONSTRAINT `lectures_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+
+--
+-- Constraints for table `posts`
+--
+ALTER TABLE `posts`
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
+  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `student_files`
