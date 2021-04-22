@@ -1,5 +1,7 @@
 <?php
 
+$version = '1.1';
+
 # 1 or a pool of databases in master-slave conf to connect to
 $pool = array('localhost',);
 
@@ -7,3 +9,6 @@ $pool = array('localhost',);
 $db = 'elearning';
 $user = 'root';
 $pass = 'root';
+
+# Google service account path
+$google_service_path = '';
