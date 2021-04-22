@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 22, 2021 at 05:09 PM
+-- Generation Time: Apr 22, 2021 at 06:05 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -50,8 +50,7 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
--- Last update: Apr 22, 2021 at 03:33 PM
+-- Creation: Apr 22, 2021 at 05:41 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -59,6 +58,7 @@ CREATE TABLE `class` (
   `class_id` int(11) NOT NULL,
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
+  `class_description` text,
   `class_instructor` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -72,6 +72,7 @@ CREATE TABLE `class` (
 -- Table structure for table `class_enrolled`
 --
 -- Creation: Apr 19, 2021 at 08:27 AM
+-- Last update: Apr 22, 2021 at 05:51 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -88,6 +89,18 @@ CREATE TABLE `class_enrolled` (
 --   `user_id`
 --       `users` -> `user_id`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `class_enrolled_count`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `class_enrolled_count`;
+CREATE TABLE `class_enrolled_count` (
+`class_id` int(11)
+,`num_students` bigint(21)
+);
 
 -- --------------------------------------------------------
 
@@ -239,6 +252,15 @@ CREATE TABLE `users` (
 --
 -- RELATIONSHIPS FOR TABLE `users`:
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `class_enrolled_count`
+--
+DROP TABLE IF EXISTS `class_enrolled_count`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `class_enrolled_count`  AS  select `class_enrolled`.`class_id` AS `class_id`,count(0) AS `num_students` from `class_enrolled` group by `class_enrolled`.`class_id` ;
 
 --
 -- Indexes for dumped tables
