@@ -41,14 +41,16 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
                                 <div class="dashboard_container">
                                     <?php
-                                    //$class_id=$_GET['class_id'];
-                                    $stmt = $db_r->query('SELECT class_name,class_code,class_instructor FROM class WHERE class_id=1');
+                                    $class_id = $_GET['class_id'];
+                                    $stmt = $db_r->prepare('SELECT class_name,class_code,class_instructor FROM class WHERE class_id=?');
+                                    $stmt->execute([$class_id]);
                                     $get = $stmt->fetch();
                                     ?>
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
-                                            <h1><?php echo $get['class_code'];?> <?php echo $get['class_name'];?></h1>
-                                            <h4 class="edu_title">Instructor: <?php echo $get['class_instructor']?></h4>
+                                            <h1><?php echo $get['class_code']; ?> <?php echo $get['class_name']; ?></h1>
+                                            <h4 class="edu_title">Instructor: <?php echo $get['class_instructor'] ?>
+                                            </h4>
                                             <span class="dashboard_instructor">Contact: Email@email.com</span>
 
                                         </div>
@@ -112,46 +114,36 @@
                                     <div class="dashboard_container_body">
 
                                         <!-- Single Course -->
-                                            <?php
-                                            //$class_id=$_GET['class_id'];
-                                            //$stmt = $db_r->query('SELECT * FROM posts WHERE class_id=$class_id ORDER BY time_created');
-                                             $stmt = $db_r->query('SELECT * FROM posts ORDER BY time_created');
-                                             while ($row = $stmt->fetch())
-                                             {
-                                            ?>
-                                        
-                                        <a href="?p=view-post&post_id=<?php echo $row['post_id']?>">
-                                        <div  style="cursor: pointer;"class="dashboard_single_course ass_hover_effect">
+                                        <?php
+                                        //$class_id=$_GET['class_id'];
+                                        //$stmt = $db_r->query('SELECT * FROM posts WHERE class_id=$class_id ORDER BY time_created');
+                                        $stmt = $db_r->query('SELECT * FROM posts ORDER BY time_created');
+                                        while ($row = $stmt->fetch()) {
+                                        ?>
+
+                                        <a
+                                            href="?p=view-post&class_id=<?= $_GET['class_id'] ?>&post_id=<?php echo $row['post_id'] ?>">
+                                            <div style="cursor: pointer;"
+                                                class="dashboard_single_course ass_hover_effect">
 
 
-                                            <div class="dashboard_single_course_caption">
-                                                <div class="dashboard_single_course_head">
-                                                    <div class="dashboard_single_course_head_flex">
-                                                        <span class="dashboard_instructor"></span>
-                                                        <h4 class="dashboard_course_title"> <?php echo $row['title']?> </h4>
+                                                <div class="dashboard_single_course_caption">
+                                                    <div class="dashboard_single_course_head">
+                                                        <div class="dashboard_single_course_head_flex">
+                                                            <span class="dashboard_instructor"></span>
+                                                            <h4 class="dashboard_course_title">
+                                                                <?php echo $row['title'] ?> </h4>
 
+                                                        </div>
+                                                        <div class="dc_head_right">
+                                                            <h4 class="dc_price_rate theme-cl"></h4>
+                                                        </div>
                                                     </div>
-                                                    <div class="dc_head_right">
-                                                        <h4 class="dc_price_rate theme-cl"></h4>
+                                                    <div class="dashboard_single_course_des">
+                                                        <p> <?php echo $row['description'] ?> </p>
                                                     </div>
-                                                </div>
-                                                <div class="dashboard_single_course_des">
-                                                    <p> <?php echo $row['description']?> </p>
-                                                </div>
-                                                <div class="dashboard_single_course_progress">
-                                                    <div class="dashboard_single_course_progress_1">
-                                                    <div class="ass-buttons">
-                                                        <a href="?p=view-post&post_id=<?php echo $row['post_id']?>" class="btn btn-theme-2">View</a>
-                                                     </div>
-                                        
-
-
-                                                    </div>
-                                                    
-                                                   
                                                 </div>
                                             </div>
-                                        </div>
                                         </a>
                                         <?php } ?>
 
