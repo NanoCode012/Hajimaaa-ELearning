@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 22, 2021 at 04:11 PM
+-- Generation Time: Apr 22, 2021 at 05:09 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -29,13 +29,14 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 19, 2021 at 01:40 PM
+-- Creation: Apr 22, 2021 at 04:44 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
 CREATE TABLE `assignments` (
   `assignment_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL
+  `post_id` int(11) NOT NULL,
+  `due_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -162,7 +163,7 @@ CREATE TABLE `lectures` (
 -- Table structure for table `posts`
 --
 -- Creation: Apr 22, 2021 at 03:38 PM
--- Last update: Apr 22, 2021 at 03:38 PM
+-- Last update: Apr 22, 2021 at 04:50 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
