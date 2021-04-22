@@ -24,7 +24,8 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="?p=now-student"><span class="ti-angle-left"> Back </a>
+                            <li class="breadcrumb-item"><a href="?p=now-student&class_id=<?= $_GET['class_id'] ?>"><span
+                                        class="ti-angle-left"> Back </a>
                             </li>
                         </ol>
                     </nav>
