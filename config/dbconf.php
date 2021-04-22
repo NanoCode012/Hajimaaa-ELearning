@@ -2,7 +2,7 @@
 
 require_once dirname(__FILE__) . '/conf.php';
 
-if ($version && $version != '1.1') die('Please check conf file (config/conf.php). Your version is missing or too low. Update it following (config/conf.php.sample) ');
+if (isset($version) && $version != '1.1') die('Please check conf file (config/conf.php). Your version is missing or too low. Update it following (config/conf.php.sample) ');
 
 function &getPDO($host, $db, $user, $pass, $charset)
 {
