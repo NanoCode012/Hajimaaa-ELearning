@@ -57,12 +57,12 @@
 
                       <div class="form-group col-md-12">
                         <label>Course Image</label>
-                        <form action="/upload-target" class="dropzone dz-clickable primary-dropzone">
+                        <div class="dropzone dz-clickable primary-dropzone">
                           <div class="dz-default dz-message">
-                            <i class="ti-gallery"></i>
-                            <span>Drag & Drop To Add Course Image</span>
+                            <input type="file" name="file" id="file" class="inputfile" />
+                            <label for="file">Choose a file</label>
                           </div>
-                        </form>
+                        </div>
                       </div>
 
                     </div>
