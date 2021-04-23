@@ -232,20 +232,3 @@
   Left:90%;
   margin-top:-2%;
 }
-
-.inputfile {
-	position: absolute;
-}
-
-.inputfile + label {
-    display: inline-block;
-}
-
-.inputfile:focus + label,
-.inputfile + label:hover {
-    color: black;
-}
-
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
