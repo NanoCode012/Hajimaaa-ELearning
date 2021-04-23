@@ -39,8 +39,7 @@
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-                                                    <a href="?p=createClass" class="btn btn-theme btn-rounded">Create
-                                                        new class</a>
+                                                    <a href="?p=createClass" class="btn btn-theme btn-rounded">Create new class</a>
                                                 </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-0">
@@ -98,7 +97,7 @@
                                                                     class="ti-user mr-1"></i><?php echo $row['class_count']; ?>
                                                                 Enrolled</li>
                                                             <!-- <li class="list-inline-item"><i
-                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass']; 
+                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
                                                                                                     ?>
                                                                 Assignments Remaining</li> -->
                                                         </ul>
