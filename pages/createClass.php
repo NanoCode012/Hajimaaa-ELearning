@@ -23,7 +23,7 @@
       <!-- Row -->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-        <form action="?p=addNewClass">
+        <form action="?p=addNewClass" method="post">
           <!-- Row -->
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -60,7 +60,7 @@
                         <label>Course Image</label>
                         <div class="dropzone dz-clickable primary-dropzone">
                           <div class="dz-default dz-message">
-                            <input type="file" name="course_cover" id="fileToUpload"/>
+                            <input name="course_cover" id="fileToUpload" type="file">
                           </div>
                         </div>
                       </div>
