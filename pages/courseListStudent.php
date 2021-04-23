@@ -158,5 +158,3 @@
       </div>
     </div>
     <!-- End Modal -->
-
-</body>
