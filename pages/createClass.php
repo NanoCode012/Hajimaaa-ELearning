@@ -23,6 +23,7 @@
       <!-- Row -->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
+        <form action="?p=addNewClass" method="post" enctype="multipart/form-data">
           <!-- Row -->
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -52,22 +53,21 @@
 
                       <div class="form-group col-md-6">
                         <label>Course Title</label>
-                        <input type="text" class="form-control" placeholder="Course Title">
+                        <input type="text" class="form-control" placeholder="Course Title" name="course_title">
                       </div>
 
                       <div class="form-group col-md-6">
-                        <label>Instructor Name</label>
-                        <input type="text" class="form-control" placeholder="Anshu Majavi">
+                        <label>Course Code</label>
+                        <input type="text" class="form-control" placeholder="Course Code" name="course_code">
                       </div>
 
                       <div class="form-group col-md-12">
                         <label>Course Image</label>
-                        <form action="/upload-target" class="dropzone dz-clickable primary-dropzone">
+                        <div class="dropzone dz-clickable primary-dropzone">
                           <div class="dz-default dz-message">
-                            <i class="ti-gallery"></i>
-                            <span>Drag & Drop To Change Logo</span>
+                            <input name="course_cover" id="fileToUpload" type="file">
                           </div>
-                        </form>
+                        </div>
                       </div>
 
                     </div>
@@ -97,12 +97,12 @@
 
                       <div class="form-group col-md-12">
                         <label>About Course</label>
-                        <textarea class="form-control" placeholder="Description"></textarea>
+                        <textarea class="form-control" placeholder="Description" name="course_description"></textarea>
                       </div>
 
                       <div class="form-group col-md-12">
                         <label>Category</label>
-                        <input type="text" class="form-control" placeholder="Ex. Science, Physics, Math..">
+                        <input type="text" class="form-control" placeholder="Ex. Science, Physics, Math.." name="category">
                       </div>
 
                     </div>
@@ -121,7 +121,7 @@
               <button class="btn btn-theme" type="submit">Save Course</button>
             </div>
           </div>
-
+        </form>
         </div>
 
       </div>

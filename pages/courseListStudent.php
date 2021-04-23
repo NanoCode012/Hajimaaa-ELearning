@@ -35,6 +35,9 @@
                                         </div>
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
+                                              <li class="list-inline-item">
+                                                  <button data-toggle="modal" data-target="#enrollNew" class="btn btn-theme btn-rounded">Enroll new class</button>
+                                              </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-0">
                                                         <input class="form-control" type="search"
@@ -96,7 +99,7 @@
                                                                     class="ti-user mr-1"></i><?php echo $row['class_count']; ?>
                                                                 Enrolled</li>
                                                             <!-- <li class="list-inline-item"><i
-                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass']; 
+                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
                                                                                                     ?>
                                                                 Assignments Remaining</li> -->
                                                         </ul>
@@ -105,11 +108,6 @@
                                             </div>
                                         </div>
                                         <?php }  ?>
-
-
-
-
-
 
                                     </div>
                                 </div>
@@ -130,4 +128,28 @@
 
     </div>
 
-</body>
+    <!-- Sign Up Modal -->
+    <div class="modal fade" id="enrollNew" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
+        <div class="modal-content" id="sign-up">
+          <span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
+          <div class="modal-body">
+            <h4 class="modal-header-title">Enroll New Class</h4>
+            <div class="login-form">
+              <form>
+
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Enter Course 6-digit Code">
+                </div>
+                <div class="form-group">
+                  <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
+                </div>
+
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Modal -->
