@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 23, 2021 at 04:14 PM
+-- Generation Time: Apr 23, 2021 at 05:13 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -50,7 +50,7 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 23, 2021 at 04:04 PM
+-- Creation: Apr 23, 2021 at 04:51 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -59,6 +59,7 @@ CREATE TABLE `class` (
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
   `class_description` text,
+  `categories` varchar(255) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `class_instructor` varchar(255) DEFAULT NULL,
   `class_secret` varchar(20) NOT NULL,
