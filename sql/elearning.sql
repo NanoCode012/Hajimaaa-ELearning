@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 22, 2021 at 06:05 PM
+-- Generation Time: Apr 23, 2021 at 04:14 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -50,7 +50,7 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 22, 2021 at 05:41 PM
+-- Creation: Apr 23, 2021 at 04:04 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -59,11 +59,17 @@ CREATE TABLE `class` (
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
   `class_description` text,
-  `class_instructor` varchar(255) DEFAULT NULL
+  `instructor_id` int(11) NOT NULL,
+  `class_instructor` varchar(255) DEFAULT NULL,
+  `class_secret` varchar(20) NOT NULL,
+  `course_img_path` varchar(255) NOT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- RELATIONSHIPS FOR TABLE `class`:
+--   `instructor_id`
+--       `users` -> `user_id`
 --
 
 -- --------------------------------------------------------
@@ -72,7 +78,7 @@ CREATE TABLE `class` (
 -- Table structure for table `class_enrolled`
 --
 -- Creation: Apr 19, 2021 at 08:27 AM
--- Last update: Apr 22, 2021 at 05:51 PM
+-- Last update: Apr 23, 2021 at 04:07 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -108,7 +114,6 @@ CREATE TABLE `class_enrolled_count` (
 -- Table structure for table `comments`
 --
 -- Creation: Apr 22, 2021 at 03:28 PM
--- Last update: Apr 22, 2021 at 04:08 PM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -176,7 +181,6 @@ CREATE TABLE `lectures` (
 -- Table structure for table `posts`
 --
 -- Creation: Apr 22, 2021 at 03:38 PM
--- Last update: Apr 22, 2021 at 04:50 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -260,7 +264,7 @@ CREATE TABLE `users` (
 --
 DROP TABLE IF EXISTS `class_enrolled_count`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `class_enrolled_count`  AS  select `class_enrolled`.`class_id` AS `class_id`,count(0) AS `num_students` from `class_enrolled` group by `class_enrolled`.`class_id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `class_enrolled_count`  AS  select `c`.`class_id` AS `class_id`,count(`ce`.`user_id`) AS `num_students` from (`class` `c` left join `class_enrolled` `ce` on((`c`.`class_id` = `ce`.`class_id`))) group by `c`.`class_id` ;
 
 --
 -- Indexes for dumped tables
@@ -277,7 +281,8 @@ ALTER TABLE `assignments`
 -- Indexes for table `class`
 --
 ALTER TABLE `class`
-  ADD PRIMARY KEY (`class_id`);
+  ADD PRIMARY KEY (`class_id`),
+  ADD KEY `instructor_id` (`instructor_id`);
 
 --
 -- Indexes for table `class_enrolled`
@@ -398,6 +403,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `assignments`
   ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+
+--
+-- Constraints for table `class`
+--
+ALTER TABLE `class`
+  ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `class_enrolled`

@@ -39,7 +39,8 @@
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-                                                    <a href="?p=createClass" class="btn btn-theme btn-rounded">Create new class</a>
+                                                    <a href="?p=createClass" class="btn btn-theme btn-rounded">Create
+                                                        new class</a>
                                                 </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-0">
@@ -56,7 +57,7 @@
 
 
                                         <?php
-                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.class_id IN (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
+                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.instructor_id = ? AND c.class_id = ce.class_id";
                                         $query = $db_r->prepare($sql);
                                         $query->execute([$_SESSION['user_id']]);
                                         $rows = $query->fetchAll();
