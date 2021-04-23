@@ -1,25 +1,74 @@
 <?php
 
+function izrand($length = 10, $numeric = false) {
+
+    $random_string = "";
+    while(strlen($random_string)<$length && $length > 0) {
+        if($numeric === false) {
+            $randnum = mt_rand(0,61);
+            $random_string .= ($randnum < 10) ?
+                chr($randnum+48) : ($randnum < 36 ?
+                    chr($randnum+55) : chr($randnum+61));
+        } else {
+            $randnum = mt_rand(0,9);
+            $random_string .= chr($randnum+48);
+        }
+    }
+    return $random_string;
+}
+
 $course_title = $_POST["course_title"];
+$course_code = $_POST["course_code"];
 $course_description = $_POST["course_description"];
 $category = $_POST["category"];
 
-$target_file = json_encode($_FILES["course_cover"]["tmp"]);
+$instructor_id = $_SESSION['user_id'];
 
-/*
-$target_dir = "course_images";
-$target_file = $target_dir . '/' . basename($_FILES["course_cover"]["name"]);
+$sqll = 'SELECT firstname, lastname FROM users WHERE user_id=?';
+$stmtt = $db_r->prepare($sqll);
+$stmtt->execute([$instructor_id]);
+$instructor = $stmtt->fetch();
+$instructor_fname = $instructor["firstname"];
+$instructor_lname = $instructor["lastname"];
+$instructor_fullname = $instructor_fname . " " . $instructor_lname;
+
+$class_secret = izrand();
+$unique = false;
+
+while ($unique == false) {
+  $sql = 'SELECT COUNT(*) FROM class WHERE class_secret=?';
+  $stmt = $db_r->prepare($sql);
+  $stmt->execute([$class_secret]);
+  $class = $stmt->fetch();
+  if ($class) {
+      $count_code = $class["COUNT(*)"];
+  }
+  if($count_code == 0) {
+    $unique = true;
+  } else if ($unique > 0) {
+    $class_secret = izrand();
+  }
+}
+
+$target_dir = 'assets/files/course_images';
+$target_file = $target_dir . '/' . $class_secret . ".png";
 $filename = $_FILES["course_cover"]['tmp_name'];
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
 if (move_uploaded_file($filename, $target_file)) {
-    //echo "The file ". htmlspecialchars( basename( $_FILES["cover_img"]["name"])). " has been uploaded.";
-    //echo $target_file . "\n";
+  include 'includes/utils/gcloud.php';
+  $gstorage = new GStorage();
+  $gstorage->upload($target_file, "course_image/" . $class_secret . ".png");
 }
 else {
     echo "Sorry, there was an error uploading your file.";
 }
-*/
+
+$gstorage_path = "course_image/" . $class_secret . ".png";
+
+$sql = "INSERT INTO `class`(`instructor_id`, `class_name`, `class_code`, `class_description`, `class_instructor`, `class_secret`, `course_img_path`, `categories`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+$db_w->prepare($sql)->execute([$instructor_id, $course_title, $course_code, $course_description, $instructor_fullname, $class_secret, $gstorage_path, $category]);
+header("Location: ?p=courseListTeacher");
 
 ?>

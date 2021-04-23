@@ -23,7 +23,7 @@
       <!-- Row -->
       <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-        <form action="?p=addNewClass" method="post">
+        <form action="?p=addNewClass" method="post" enctype="multipart/form-data">
           <!-- Row -->
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -51,9 +51,14 @@
                   <div class="submit-section">
                     <div class="form-row">
 
-                      <div class="form-group col-md-12">
+                      <div class="form-group col-md-6">
                         <label>Course Title</label>
                         <input type="text" class="form-control" placeholder="Course Title" name="course_title">
+                      </div>
+
+                      <div class="form-group col-md-6">
+                        <label>Course Code</label>
+                        <input type="text" class="form-control" placeholder="Course Code" name="course_code">
                       </div>
 
                       <div class="form-group col-md-12">
