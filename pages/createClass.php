@@ -50,14 +50,9 @@
                   <div class="submit-section">
                     <div class="form-row">
 
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-12">
                         <label>Course Title</label>
                         <input type="text" class="form-control" placeholder="Course Title">
-                      </div>
-
-                      <div class="form-group col-md-6">
-                        <label>Instructor Name</label>
-                        <input type="text" class="form-control" placeholder="Anshu Majavi">
                       </div>
 
                       <div class="form-group col-md-12">
@@ -65,7 +60,7 @@
                         <form action="/upload-target" class="dropzone dz-clickable primary-dropzone">
                           <div class="dz-default dz-message">
                             <i class="ti-gallery"></i>
-                            <span>Drag & Drop To Change Logo</span>
+                            <span>Drag & Drop To Add Course Image</span>
                           </div>
                         </form>
                       </div>
