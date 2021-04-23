@@ -59,13 +59,13 @@ $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 if (move_uploaded_file($filename, $target_file)) {
   include 'includes/utils/gcloud.php';
   $gstorage = new GStorage();
-  $gstorage->upload($target_file, "course_image/" . $class_secret . ".png");
+  $gstorage->upload($target_file, "course_images/" . $class_secret . ".png");
 }
 else {
     echo "Sorry, there was an error uploading your file.";
 }
 
-$gstorage_path = "course_image/" . $class_secret . ".png";
+$gstorage_path = "course_images/" . $class_secret . ".png";
 
 $sql = "INSERT INTO `class`(`instructor_id`, `class_name`, `class_code`, `class_description`, `class_instructor`, `class_secret`, `course_img_path`, `categories`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $db_w->prepare($sql)->execute([$instructor_id, $course_title, $course_code, $course_description, $instructor_fullname, $class_secret, $gstorage_path, $category]);

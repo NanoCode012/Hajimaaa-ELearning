@@ -39,8 +39,7 @@
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-                                                    <a href="?p=createClass" class="btn btn-theme btn-rounded">Create
-                                                        new class</a>
+                                                    <a href="?p=createClass" class="btn btn-theme btn-rounded">Create new class</a>
                                                 </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-0">
@@ -57,17 +56,22 @@
 
 
                                         <?php
-                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.instructor_id = ? AND c.class_id = ce.class_id";
+                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.class_id IN (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
                                         $query = $db_r->prepare($sql);
                                         $query->execute([$_SESSION['user_id']]);
                                         $rows = $query->fetchAll();
                                         foreach ($rows as $row) {
+
+                                          include 'includes/utils/gcloud.php';
+                                          $gstorage = new GStorage();
+                                          $gstorage->download($row["course_img_path"], 'assets/files/course_images'.'/'.$row["class_secret"].'.png');
+                                          $course_img = 'assets/files/course_images'.'/'.$row["class_secret"].'.png';
                                         ?>
 
                                         <!-- Single Course -->
                                         <div class="dashboard_single_course">
                                             <div class="dashboard_single_course_thumb">
-                                                <img src="https://miro.medium.com/max/3960/0*HICLyAdNSIyT0ODU.jpg"
+                                                <img src= "<?php echo $course_img; ?>"
                                                     class="img-fluid" alt="" />
                                                 <div class="dashboard_action">
                                                     <a href="#" <?php
@@ -107,6 +111,19 @@
                                             </div>
                                         </div>
                                         <?php }  ?>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                                     </div>
