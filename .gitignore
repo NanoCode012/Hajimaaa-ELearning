@@ -4,6 +4,9 @@ template
 ## Ignore conf file
 config/conf.php
 
+## Ignore uploaded/downloaded file
+assets/files
+
 ## Ignore Mac files
 # General
 .DS_Store
