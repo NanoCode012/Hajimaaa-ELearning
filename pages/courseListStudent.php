@@ -136,10 +136,9 @@
           <div class="modal-body">
             <h4 class="modal-header-title">Enroll New Class</h4>
             <div class="login-form">
-              <form>
-
+              <form action="?p=enrollClass" method="post">
                 <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Enter Course 6-digit Code">
+                  <input type="text" class="form-control" name="class_secret" placeholder="Enter Course 6-digit Code">
                 </div>
                 <div class="form-group">
                   <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
