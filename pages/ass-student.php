@@ -8,7 +8,7 @@ header('location:?p=login');
 }
 else{
   $user_id = $_SESSION["user_id"];
-  $class_id=1;
+  $class_id=$_GET['class_id'];
   if(isset($_POST['create']))
   {
 
