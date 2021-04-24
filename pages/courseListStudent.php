@@ -62,13 +62,15 @@
                                         $query->execute([$_SESSION['user_id']]);
                                         $rows = $query->fetchAll();
                                         foreach ($rows as $row) {
+                                          $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
+                                          if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], 'assets/files/' . $course_img);
                                         ?>
 
 
                                         <!-- Single Course -->
                                         <div class="dashboard_single_course">
                                             <div class="dashboard_single_course_thumb">
-                                                <img src="https://miro.medium.com/max/3960/0*HICLyAdNSIyT0ODU.jpg"
+                                                <img src="<?php echo $course_img; ?>"
                                                     class="img-fluid" alt="" />
                                                 <div class="dashboard_action">
                                                     <a href="#" <?php
