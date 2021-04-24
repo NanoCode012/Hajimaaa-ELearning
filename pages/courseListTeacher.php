@@ -44,8 +44,10 @@
                                                 </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-0">
-                                                        <input class="form-control" type="search" placeholder="Search Courses" aria-label="Search">
-                                                        <button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
+                                                        <input class="form-control" type="search"
+                                                            placeholder="Search Courses" aria-label="Search">
+                                                        <button class="btn my-2 my-sm-0" type="submit"><i
+                                                                class="ti-search"></i></button>
                                                     </form>
                                                 </li>
                                             </ul>
@@ -63,47 +65,50 @@
                                         $gstorage = new GStorage();
                                         foreach ($rows as $row) {
                                             $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
-                                            if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], 'assets/files/' . $course_img);
+                                            if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
                                         ?>
 
-                                            <!-- Single Course -->
-                                            <div class="dashboard_single_course">
-                                                <div class="dashboard_single_course_thumb">
-                                                    <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
-                                                    <div class="dashboard_action">
-                                                        <a href="#" <?php
+                                        <!-- Single Course -->
+                                        <div class="dashboard_single_course">
+                                            <div class="dashboard_single_course_thumb">
+                                                <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
+                                                <div class="dashboard_action">
+                                                    <a href="#" <?php
 
 
 
                                                                     ?> class="btn btn-ect">Delete</a>
-                                                        <a href="?p=now-teacher&class_id=<?= $row['class_id'] ?>" class="btn btn-ect">View</a>
+                                                    <a href="?p=now-teacher&class_id=<?= $row['class_id'] ?>"
+                                                        class="btn btn-ect">View</a>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_single_course_caption">
+                                                <div class="dashboard_single_course_head">
+                                                    <div class="dashboard_single_course_head_flex">
+                                                        <span
+                                                            class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
+                                                        <h4 class="dashboard_course_title">
+                                                            <?php echo $row['class_name']; ?></h4>
                                                     </div>
                                                 </div>
-                                                <div class="dashboard_single_course_caption">
-                                                    <div class="dashboard_single_course_head">
-                                                        <div class="dashboard_single_course_head_flex">
-                                                            <span class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
-                                                            <h4 class="dashboard_course_title">
-                                                                <?php echo $row['class_name']; ?></h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dashboard_single_course_des">
-                                                        <p><?php echo $row['class_description']; ?></p>
-                                                    </div>
-                                                    <div class="dashboard_single_course_progress">
-                                                        <div class="dashboard_single_course_progress_2">
-                                                            <ul class="m-0">
-                                                                <li class="list-inline-item"><i class="ti-user mr-1"></i><?php echo $row['class_count']; ?>
-                                                                    Enrolled</li>
-                                                                <!-- <li class="list-inline-item"><i
+                                                <div class="dashboard_single_course_des">
+                                                    <p><?php echo $row['class_description']; ?></p>
+                                                </div>
+                                                <div class="dashboard_single_course_progress">
+                                                    <div class="dashboard_single_course_progress_2">
+                                                        <ul class="m-0">
+                                                            <li class="list-inline-item"><i
+                                                                    class="ti-user mr-1"></i><?php echo $row['class_count']; ?>
+                                                                Enrolled</li>
+                                                            <!-- <li class="list-inline-item"><i
                                                                     class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
                                                                                                     ?>
                                                                 Assignments Remaining</li> -->
-                                                            </ul>
-                                                        </div>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         <?php }  ?>
 
 
@@ -141,7 +146,8 @@
     </div>
 
     <!-- Log In Modal -->
-    <div class="modal fade" id="create-class" tabindex="-1" role="dialog" aria-labelledby="registermodal" aria-hidden="true">
+    <div class="modal fade" id="create-class" tabindex="-1" role="dialog" aria-labelledby="registermodal"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="width:800px;">
             <div class="modal-content" id="registermodal" style="width:800px;">
                 <span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
