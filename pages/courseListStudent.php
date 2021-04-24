@@ -35,9 +35,10 @@
                                         </div>
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
-                                              <li class="list-inline-item">
-                                                  <button data-toggle="modal" data-target="#enrollNew" class="btn btn-theme btn-rounded">Enroll new class</button>
-                                              </li>
+                                                <li class="list-inline-item">
+                                                    <button data-toggle="modal" data-target="#enrollNew"
+                                                        class="btn btn-theme btn-rounded">Enroll new class</button>
+                                                </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-0">
                                                         <input class="form-control" type="search"
@@ -61,6 +62,8 @@
                                         $query = $db_r->prepare($sql);
                                         $query->execute([$_SESSION['user_id']]);
                                         $rows = $query->fetchAll();
+                                        include 'includes/utils/gcloud.php';
+                                        $gstorage = new GStorage();
                                         foreach ($rows as $row) {
                                           $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
                                           if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], 'assets/files/' . $course_img);
@@ -70,8 +73,7 @@
                                         <!-- Single Course -->
                                         <div class="dashboard_single_course">
                                             <div class="dashboard_single_course_thumb">
-                                                <img src="<?php echo $course_img; ?>"
-                                                    class="img-fluid" alt="" />
+                                                <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
                                                 <div class="dashboard_action">
                                                     <a href="#" <?php
 
@@ -132,25 +134,26 @@
 
     <!-- Sign Up Modal -->
     <div class="modal fade" id="enrollNew" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
-        <div class="modal-content" id="sign-up">
-          <span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
-          <div class="modal-body">
-            <h4 class="modal-header-title">Enroll New Class</h4>
-            <div class="login-form">
-              <form action="?p=enrollClass" method="post">
-                <div class="form-group">
-                  <input type="text" class="form-control" name="class_secret" placeholder="Enter Course 6-digit Code">
-                </div>
-                <div class="form-group">
-                  <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
-                </div>
+        <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
+            <div class="modal-content" id="sign-up">
+                <span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
+                <div class="modal-body">
+                    <h4 class="modal-header-title">Enroll New Class</h4>
+                    <div class="login-form">
+                        <form action="?p=enrollClass" method="post">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="class_secret"
+                                    placeholder="Enter Course 6-digit Code">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
+                            </div>
 
-              </form>
+                        </form>
+                    </div>
+
+                </div>
             </div>
-
-          </div>
         </div>
-      </div>
     </div>
     <!-- End Modal -->
