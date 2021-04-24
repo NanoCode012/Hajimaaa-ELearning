@@ -47,7 +47,7 @@
                                             <div class="form-group">
                                                 <div class="select_buttonnn center-align">
                                                     <label class="center-align"><input type="radio" name="accSel"
-                                                            value="0"><span style="width:500px;"
+                                                            value="0" checked="checked"><span style="width:500px;"
                                                             class="btn btn-outline-theme btn-rounded center-align">Student</span></label>
                                                 </div>
                                             </div>
