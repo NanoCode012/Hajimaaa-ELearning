@@ -7,14 +7,18 @@ if (!isset($_SESSION['user_id']))
 header('location:?p=login');
 }
 else{
+  $class_id=$_GET['class_id'];
+  $user_id = $_SESSION["user_id"];
 
 if(isset($_POST['create']))
 {
 
+
 $title=$_POST['title'];
 $description=$_POST['description'];
-$sqlp="INSERT INTO  posts(class_id,title,description,post_type) VALUES(1,:title,:description,2)";
+$sqlp="INSERT INTO  posts(class_id,title,description,post_type) VALUES(:class_id,:title,:description,2)";
 $queryp = $db_w->prepare($sqlp);
+$queryp->bindParam(':class_id',$class_id,PDO::PARAM_STR);
 $queryp->bindParam(':title',$title,PDO::PARAM_STR);
 $queryp->bindParam(':description',$description,PDO::PARAM_STR);
 $queryp->execute();
@@ -54,14 +58,20 @@ function getSalt() {
    $extension = substr($filename,strlen($filename)-4,strlen($filename));
    $salt = getSalt();
    $filename=md5($filename+$salt).$extension;
-   move_uploaded_file($_FILES["files"]["tmp_name"][$i],"uploads/".$filename);
+move_uploaded_file($_FILES["files"]["tmp_name"][$i],"assets/files/assignments/".$filename);
+   // if(move_uploaded_file($_FILES["files"]["tmp_name"][$i],"assets/files/assignments/".$filename)){
+   //   include 'includes/utils/gcloud.php';
+   //   $gstorage = new GStorage();
+   //   $gstorage->upload("assets/files/assignments/".$filename,"assignments/".$filename);
+   // }
    // $new_path="assets/files/assignments".$filename;
    // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
    // upload($tmp_dir, $new_path);
-
-   $sql1="INSERT INTO  files(file_name,assignments_id) VALUES(:filename,:lastInsertId)";
+   $filepath='assignments/'.$filename;
+   $sql1="INSERT INTO  files(file_name,file_path,assignments_id) VALUES(:filename,:filepath,:lastInsertId)";
    $query1 = $db_w->prepare($sql1);
    $query1->bindParam(':filename',$filename,PDO::PARAM_STR);
+   $query1->bindParam(':filepath',$filepath,PDO::PARAM_STR);
    $query1->bindParam(':lastInsertId',$lastInsertId,PDO::PARAM_STR);
    $query1->execute();
 
@@ -133,7 +143,7 @@ header('location:?p=ass-teacher');
                                         <div class="dashboard_fl_1">
                                           <?php
 
-                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=".$class_id;
                                           $query1 = $db_r -> prepare($sql1);
                                           $query1->execute();
                                           $results1=$query1->fetchAll(PDO::FETCH_OBJ);
@@ -146,7 +156,7 @@ header('location:?p=ass-teacher');
                                             <h4 class="edu_title">Dr. <?php echo htmlentities($result1->class_instructor);?></h4>
                                             <?php
 
-                                            $sql2 = "SELECT email from users where user_id=2;";
+                                            $sql2 = "SELECT email from users where user_id=".$user_id;
                                             $query2 = $db_r -> prepare($sql2);
                                             $query2->execute();
                                             $results2=$query2->fetchAll(PDO::FETCH_OBJ);
@@ -241,7 +251,7 @@ header('location:?p=ass-teacher');
 <?php
 
 
-$sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=1";
+$sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=".$class_id;
 $query = $db_r -> prepare($sql);
 $query->execute();
 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -292,7 +302,7 @@ foreach($results as $result)
                                                         <ul class="m-0">
                                                           <?php
 
-                                                          $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=1";
+                                                          $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=".$class_id;
                                                           $query1 = $db_r -> prepare($sql1);
                                                           $query1->execute();
                                                           $results1=$query1->fetchAll(PDO::FETCH_OBJ);
@@ -357,7 +367,7 @@ foreach($results as $result)
 
                                         <?php
 
-                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=1";
+                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=".$class_id;
                                         $query = $db_r -> prepare($sql);
                                         $query->execute();
                                         $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -407,7 +417,7 @@ foreach($results as $result)
                                                           <ul class="m-0">
                                                             <?php
 
-                                                            $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=1";
+                                                            $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=".$class_id;
                                                             $query1 = $db_r -> prepare($sql1);
                                                             $query1->execute();
                                                             $results1=$query1->fetchAll(PDO::FETCH_OBJ);
@@ -469,7 +479,7 @@ foreach($results as $result)
 
                                         <?php
 
-                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=1";
+                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=".$class_id;
                                         $query = $db_r -> prepare($sql);
                                         $query->execute();
                                         $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -520,7 +530,7 @@ foreach($results as $result)
                                                           <ul class="m-0">
                                                             <?php
 
-                                                            $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=1";
+                                                            $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=".$class_id;
                                                             $query1 = $db_r -> prepare($sql1);
                                                             $query1->execute();
                                                             $results1=$query1->fetchAll(PDO::FETCH_OBJ);

@@ -1,3 +1,4 @@
+
 <body class="red-skin gray">
 
     <?php include 'includes/nav.php'; ?>
@@ -32,9 +33,33 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <div class="trips_detail">
-                                            <h1 class="breadcrumb-title">Basic Electrical Engineering</h1>
-                                            <h4>Dr. Harry Potter</h4>
-                                            <h4>Contact: harryharry@gmail.com</h4>
+                                          <?php
+
+                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                          $query1 = $db_r -> prepare($sql1);
+                                          $query1->execute();
+                                          $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+
+                                          if($results1)
+                                          {
+                                          foreach($results1 as $result1)
+                                          {               ?>
+                                            <h1 class="breadcrumb-title"><?php echo htmlentities($result1->class_name);?></h1>
+                                            <h4><?php echo htmlentities($result1->class_instructor);?></h4>
+                                            <?php
+
+                                            $sql2 = "SELECT email from users where user_id=2;";
+                                            $query2 = $db_r -> prepare($sql2);
+                                            $query2->execute();
+                                            $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+
+                                            if($results2)
+                                            {
+                                            foreach($results2 as $result2)
+                                            {               ?>
+                                            <h4>Contact: <?php echo htmlentities($result2->email);?></h4>
+
+                                          <?php }}}} ?>
                                         </div>
                                     </ol>
 
@@ -121,8 +146,25 @@
                         <li class="facts-5">Design</li>
                       </ul>-->
                                                     <div class="ed_header_caption">
-                                                        <h1 class="ed_title">Assignment 1</h1>
-                                                        <span class="viewer_location">CSS334-1</span>
+                                                      <?php
+
+                                                      $sql1 = "SELECT c.class_code, p.title, p.description FROM class c, posts p WHERE c.class_id = p.class_id and p.post_id=13;";
+                                                      $query1 = $db_r -> prepare($sql1);
+                                                      $query1->execute();
+                                                      $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+
+                                                      if($results1)
+                                                      {
+                                                      foreach($results1 as $result1)
+                                                      {               ?>
+
+
+                                                        <h1 class="ed_title"><?php echo htmlentities($result1->title);?></h1>
+
+
+                                                        <span class="viewer_location"><?php echo htmlentities($result1->class_code);?></span>
+
+
                                                         <ul>
                                                             <!--<li><i class="ti-calendar"></i>10 - 20 weeks</li>
                           <li><i class="ti-control-forward"></i>102 Lectures</li>-->
@@ -130,13 +172,9 @@
                                                         </ul>
                                                     </div>
                                                     <div class="ed_header_short">
-                                                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa
-                                                            qui officia deserunt mollit anim id est laborum. accusantium
-                                                            doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-                                                            illo inventore. veritatis et quasi architecto beatae vitae
-                                                            dicta sunt explicabo.</p>
+                                                        <p><?php echo htmlentities($result1->description);?></p>
                                                     </div>
-
+                                                  <?php }} ?>
                                                     <div class="viewer_package_status">Due in 2 Days</div>
                                                     <div class="viewer_package_status">150 words</div>
                                                     <div class="viewer_package_status">20 Marks</div>

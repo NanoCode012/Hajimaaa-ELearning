@@ -7,9 +7,11 @@ if (!isset($_SESSION['user_id']))
 header('location:?p=login');
 }
 else{
+  $user_id = $_SESSION["user_id"];
+  $class_id=1;
   if(isset($_POST['create']))
   {
-    $user_id = $_SESSION["user_id"];
+
     $countfiles = count($_FILES['files']['name']);
     function getSalt() {
          $charset = '0123456789';
@@ -28,19 +30,26 @@ else{
       $extension = substr($filename,strlen($filename)-4,strlen($filename));
       $salt = getSalt();
       $filename=md5($filename+$salt).$extension;
-      move_uploaded_file($_FILES["files"]["tmp_name"][$i],"uploads/".$filename);
+
+      if(move_uploaded_file($_FILES["files"]["tmp_name"][$i],"assets/files/student_files/".$filename)){
+        // include 'includes/utils/gcloud.php';
+        // $gstorage = new GStorage();
+        // $gstorage->upload("assets/files/student_files/".$filename,"student_files/".$filename);
+      }
       // $new_path="assets/files/student_files".$filename;
       // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
       // upload($tmp_dir, $new_path);
       $text_answer=$_POST['text_answer'];
       $assignment_id=$_POST['assignment_id'];
+      $filepath='student_files/'.$filename;
 
-      $sqlp="INSERT INTO student_files(student_id,assignment_id,text_answer,file_name) VALUES(:user_id,:assignment_id,:text_answer,:filename)";
+      $sqlp="INSERT INTO student_files(student_id,assignment_id,text_answer,file_name,file_path) VALUES(:user_id,:assignment_id,:text_answer,:filename,:filepath)";
       $queryp = $db_w->prepare($sqlp);
       $queryp->bindParam(':user_id',$user_id,PDO::PARAM_STR);
       $queryp->bindParam(':assignment_id',$assignment_id,PDO::PARAM_STR);
       $queryp->bindParam(':text_answer',$text_answer,PDO::PARAM_STR);
       $queryp->bindParam(':filename',$filename,PDO::PARAM_STR);
+      $queryp->bindParam(':filepath',$filepath,PDO::PARAM_STR);
       $queryp->execute();
       $lastInsertId = $db_w->lastInsertId();
 
@@ -122,7 +131,7 @@ else{
                                       <div class="dashboard_fl_1">
                                         <?php
 
-                                        $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                        $sql1 = "SELECT class_name,class_instructor from class where class_id=".$class_id;
                                         $query1 = $db_r -> prepare($sql1);
                                         $query1->execute();
                                         $results1=$query1->fetchAll(PDO::FETCH_OBJ);
@@ -135,8 +144,9 @@ else{
                                           <h4 class="edu_title">Dr. <?php echo htmlentities($result1->class_instructor);?></h4>
                                           <?php
 
-                                          $sql2 = "SELECT email from users where user_type=1 and user_id=(SELECT user_id from class_enrolled where class_id=1)";
+                                          $sql2 = "SELECT email from users where user_type=1 and user_id=(SELECT user_id from class where class_id=:class_id)";
                                           $query2 = $db_r -> prepare($sql2);
+                                          $query2->bindParam(':class_id',$class_id,PDO::PARAM_STR);
                                           $query2->execute();
                                           $results2=$query2->fetchAll(PDO::FETCH_OBJ);
 
@@ -250,8 +260,9 @@ else{
 
         <?php
 
-        $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=1 and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) ";
+        $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=:class_id and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) ";
         $query = $db_r -> prepare($sql);
+        $query->bindParam(':class_id',$class_id,PDO::PARAM_STR);
         $query->execute();
         $results=$query->fetchAll(PDO::FETCH_OBJ);
         $y=array();
@@ -265,9 +276,9 @@ else{
         ?>
 
 
-
+              <script> $data = json_encode($data); </script>
                                                 <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
-                                                    class="dashboard_single_course ass_hover_effect join-button pop-login">
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login" data-type="edit" data-service='{$data}'>
 
 
                                                     <div class="dashboard_single_course_caption">
@@ -328,16 +339,26 @@ else{
 
                                                               <?php
 
-                                                              $sqlf = "SELECT file_name from files where assignments_id=".$assid;
+                                                              $sqlf = "SELECT file_name,file_path from files where assignments_id=".$assid;
                                                               $queryf = $db_r -> prepare($sqlf);
                                                               $queryf->execute();
                                                               $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
 
+
                                                               if($queryf->rowCount() > 0)
                                                               { $x=0;
+                                                                include 'includes/utils/gcloud.php';
+                                                                $gstorage = new GStorage();
                                                               foreach($resultsf as $resultf)
-                                                              {    $x++;           ?>
-                                                                <a class="list-inline-item " target="_blank" href="uploads/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x;?></a>
+                                                              {    $x++;
+
+                                                                if(!file_exists('assets/files/assignments/'.$resultf->file_name)){
+                                                                  $gstorage->download($resultf->file_path,'assets/files/assignments/'.$resultf->file_name);
+                                                                }
+
+
+                                                                ?>
+                                                                <a class="list-inline-item " target="_blank" href="assets/files/assignments/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x ;?></a>
 
                                                               <?php }} ?>
                                                             </ul>
@@ -380,7 +401,7 @@ else{
 
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=1";
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=".$class_id;
                                                 $query = $db_r -> prepare($sql);
                                                 $query->execute();
                                                 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -480,7 +501,7 @@ else{
 
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=1";
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=".$class_id;
                                                 $query = $db_r -> prepare($sql);
                                                 $query->execute();
                                                 $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -589,7 +610,7 @@ else{
 
                                     <?php
 
-                                    $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=1";
+                                    $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=".$class_id;
                                     $query = $db_r -> prepare($sql);
                                     $query->execute();
                                     $results=$query->fetchAll(PDO::FETCH_OBJ);
@@ -622,7 +643,7 @@ else{
                                                             <div class="dashboard_single_course_progress_1">
 
                                                               <?php
-                                                              $user_id = $_SESSION["user_id"];
+
                                                               $assid = htmlentities($result->assignment_id);
                                                               $sql0 = "SELECT count(student_id) as no_of_files_submitted from student_files where student_id=:user_id and assignment_id=". $assid;
                                                               $query0 = $db_r -> prepare($sql0);
@@ -727,7 +748,10 @@ else{
                             <textarea class="form-control popuptarea" id="message-text" name="text_answer"></textarea>
                         </div>
 
-                        <input type="hidden" name="assignment_id" value="8">
+
+                        <div class="modal-footer">
+                            <input type="hidden" name="assignment_id" value="8">
+                        </div>
 
                         <div class="form-group">
                             <label class="col-form-label">Upload files:</label>
@@ -800,4 +824,29 @@ else{
     }
     </script>
     <!--JS for tabs-->
+<!-- <script>
+$(function() {
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var div = $(event.relatedTarget) // Button that triggered the modal
+            var data = div.data('service') // Extract info from data-* attributes
+            var type = div.data('type')
+            var modal = $(this)
+
+            // Type: Edit
+            //modal.find('#title').text(capitalizeFirstLetter(type));
+            //modal.find('.modal-footer .btn-primary').attr('name', type)
+            if (type == 'edit') {
+                modal.find('.modal-footer input').val(data['assignment_id'])
+
+            }
+
+        });
+    });
+
+
+
+</script> -->
+
+
 <?php } ?>
