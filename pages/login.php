@@ -1,3 +1,51 @@
+<?php
+
+// Define variables and initialize with empty values
+$username = $password = "";
+$username_err = $password_err = "";
+
+// Processing form data when form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Check if username is empty
+    if (empty(trim($_POST["username"]))) {
+        $username_err = "Please enter username.";
+    } else {
+        $username = trim($_POST["username"]);
+    }
+
+    // Check if password is empty
+    if (empty(trim($_POST["password"]))) {
+        $password_err = "Please enter your password.";
+    } else {
+        $password = trim($_POST["password"]);
+    }
+
+    $sql = 'SELECT user_id, username, password FROM users WHERE username=?';
+    $stmt = $db_r->prepare($sql);
+    $stmt->execute([$username]);
+    $user = $stmt->fetch();
+    if ($user) {
+        $user_id = $user["user_id"];
+        $password_hash = $user["password"];
+        $db_username = $user["username"];
+
+        if (password_verify($password, $password_hash)) {
+            session_destroy();
+            session_start();
+            $_SESSION["loggedin"] = true;
+            $_SESSION["user_id"] = $user_id;
+            $_SESSION["logged_in_username"] = $username;
+            header("Location: ?p=profile");
+        }
+    } else {
+        //invalid username or password
+    }
+}
+
+?>
+
+
 <body class="red-skin gray">
     <!-- Preloader - style you can find in spinners.css -->
     <div id="preloader">
@@ -41,14 +89,14 @@
                             <h4>Sign In</h4>
                             <div class="login-form">
                                 <br><br><br>
-                                <form action="?p=accountmanager" method="post">
+                                <form action="?p=login" method="post">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input type="text" class="form-control">
+                                        <input name="username" type="text" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input type="password" class="form-control">
+                                        <input name="password" type="password" class="form-control">
                                     </div>
                                     <div class="social-login mb-3">
                                         <ul>

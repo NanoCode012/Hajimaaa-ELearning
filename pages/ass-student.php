@@ -1,881 +1,803 @@
+<?php
 
-    <body class="red-skin gray">
-      <?php include 'includes/nav.php'; ?>
+// error_reporting(0);
 
+if (!isset($_SESSION['user_id']))
+    {
+header('location:?p=login');
+}
+else{
+  if(isset($_POST['create']))
+  {
+    $user_id = $_SESSION["user_id"];
+    $countfiles = count($_FILES['files']['name']);
+    function getSalt() {
+         $charset = '0123456789';
+         $randStringLen = 4;
+
+         $randString = "";
+         for ($i = 0; $i < $randStringLen; $i++) {
+             $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
+         }
+
+         return $randString;
+    }
+
+    for($i=0;$i<$countfiles;$i++){
+      $filename = $_FILES['files']['name'][$i];
+      $extension = substr($filename,strlen($filename)-4,strlen($filename));
+      $salt = getSalt();
+      $filename=md5($filename+$salt).$extension;
+      move_uploaded_file($_FILES["files"]["tmp_name"][$i],"uploads/".$filename);
+      // $new_path="assets/files/student_files".$filename;
+      // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
+      // upload($tmp_dir, $new_path);
+      $text_answer=$_POST['text_answer'];
+      $assignment_id=$_POST['assignment_id'];
+
+      $sqlp="INSERT INTO student_files(student_id,assignment_id,text_answer,file_name) VALUES(:user_id,:assignment_id,:text_answer,:filename)";
+      $queryp = $db_w->prepare($sqlp);
+      $queryp->bindParam(':user_id',$user_id,PDO::PARAM_STR);
+      $queryp->bindParam(':assignment_id',$assignment_id,PDO::PARAM_STR);
+      $queryp->bindParam(':text_answer',$text_answer,PDO::PARAM_STR);
+      $queryp->bindParam(':filename',$filename,PDO::PARAM_STR);
+      $queryp->execute();
+      $lastInsertId = $db_w->lastInsertId();
+
+
+    }
+
+
+
+
+
+
+
+
+   // Looping all files
+
+
+
+
+  $lastInsertId = $db_w->lastInsertId();
+  if($lastInsertId)
+  {
+  $_SESSION['msg']="Assignment created successfully";
+  header('location:?p=ass-student');
+  }
+  else
+  {
+  $_SESSION['error']="Something went wrong. Please try again";
+  header('location:?p=ass-student');
+  }
+
+   }
+?>
+
+
+<body class="red-skin gray">
+    <!-- ============================================================== -->
+    <!-- Preloader - style you can find in spinners.css -->
+    <!-- ============================================================== -->
+    <div id="preloader">
+        <div class="preloader"><span></span><span></span>
+        </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- Main wrapper - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <div id="main-wrapper">
+
+        <?php include 'includes/nav.php'; ?>
+        <div class="clearfix"></div>
         <!-- ============================================================== -->
-        <!-- Preloader - style you can find in spinners.css -->
+        <!-- Top header  -->
         <!-- ============================================================== -->
-        <div id="preloader">
-					<div class="preloader"><span></span><span></span>
-				</div></div>
 
 
-        <!-- ============================================================== -->
-        <!-- Main wrapper - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <div id="main-wrapper">
+        <!-- ============================ Dashboard: My Order Start ================================== -->
+        <section class="gray pt-0">
 
-
-			<div class="clearfix"></div>
-			<!-- ============================================================== -->
-			<!-- Top header  -->
-			<!-- ============================================================== -->
-
-
-			<!-- ============================ Dashboard: My Order Start ================================== -->
-			<section  class="gray pt-0">
-
-				<div class="container">
+            <div class="container">
 
 
 
-					<!-- Row -->
-					<div class="row">
+                <!-- Row -->
+                <div class="row">
 
 
 
 
-						<div class="col-lg-12 col-md-12 col-sm-12" >  	<!--style="margin: auto; width: 50%;"-->
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <!--style="margin: auto; width: 50%;"-->
 
-							<!-- Row -->
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                  <div class="dashboard_container">
+                        <!-- Row -->
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
+                                <div class="dashboard_container">
 
-                    <div class="dashboard_container_header">
-                      <div class="dashboard_fl_1">
-                      <h1>Basic Electrical Engineering</h1>
-                      <h4 class="edu_title">Dr. John Simth</h4>
-                      <span class="dashboard_instructor">johnsmith@siit.tu.ac.th</span>
+                                    <div class="dashboard_container_header">
+                                      <div class="dashboard_fl_1">
+                                        <?php
 
-                      </div>
+                                        $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                        $query1 = $db_r -> prepare($sql1);
+                                        $query1->execute();
+                                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+
+                                        if($results1)
+                                        {
+                                        foreach($results1 as $result1)
+                                        {               ?>
+                                          <h1><?php echo htmlentities($result1->class_name);?></h1>
+                                          <h4 class="edu_title">Dr. <?php echo htmlentities($result1->class_instructor);?></h4>
+                                          <?php
+
+                                          $sql2 = "SELECT email from users where user_type=1 and user_id=(SELECT user_id from class_enrolled where class_id=1)";
+                                          $query2 = $db_r -> prepare($sql2);
+                                          $query2->execute();
+                                          $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+
+                                          if($results2)
+                                          {
+                                          foreach($results2 as $result2)
+                                          {               ?>
+                                          <span class="dashboard_instructor"><?php echo htmlentities($result2->email);?></span>
+                                        <?php }}}} ?>
+                                      </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                <nav aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <!-- tabs-->
+
+                                        <div class="tabs">
+                                            <div class="tab-header">
+                                                <div>
+                                                    <a href="?p=now-student">Now</a>
+                                                </div>
+                                                <div class="active">
+                                                    <a href="?p=ass-student">Assignments</a>
+                                                </div>
+                                                <div>
+                                                    <a href="?p=lecturestudent">Lecture Notes</a>
+                                                </div>
+
+                                            </div>
+                                            <div class="tab-indicator" style="left: calc(33.3333%);"></div>
+
+                                            <div class="tab-body">
+                                                <div class="active">
+
+
+                                                </div>
+                                                <div class="active">
+
+
+                                                </div>
+                                                <div class="active">
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <!-- /tabs-->
+                        <!-- /Row -->
+
+                        <div class="custom-tab customize-tab tabs_creative">
+                            <ul class="nav nav-tabs pb-2 b-0" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
+                                        aria-controls="home" aria-selected="true">To-Do</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                                        aria-controls="profile" aria-selected="false">Completed</a>
+                                </li>
+
+                            </ul>
+
+                        </div>
+
+
+
+
+                        <!-- Row -->
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+
+
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel"
+                                        aria-labelledby="home-tab">
+
+                                        <!-- Course Style 1 For Student -->
+                                        <!-- due this week -->
+
+                                        <div class="dashboard_container">
+                                            <div class="dashboard_container_header">
+                                                <div class="dashboard_fl_1">
+                                                    <h4>Due this week</h4>
+                                                </div>
+                                                <div class="dashboard_fl_2">
+                                                    <ul class="mb0">
+                                                        <li class="list-inline-item">
+
+                                                        </li>
+                                                        <li class="list-inline-item">
+
+
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_container_body">
+
+                                                <!-- Single Course -->
+
+
+        <?php
+
+        $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=1 and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) ";
+        $query = $db_r -> prepare($sql);
+        $query->execute();
+        $results=$query->fetchAll(PDO::FETCH_OBJ);
+        $y=array();
+        if($query->rowCount() > 0)
+        {
+        foreach($results as $result)
+        {
+            $assid = htmlentities($result->assignment_id);
+
+
+        ?>
+
+
+
+                                                <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login">
+
+
+                                                    <div class="dashboard_single_course_caption">
+                                                        <div class="dashboard_single_course_head">
+                                                            <div class="dashboard_single_course_head_flex">
+                                                                <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                                <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+
+                                                            </div>
+                                                            <div class="dc_head_right">
+                                                                <h4 class="dc_price_rate theme-cl"></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="dashboard_single_course_des">
+                                                            <p><?php echo htmlentities($result->description);?></p>
+                                                        </div>
+                                                        <div class="dashboard_single_course_progress">
+                                                            <div class="dashboard_single_course_progress_1">
+
+                                                              <?php
+                                                              $assid = htmlentities($result->assignment_id);
+
+                                                              $sql0 = "SELECT due_date from assignments where assignment_id = ". $assid;
+                                                              $query0 = $db_r -> prepare($sql0);
+                                                              $query0->execute();
+                                                              $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+
+                                                              if($query0->rowCount() > 0)
+                                                              {
+                                                              foreach($results0 as $result0)
+                                                              {               ?>
+                                                                <label>Due <?php echo htmlentities($result0->due_date);?></label>
+                                                                <?php }} ?>
+
+                                                            </div>
+                                                            <!-- <div class="dashboard_single_course_progress_2">
+                                                                <ul class="m-0">
+
+                                                                        <?php
+
+                                                                        // $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = ". $assid;
+                                                                        // $query2 = $db_r -> prepare($sql2);
+                                                                        // $query2->execute();
+                                                                        // $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                                        //
+                                                                        // if($query2->rowCount() > 0)
+                                                                        // {
+                                                                        // foreach($results2 as $result2)
+                                                                        // {               ?>
+
+                                                                    <li class="list-inline-item"><i class="far fa-file mr-1"></i><?php //echo htmlentities($result2->no_of_files);?> Files</li>
+
+                                                                    <?php //}} ?>
+                                                                </ul>
+                                                            </div> -->
+                                                            <div class="dashboard_single_course_progress_2">
+                                                              <ul class="m-0">
+
+                                                              <?php
+
+                                                              $sqlf = "SELECT file_name from files where assignments_id=".$assid;
+                                                              $queryf = $db_r -> prepare($sqlf);
+                                                              $queryf->execute();
+                                                              $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
+
+                                                              if($queryf->rowCount() > 0)
+                                                              { $x=0;
+                                                              foreach($resultsf as $resultf)
+                                                              {    $x++;           ?>
+                                                                <a class="list-inline-item " target="_blank" href="uploads/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x;?></a>
+
+                                                              <?php }} ?>
+                                                            </ul>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+        <?php }} ?>
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+
+                                        <!-- due next week -->
+                                        <div class="dashboard_container">
+                                            <div class="dashboard_container_header">
+                                                <div class="dashboard_fl_1">
+                                                    <h4>Due next week</h4>
+                                                </div>
+                                                <div class="dashboard_fl_2">
+                                                    <ul class="mb0">
+                                                        <li class="list-inline-item">
+
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_container_body">
+
+                                                <!-- Single Course -->
+
+                                                <?php
+
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=1";
+                                                $query = $db_r -> prepare($sql);
+                                                $query->execute();
+                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+
+                                                if($query->rowCount() > 0)
+                                                {
+                                                foreach($results as $result)
+                                                {               ?>
+
+                                                  <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
+                                                      class="dashboard_single_course ass_hover_effect join-button pop-login">
+
+
+                                                      <div class="dashboard_single_course_caption">
+                                                          <div class="dashboard_single_course_head">
+                                                              <div class="dashboard_single_course_head_flex">
+                                                                  <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                                  <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+
+                                                              </div>
+                                                              <div class="dc_head_right">
+                                                                  <h4 class="dc_price_rate theme-cl"></h4>
+                                                              </div>
+                                                          </div>
+                                                          <div class="dashboard_single_course_des">
+                                                              <p><?php echo htmlentities($result->description);?></p>
+                                                          </div>
+                                                          <div class="dashboard_single_course_progress">
+                                                              <div class="dashboard_single_course_progress_1">
+
+                                                                <?php
+                                                                $assid = htmlentities($result->assignment_id);
+                                                                $sql0 = "SELECT due_date from assignments where assignment_id = ". $assid;
+                                                                $query0 = $db_r -> prepare($sql0);
+                                                                $query0->execute();
+                                                                $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+
+                                                                if($query0->rowCount() > 0)
+                                                                {
+                                                                foreach($results0 as $result0)
+                                                                {               ?>
+                                                                  <label>Due <?php echo htmlentities($result0->due_date);?></label>
+                                                                  <?php }} ?>
+
+                                                              </div>
+                                                              <div class="dashboard_single_course_progress_2">
+                                                                <ul class="m-0">
+
+                                                                <?php
+
+                                                                $sqlf = "SELECT file_name from files where assignments_id=".$assid;
+                                                                $queryf = $db_r -> prepare($sqlf);
+                                                                $queryf->execute();
+                                                                $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
+
+                                                                if($queryf->rowCount() > 0)
+                                                                { $x=0;
+                                                                foreach($resultsf as $resultf)
+                                                                {    $x++;           ?>
+                                                                  <a class="list-inline-item " target="_blank" href="uploads/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x;?></a>
+
+                                                                <?php }} ?>
+                                                              </ul>
+
+
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+        <?php }} ?>
+
+
+
+
+                                            </div>
+                                        </div>
+
+                                        <!-- due in more than two weeks -->
+                                        <div class="dashboard_container">
+                                            <div class="dashboard_container_header">
+                                                <div class="dashboard_fl_1">
+                                                    <h4>Due in more than two weeks</h4>
+                                                </div>
+                                                <div class="dashboard_fl_2">
+                                                    <ul class="mb0">
+                                                        <li class="list-inline-item">
+
+                                                        </li>
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_container_body">
+
+                                                <!-- Single Course -->
+
+
+                                                <?php
+
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=1";
+                                                $query = $db_r -> prepare($sql);
+                                                $query->execute();
+                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+
+                                                if($query->rowCount() > 0)
+                                                {
+                                                foreach($results as $result)
+                                                {               ?>
+
+
+                                                  <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
+                                                      class="dashboard_single_course ass_hover_effect join-button pop-login">
+
+
+                                                      <div class="dashboard_single_course_caption">
+                                                          <div class="dashboard_single_course_head">
+                                                              <div class="dashboard_single_course_head_flex">
+                                                                  <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                                  <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+
+                                                              </div>
+                                                              <div class="dc_head_right">
+                                                                  <h4 class="dc_price_rate theme-cl"></h4>
+                                                              </div>
+                                                          </div>
+                                                          <div class="dashboard_single_course_des">
+                                                              <p><?php echo htmlentities($result->description);?></p>
+                                                          </div>
+                                                          <div class="dashboard_single_course_progress">
+                                                              <div class="dashboard_single_course_progress_1">
+
+                                                                <?php
+                                                                $assid = htmlentities($result->assignment_id);
+                                                                $sql0 = "SELECT due_date from assignments where assignment_id = ". $assid;
+                                                                $query0 = $db_r -> prepare($sql0);
+                                                                $query0->execute();
+                                                                $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+
+                                                                if($query0->rowCount() > 0)
+                                                                {
+                                                                foreach($results0 as $result0)
+                                                                {               ?>
+                                                                  <label>Due <?php echo htmlentities($result0->due_date);?></label>
+                                                                  <?php }} ?>
+
+                                                              </div>
+                                                              <div class="dashboard_single_course_progress_2">
+                                                                <ul class="m-0">
+
+                                                                <?php
+
+                                                                $sqlf = "SELECT file_name from files where assignments_id=".$assid;
+                                                                $queryf = $db_r -> prepare($sqlf);
+                                                                $queryf->execute();
+                                                                $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
+
+                                                                if($queryf->rowCount() > 0)
+                                                                { $x=0;
+                                                                foreach($resultsf as $resultf)
+                                                                {    $x++;           ?>
+                                                                  <a class="list-inline-item " target="_blank" href="uploads/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x;?></a>
+
+                                                                <?php }} ?>
+                                                              </ul>
+
+
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+        <?php }} ?>
+
+
+                                            </div>
+                                        </div>
+                                        <!-- /due in more than two weeks -->
+
+                                    </div>
+
+                                    <div class="tab-pane fade" id="profile" role="tabpanel"
+                                        aria-labelledby="profile-tab">
+
+
+                                        <div class="dashboard_container">
+                                            <div class="dashboard_container_header">
+                                                <div class="dashboard_fl_1">
+                                                    <h4>Completed Assignments</h4>
+                                                </div>
+                                                <div class="dashboard_fl_2">
+                                                    <ul class="mb0">
+                                                        <li class="list-inline-item">
+
+                                                        </li>
+                                                        <li class="list-inline-item">
+
+
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_container_body">
+
+                                                <!-- Single Course -->
+
+
+                                    <?php
+
+                                    $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=1";
+                                    $query = $db_r -> prepare($sql);
+                                    $query->execute();
+                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
+
+                                    if($query->rowCount() > 0)
+                                    {
+                                    foreach($results as $result)
+                                    {               ?>
+
+
+                                                <div onclick="location.href='#';" style="cursor: pointer;"
+                                                    class="dashboard_single_course ass_hover_effect">
+
+
+                                                    <div class="dashboard_single_course_caption">
+                                                        <div class="dashboard_single_course_head">
+                                                            <div class="dashboard_single_course_head_flex">
+                                                                <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                                <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+
+                                                            </div>
+                                                            <div class="dc_head_right">
+                                                                <h4 class="dc_price_rate theme-cl"></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="dashboard_single_course_des">
+                                                            <p><?php echo htmlentities($result->description);?></p>
+                                                        </div>
+                                                        <div class="dashboard_single_course_progress">
+                                                            <div class="dashboard_single_course_progress_1">
+
+                                                              <?php
+                                                              $user_id = $_SESSION["user_id"];
+                                                              $assid = htmlentities($result->assignment_id);
+                                                              $sql0 = "SELECT count(student_id) as no_of_files_submitted from student_files where student_id=:user_id and assignment_id=". $assid;
+                                                              $query0 = $db_r -> prepare($sql0);
+                                                              $query0->bindParam(':user_id',$user_id,PDO::PARAM_STR);
+                                                              $query0->execute();
+                                                              $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+
+                                                              if($query0->rowCount() > 0)
+                                                              {
+                                                              foreach($results0 as $result0)
+                                                              {               ?>
+                                                                <label><?php echo htmlentities($result0->no_of_files_submitted);?> Files Submitted</label>
+                                                                <?php }} ?>
+
+                                                            </div>
+                                                            <div class="dashboard_single_course_progress_2">
+                                                                <ul class="m-0">
+                                                                  <?php
+                                                                  $user_id = $_SESSION["user_id"];
+                                                                  $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=".$assid;
+                                                                  $query1 = $db_r -> prepare($sql1);
+                                                                  $query1->bindParam(':user_id',$user_id,PDO::PARAM_STR);
+                                                                  $query1->execute();
+                                                                  $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+
+                                                                  if($query1->rowCount() > 0)
+                                                                  {
+                                                                  foreach($results1 as $result1)
+                                                                  {               ?>
+                                                                    <li class="list-inline-item">Submitted on </i><?php echo htmlentities($result1->time_created);?></li>
+
+                                                                    <?php break;}} ?>
+
+
+
+
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                    <?php }} ?>
+
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            <!-- /Row -->
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- Row -->
+
+            </div>
+        </section>
+
+        <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- End Wrapper -->
+    <!-- ============================================================== -->
+
+    <!-- popup window -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog " role="document">
+            <div class="modal-content popupform">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Submit your assignment</h5>
+
+                </div>
+                <div class="modal-body">
+                    <form role="form" method="post" enctype="multipart/form-data">
+                        <!-- <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Chapter:</label>
+                            <input type="text" class="form-control popuptarea" id="recipient-name" name="chapter">
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Post title:</label>
+                            <input type="text" class="form-control popuptarea" id="recipient-name" name="title">
+                        </div> -->
+                        <div class="form-group">
+                            <label for="message-text" class="col-form-label">Comments:</label>
+                            <textarea class="form-control popuptarea" id="message-text" name="text_answer"></textarea>
+                        </div>
+
+                        <input type="hidden" name="assignment_id" value="8">
+
+                        <div class="form-group">
+                            <label class="col-form-label">Upload files:</label>
+                            <div class="choose_file">
+
+                                <label for="choose_file">
+                                    <input type="file" id="choose_file" name="files[]" multiple>
+                                    <span>Choose Files</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- <div class="form-group">
+                            <label for="exampleFormControlFile1">Submission type:</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                    value="option1">
+                                <label class="form-check-label" for="inlineRadio1">File</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                    value="option2">
+                                <label class="form-check-label" for="inlineRadio2">Text</label>
+                            </div>
+                        </div> -->
+
+                        <!-- <div class="form-group">
+
+                        <label for="start">Due date:</label>
+                        <input type="datetime-local" id="start" name="due_date" value="2018-07-22" min="2018-01-01" max="2022-12-31">
+
+                        </div> -->
+
+
 
 
                 </div>
-              </div>
 
 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-theme popupbtn" name="create">Submit</button>
+                </div>
 
-									<nav aria-label="breadcrumb">
-										<ol class="breadcrumb">
-                      <!-- tabs-->
+</form>
+            </div>
+        </div>
+    </div>
 
-											<div class="tabs">
-											  <div class="tab-header">
-											    <div class="active">
-											      Now
-											    </div>
-											    <div >
-											       Assignments
-											    </div>
-											    <div>
-											      Lecture Notes
-											    </div>
 
-											  </div>
-											  <div class="tab-indicator"></div>
 
-											  <div class="tab-body">
-											    <div class="active">
 
-
-						                    </div>
-                                <div class="active">
-
-
-                                </div>
-                                <div class="active">
-
-
-                                </div>
-						                        </div>
-						                            </div>
-								                            </ol>
-									                              </nav>
-								                                     </div>
-							                                           </div>
-
-                                                                  <!-- /tabs-->
-							<!-- /Row -->
-
-              <div class="custom-tab customize-tab tabs_creative">
-  <ul class="nav nav-tabs pb-2 b-0" id="myTab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">To-Do</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Completed</a>
-    </li>
-
-  </ul>
-
-</div>
-
-
-
-
-							<!-- Row -->
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-
-
-                  <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-									<!-- Course Style 1 For Student -->
-										<!-- due this week -->
-
-									<div class="dashboard_container">
-										<div class="dashboard_container_header">
-											<div class="dashboard_fl_1">
-											<h4>Due this week</h4>
-											</div>
-											<div class="dashboard_fl_2">
-												<ul class="mb0">
-
-
-
-
-												</ul>
-											</div>
-										</div>
-
-
-										<div class="dashboard_container_body">
-
-											<!-- Single Course -->
-
-
-											<div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-												<div class="dashboard_single_course_caption">
-													<div class="dashboard_single_course_head">
-														<div class="dashboard_single_course_head_flex">
-															<span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-															<h4 class="dashboard_course_title">Calculate the current </h4>
-
-														</div>
-														<div class="dc_head_right">
-															<h4 class="dc_price_rate theme-cl"></h4>
-														</div>
-													</div>
-													<div class="dashboard_single_course_des">
-														<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-													</div>
-													<div class="dashboard_single_course_progress">
-														<div class="dashboard_single_course_progress_1">
-															<label>20 Students Submitted</label>
-
-
-														</div>
-														<div class="dashboard_single_course_progress_2">
-															<ul class="m-0">
-																<li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-																<li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-															</ul>
-														</div>
-													</div>
-												</div>
-											</div>
-
-
-
-											<!-- Single Course -->
-                      <div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                        <div class="dashboard_single_course_caption">
-                          <div class="dashboard_single_course_head">
-                            <div class="dashboard_single_course_head_flex">
-                              <span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                              <h4 class="dashboard_course_title">Calculate the current </h4>
-
-                            </div>
-                            <div class="dc_head_right">
-                              <h4 class="dc_price_rate theme-cl"></h4>
-                            </div>
-                          </div>
-                          <div class="dashboard_single_course_des">
-                            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                          </div>
-                          <div class="dashboard_single_course_progress">
-                            <div class="dashboard_single_course_progress_1">
-                              <label>20 Students Submitted</label>
-
-
-                            </div>
-                            <div class="dashboard_single_course_progress_2">
-                              <ul class="m-0">
-                                <li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                                <li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-
-
-
-
-										</div>
-									</div>
-
-
-									<!-- due next week -->
-									<div class="dashboard_container">
-										<div class="dashboard_container_header">
-											<div class="dashboard_fl_1">
-											<h4>Due next week</h4>
-											</div>
-											<div class="dashboard_fl_2">
-												<ul class="mb0">
-													<li class="list-inline-item">
-
-													</li>
-
-												</ul>
-											</div>
-										</div>
-										<div class="dashboard_container_body">
-
-											<!-- Single Course -->
-
-                      											<div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                      												<div class="dashboard_single_course_caption">
-                      													<div class="dashboard_single_course_head">
-                      														<div class="dashboard_single_course_head_flex">
-                      															<span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                      															<h4 class="dashboard_course_title">Calculate the current </h4>
-
-                      														</div>
-                      														<div class="dc_head_right">
-                      															<h4 class="dc_price_rate theme-cl"></h4>
-                      														</div>
-                      													</div>
-                      													<div class="dashboard_single_course_des">
-                      														<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                      													</div>
-                      													<div class="dashboard_single_course_progress">
-                      														<div class="dashboard_single_course_progress_1">
-                      															<label>20 Students Submitted</label>
-
-
-                      														</div>
-                      														<div class="dashboard_single_course_progress_2">
-                      															<ul class="m-0">
-                      																<li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                      																<li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                      															</ul>
-                      														</div>
-                      													</div>
-                      												</div>
-                      											</div>
-
-
-                      											<!-- Single Course -->
-                                            <div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                                              <div class="dashboard_single_course_caption">
-                                                <div class="dashboard_single_course_head">
-                                                  <div class="dashboard_single_course_head_flex">
-                                                    <span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                                                    <h4 class="dashboard_course_title">Calculate the current </h4>
-
-                                                  </div>
-                                                  <div class="dc_head_right">
-                                                    <h4 class="dc_price_rate theme-cl"></h4>
-                                                  </div>
-                                                </div>
-                                                <div class="dashboard_single_course_des">
-                                                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                                                </div>
-                                                <div class="dashboard_single_course_progress">
-                                                  <div class="dashboard_single_course_progress_1">
-                                                    <label>20 Students Submitted</label>
-
-
-                                                  </div>
-                                                  <div class="dashboard_single_course_progress_2">
-                                                    <ul class="m-0">
-                                                      <li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                                                      <li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                                                    </ul>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-
-
-
-
-										</div>
-									</div>
-
-									<!-- due in more than two weeks -->
-									<div class="dashboard_container">
-										<div class="dashboard_container_header">
-											<div class="dashboard_fl_1">
-											<h4>Due in more than two weeks</h4>
-											</div>
-											<div class="dashboard_fl_2">
-												<ul class="mb0">
-													<li class="list-inline-item">
-
-													</li>
-
-												</ul>
-											</div>
-										</div>
-										<div class="dashboard_container_body">
-
-											<!-- Single Course -->
-
-                      											<div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                      												<div class="dashboard_single_course_caption">
-                      													<div class="dashboard_single_course_head">
-                      														<div class="dashboard_single_course_head_flex">
-                      															<span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                      															<h4 class="dashboard_course_title">Calculate the current </h4>
-
-                      														</div>
-                      														<div class="dc_head_right">
-                      															<h4 class="dc_price_rate theme-cl"></h4>
-                      														</div>
-                      													</div>
-                      													<div class="dashboard_single_course_des">
-                      														<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                      													</div>
-                      													<div class="dashboard_single_course_progress">
-                      														<div class="dashboard_single_course_progress_1">
-                      															<label>20 Students Submitted</label>
-
-
-                      														</div>
-                      														<div class="dashboard_single_course_progress_2">
-                      															<ul class="m-0">
-                      																<li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                      																<li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                      															</ul>
-                      														</div>
-                      													</div>
-                      												</div>
-                      											</div>
-
-
-                      											<!-- Single Course -->
-                                            <div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                                              <div class="dashboard_single_course_caption">
-                                                <div class="dashboard_single_course_head">
-                                                  <div class="dashboard_single_course_head_flex">
-                                                    <span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                                                    <h4 class="dashboard_course_title">Calculate the current </h4>
-
-                                                  </div>
-                                                  <div class="dc_head_right">
-                                                    <h4 class="dc_price_rate theme-cl"></h4>
-                                                  </div>
-                                                </div>
-                                                <div class="dashboard_single_course_des">
-                                                  <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                                                </div>
-                                                <div class="dashboard_single_course_progress">
-                                                  <div class="dashboard_single_course_progress_1">
-                                                    <label>20 Students Submitted</label>
-
-                                                  </div>
-                                                  <div class="dashboard_single_course_progress_2">
-                                                    <ul class="m-0">
-                                                      <li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                                                      <li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                                                    </ul>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-
-
-
-
-										</div>
-									</div>
-										<!-- /due in more than two weeks -->
-
-</div>
-
-<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
-
-  									<div class="dashboard_container">
-  										<div class="dashboard_container_header">
-  											<div class="dashboard_fl_1">
-  											<h4>Due this week</h4>
-  											</div>
-  											<div class="dashboard_fl_2">
-  												<ul class="mb0">
-
-
-
-
-  												</ul>
-  											</div>
-  										</div>
-
-
-  										<div class="dashboard_container_body">
-
-  											<!-- Single Course -->
-
-
-  											<div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-  												<div class="dashboard_single_course_caption">
-  													<div class="dashboard_single_course_head">
-  														<div class="dashboard_single_course_head_flex">
-  															<span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-  															<h4 class="dashboard_course_title">Calculate the current </h4>
-
-  														</div>
-  														<div class="dc_head_right">
-  															<h4 class="dc_price_rate theme-cl"></h4>
-  														</div>
-  													</div>
-  													<div class="dashboard_single_course_des">
-  														<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-  													</div>
-  													<div class="dashboard_single_course_progress">
-  														<div class="dashboard_single_course_progress_1">
-  															<label>20 Students Submitted</label>
-
-
-  														</div>
-  														<div class="dashboard_single_course_progress_2">
-  															<ul class="m-0">
-  																<li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-  																<li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-  															</ul>
-  														</div>
-  													</div>
-  												</div>
-  											</div>
-
-
-
-  											<!-- Single Course -->
-                        <div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                          <div class="dashboard_single_course_caption">
-                            <div class="dashboard_single_course_head">
-                              <div class="dashboard_single_course_head_flex">
-                                <span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                                <h4 class="dashboard_course_title">Calculate the current </h4>
-
-                              </div>
-                              <div class="dc_head_right">
-                                <h4 class="dc_price_rate theme-cl"></h4>
-                              </div>
-                            </div>
-                            <div class="dashboard_single_course_des">
-                              <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                            </div>
-                            <div class="dashboard_single_course_progress">
-                              <div class="dashboard_single_course_progress_1">
-                                <label>20 Students Submitted</label>
-
-
-                              </div>
-                              <div class="dashboard_single_course_progress_2">
-                                <ul class="m-0">
-                                  <li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                                  <li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-
-
-
-
-
-  										</div>
-  									</div>
-
-
-  									<!-- due next week -->
-  									<div class="dashboard_container">
-  										<div class="dashboard_container_header">
-  											<div class="dashboard_fl_1">
-  											<h4>Due next week</h4>
-  											</div>
-  											<div class="dashboard_fl_2">
-  												<ul class="mb0">
-  													<li class="list-inline-item">
-
-  													</li>
-
-  												</ul>
-  											</div>
-  										</div>
-  										<div class="dashboard_container_body">
-
-  											<!-- Single Course -->
-
-                        											<div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                        												<div class="dashboard_single_course_caption">
-                        													<div class="dashboard_single_course_head">
-                        														<div class="dashboard_single_course_head_flex">
-                        															<span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                        															<h4 class="dashboard_course_title">Calculate the current </h4>
-
-                        														</div>
-                        														<div class="dc_head_right">
-                        															<h4 class="dc_price_rate theme-cl"></h4>
-                        														</div>
-                        													</div>
-                        													<div class="dashboard_single_course_des">
-                        														<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                        													</div>
-                        													<div class="dashboard_single_course_progress">
-                        														<div class="dashboard_single_course_progress_1">
-                        															<label>20 Students Submitted</label>
-
-
-                        														</div>
-                        														<div class="dashboard_single_course_progress_2">
-                        															<ul class="m-0">
-                        																<li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                        																<li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                        															</ul>
-                        														</div>
-                        													</div>
-                        												</div>
-                        											</div>
-
-
-                        											<!-- Single Course -->
-                                              <div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                                                <div class="dashboard_single_course_caption">
-                                                  <div class="dashboard_single_course_head">
-                                                    <div class="dashboard_single_course_head_flex">
-                                                      <span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                                                      <h4 class="dashboard_course_title">Calculate the current </h4>
-
-                                                    </div>
-                                                    <div class="dc_head_right">
-                                                      <h4 class="dc_price_rate theme-cl"></h4>
-                                                    </div>
-                                                  </div>
-                                                  <div class="dashboard_single_course_des">
-                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                                                  </div>
-                                                  <div class="dashboard_single_course_progress">
-                                                    <div class="dashboard_single_course_progress_1">
-                                                      <label>20 Students Submitted</label>
-
-
-                                                    </div>
-                                                    <div class="dashboard_single_course_progress_2">
-                                                      <ul class="m-0">
-                                                        <li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                                                        <li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                                                      </ul>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-
-
-
-
-  										</div>
-  									</div>
-
-  									<!-- due in more than two weeks -->
-  									<div class="dashboard_container">
-  										<div class="dashboard_container_header">
-  											<div class="dashboard_fl_1">
-  											<h4>Due in more than two weeks</h4>
-  											</div>
-  											<div class="dashboard_fl_2">
-  												<ul class="mb0">
-  													<li class="list-inline-item">
-
-  													</li>
-
-  												</ul>
-  											</div>
-  										</div>
-  										<div class="dashboard_container_body">
-
-  											<!-- Single Course -->
-
-                        											<div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                        												<div class="dashboard_single_course_caption">
-                        													<div class="dashboard_single_course_head">
-                        														<div class="dashboard_single_course_head_flex">
-                        															<span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                        															<h4 class="dashboard_course_title">Calculate the current </h4>
-
-                        														</div>
-                        														<div class="dc_head_right">
-                        															<h4 class="dc_price_rate theme-cl"></h4>
-                        														</div>
-                        													</div>
-                        													<div class="dashboard_single_course_des">
-                        														<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                        													</div>
-                        													<div class="dashboard_single_course_progress">
-                        														<div class="dashboard_single_course_progress_1">
-                        															<label>20 Students Submitted</label>
-
-
-                        														</div>
-                        														<div class="dashboard_single_course_progress_2">
-                        															<ul class="m-0">
-                        																<li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                        																<li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                        															</ul>
-                        														</div>
-                        													</div>
-                        												</div>
-                        											</div>
-
-
-                        											<!-- Single Course -->
-                                              <div onclick="location.href='#';" style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
-
-                                                <div class="dashboard_single_course_caption">
-                                                  <div class="dashboard_single_course_head">
-                                                    <div class="dashboard_single_course_head_flex">
-                                                      <span class="dashboard_instructor">Lecture 1 - Inroduction</span>
-                                                      <h4 class="dashboard_course_title">Calculate the current </h4>
-
-                                                    </div>
-                                                    <div class="dc_head_right">
-                                                      <h4 class="dc_price_rate theme-cl"></h4>
-                                                    </div>
-                                                  </div>
-                                                  <div class="dashboard_single_course_des">
-                                                    <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
-                                                  </div>
-                                                  <div class="dashboard_single_course_progress">
-                                                    <div class="dashboard_single_course_progress_1">
-                                                      <label>20 Students Submitted</label>
-
-                                                    </div>
-                                                    <div class="dashboard_single_course_progress_2">
-                                                      <ul class="m-0">
-                                                        <li class="list-inline-item"><i class="ti-user mr-1"></i>65 Assigned</li>
-                                                        <li class="list-inline-item"><i class="far fa-file mr-1"></i>2 Files</li>
-                                                      </ul>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-
-
-
-
-  										</div>
-  									</div>
-
-
-</div>
-
-
-								</div>
-							</div>
-
-							<!-- /Row -->
-
-              	</div>
-
-						</div>
-
-					</div>
-					<!-- Row -->
-
-				</div>
-			</section>
-
-			<!-- Log In Modal -->
-			<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="registermodal" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
-					<div class="modal-content" id="registermodal">
-						<span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
-						<div class="modal-body">
-							<h4 class="modal-header-title">Log In</h4>
-							<div class="login-form">
-								<form>
-
-									<div class="form-group">
-										<label>User Name</label>
-										<input type="text" class="form-control" placeholder="Username">
-									</div>
-
-									<div class="form-group">
-										<label>Password</label>
-										<input type="password" class="form-control" placeholder="*******">
-									</div>
-
-									<div class="form-group">
-										<button type="submit" class="btn btn-md full-width pop-login">Login</button>
-									</div>
-
-								</form>
-							</div>
-
-							<div class="social-login mb-3">
-								<ul>
-									<li>
-										<input id="reg" class="checkbox-custom" name="reg" type="checkbox">
-										<label for="reg" class="checkbox-custom-label">Save Password</label>
-									</li>
-									<li class="right"><a href="#" class="theme-cl">Forget Password?</a></li>
-								</ul>
-							</div>
-
-							<div class="modal-divider"><span>Or login via</span></div>
-							<div class="social-login ntr mb-3">
-								<ul>
-									<li><a href="#" class="btn connect-fb"><i class="ti-facebook"></i>Facebook</a></li>
-									<li><a href="#" class="btn connect-google"><i class="ti-google"></i>Google</a></li>
-								</ul>
-							</div>
-
-							<div class="text-center">
-								<p class="mt-2">Haven't Any Account? <a href="register.html" class="link">Click here</a></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- End Modal -->
-
-			<!-- Sign Up Modal -->
-			<div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
-				<div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
-					<div class="modal-content" id="sign-up">
-						<span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
-						<div class="modal-body">
-							<h4 class="modal-header-title">Sign Up</h4>
-							<div class="login-form">
-								<form>
-
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Full Name">
-									</div>
-
-									<div class="form-group">
-										<input type="email" class="form-control" placeholder="Email">
-									</div>
-
-									<div class="form-group">
-										<input type="text" class="form-control" placeholder="Username">
-									</div>
-
-									<div class="form-group">
-										<input type="password" class="form-control" placeholder="*******">
-									</div>
-
-
-									<div class="form-group">
-										<button type="submit" class="btn btn-md full-width pop-login">Sign Up</button>
-									</div>
-
-								</form>
-							</div>
-
-							<div class="modal-divider"><span>Or Signup via</span></div>
-							<div class="social-login ntr mb-3">
-								<ul>
-									<li><a href="#" class="btn connect-fb"><i class="ti-facebook"></i>Facebook</a></li>
-									<li><a href="#" class="btn connect-google"><i class="ti-google"></i>Google</a></li>
-								</ul>
-							</div>
-
-							<div class="text-center">
-								<p class="mt-3"><i class="ti-user mr-1"></i>Already Have An Account? <a href="#" class="link">Go For LogIn</a></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- End Modal -->
-
-			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
-		</div>
-		<!-- ============================================================== -->
-		<!-- End Wrapper -->
-		<!-- ============================================================== -->
-
-		<!-- ============================================================== -->
-		<!-- All Jquery -->
-		<!-- ============================================================== -->
-
-
-
-
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/popper.min.js"></script>
-		<script src="assets/js/bootstrap.min.js"></script>
-		<script src="assets/js/select2.min.js"></script>
-		<script src="assets/js/slick.js"></script>
-		<script src="assets/js/jquery.counterup.min.js"></script>
-		<script src="assets/js/counterup.min.js"></script>
-		<script src="assets/js/custom.js"></script>
-		<!-- ============================================================== -->
-		<!-- This page plugins -->
-		<!-- ============================================================== -->
-		<script src="assets/js/metisMenu.min.js"></script>
-		<script>
-			$('#side-menu').metisMenu();
-		</script>
-
-
-
-
-
-    		 <!--JS for tabs-->
-         <script>
-     		let tabHeader = document.getElementsByClassName("tab-header")[0];
-     	let tabIndicator = document.getElementsByClassName("tab-indicator")[0];
-     	let tabBody = document.getElementsByClassName("tab-body")[0];
-
-     	let tabsPane = tabHeader.getElementsByTagName("div");
-
-     	for(let i=0;i<tabsPane.length;i++){
-     	tabsPane[i].addEventListener("click",function(){
-     	tabHeader.getElementsByClassName("active")[0].classList.remove("active");
-     	tabsPane[i].classList.add("active");
-     	tabBody.getElementsByClassName("active")[0].classList.remove("active");
-     	tabBody.getElementsByTagName("div")[i].classList.add("active");
-
-     	tabIndicator.style.left = `calc(calc(100% / 3) * ${i})`;
-     	});
-     	}
-
-     		</script>
     <!--JS for tabs-->
+    <script>
+    let tabHeader = document.getElementsByClassName("tab-header")[0];
+    let tabIndicator = document.getElementsByClassName("tab-indicator")[0];
+    let tabBody = document.getElementsByClassName("tab-body")[0];
+
+    let tabsPane = tabHeader.getElementsByTagName("div");
+
+    for (let i = 0; i < tabsPane.length; i++) {
+        tabsPane[i].addEventListener("click", function() {
+            tabHeader.getElementsByClassName("active")[0].classList.remove("active");
+            tabsPane[i].classList.add("active");
+            tabBody.getElementsByClassName("active")[0].classList.remove("active");
+            tabBody.getElementsByTagName("div")[i].classList.add("active");
+
+            tabIndicator.style.left = `calc(calc(100% / 3) * ${i})`;
+        });
+    }
+    </script>
+    <!--JS for tabs-->
+<?php } ?>
