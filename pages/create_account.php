@@ -28,7 +28,7 @@ if($count_user > 0) {
       exit();
   }
   else {
-      header("Location: ?p=register-alert");
+      header("Location: ?p=register-alert-password");
       exit();
   }
 
