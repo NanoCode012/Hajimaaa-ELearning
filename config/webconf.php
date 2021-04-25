@@ -16,7 +16,7 @@ else {
         ['login',
         'logout',
         'register',
-        'register-alert',
+        'register-alert-password',
         'register-alert-username',
         'landing',
         'accountmanager',
