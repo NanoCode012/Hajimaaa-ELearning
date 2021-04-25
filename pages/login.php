@@ -21,12 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-    $sql = 'SELECT user_id, username, password FROM users WHERE username=?';
+    $sql = 'SELECT user_id, user_type, username, password FROM users WHERE username=?';
     $stmt = $db_r->prepare($sql);
     $stmt->execute([$username]);
     $user = $stmt->fetch();
     if ($user) {
         $user_id = $user["user_id"];
+        $user_type = $user["user_type"];
         $password_hash = $user["password"];
         $db_username = $user["username"];
 
@@ -35,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             session_start();
             $_SESSION["loggedin"] = true;
             $_SESSION["user_id"] = $user_id;
+            $_SESSION["user_type"] = $user_type;
             $_SESSION["logged_in_username"] = $username;
             header("Location: ?p=profile");
         }

@@ -24,8 +24,11 @@
                     <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a
-                                        href="?p=now-student&class_id=<?= $_GET['class_id'] ?>"><span
+                                <li class="breadcrumb-item"><a href="?p=<?php if ($_SESSION['user_type'] == 0) {
+                                                                            echo 'now-student';
+                                                                        } else {
+                                                                            echo 'now-teacher';
+                                                                        } ?>&class_id=<?= $_GET['class_id'] ?>"><span
                                             class="ti-angle-left"> Back </a>
                                 </li>
                             </ol>
@@ -134,7 +137,7 @@
                                                 <div class="clearfix"></div>
                                                 <p><?= $row->comment ?></p><br>
                                                 <br><a
-                                                    href="?p=delete-comment&post_id=<?= $_GET['post_id'] ?>&comment_id=<?php echo ($row->comment_id); ?>"><input
+                                                    href="?p=delete-comment&class_id=<?= $_GET['class_id'] ?>&post_id=<?= $_GET['post_id'] ?>&comment_id=<?php echo ($row->comment_id); ?>"><input
                                                         type="image" src="assets/img/trash.svg" width="20" height="20"
                                                         style="float:right"></a>
                                             </div>
@@ -150,7 +153,7 @@
                                 <div class="edu_wraper">
                                     <h4 class="edu_title">Add a Comment</h4>
                                     <div class="review-form-box form-submit">
-                                        <form method="post" action="?p=add-comment">
+                                        <form method="post" action="?p=add-comment&class_id=<?= $_GET['class_id'] ?>">
                                             <div class="row">
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="form-group">
