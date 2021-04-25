@@ -69,7 +69,7 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div class="active">
-                                                    <a href="?p=now-teacher">Now</a>
+                                                    <a href="?p=now-teacher&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div>
                                                     <a
@@ -139,11 +139,12 @@
 
                                         <!-- Single Course -->
                                         <?php
-                                        $stmt = $db_r->prepare(' SELECT p.post_id, post_type, class_id,title,description,time_created,assignment_id,due_date FROM posts p LEFT JOIN Assignments a ON a.post_id=p.post_id WHERE class_id=? ORDER BY time_created ');
+                                        $stmt = $db_r->prepare(' SELECT p.post_id, post_type, class_id,title,description,time_created,assignment_id,due_date FROM posts p LEFT JOIN Assignments a ON a.post_id=p.post_id WHERE class_id=? ORDER BY time_created  DESC');
                                         $stmt->execute([$_GET['class_id']]);
                                         while ($row = $stmt->fetch()) {
                                         ?>
-                                        <a href="?p=view-post&post_id=<?php echo $row['post_id'] ?>">
+                                        <a
+                                            href="?p=view-post&class_id=<?= $_GET['class_id'] ?>&post_id=<?php echo $row['post_id'] ?>">
                                             <div style="cursor: pointer;"
                                                 class="dashboard_single_course ass_hover_effect">
 

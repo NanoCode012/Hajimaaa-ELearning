@@ -68,13 +68,15 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div class="active">
-                                                    <a href="?p=now-teacher">Now</a>
+                                                    <a href="?p=now-student&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=ass-teacher">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-student&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=lectureteacher">Lecture Notes</a>
+                                                    <a href="?p=lecturestudent&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
 
                                             </div>
@@ -117,7 +119,7 @@
                                         <?php
                                         //$class_id=$_GET['class_id'];
                                         //$stmt = $db_r->query('SELECT * FROM posts WHERE class_id=$class_id ORDER BY time_created');
-                                        $stmt = $db_r->query('SELECT * FROM posts ORDER BY time_created');
+                                        $stmt = $db_r->query('SELECT * FROM posts ORDER BY time_created DESC');
                                         while ($row = $stmt->fetch()) {
                                         ?>
 

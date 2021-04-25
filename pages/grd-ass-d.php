@@ -95,10 +95,33 @@ $notdone=$studentso-$countnames;
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <div class="trips_detail">
-                                            <h1 class="breadcrumb-title"><?php echo $cname ?></h1>
-											<h4> <?php echo $teacher;?></h4>
-                                            <h4>Contact:<?php echo ' '; echo $email;?></h4>
+                                          <?php
 
+                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                          $query1 = $db_r -> prepare($sql1);
+                                          $query1->execute();
+                                          $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+
+                                          if($results1)
+                                          {
+                                          foreach($results1 as $result1)
+                                          {               ?>
+                                            <h1 class="breadcrumb-title"><?php echo htmlentities($result1->class_name);?></h1>
+                                            <h4><?php echo htmlentities($result1->class_instructor);?></h4>
+                                            <?php
+
+                                            $sql2 = "SELECT email from users where user_id=2;";
+                                            $query2 = $db_r -> prepare($sql2);
+                                            $query2->execute();
+                                            $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+
+                                            if($results2)
+                                            {
+                                            foreach($results2 as $result2)
+                                            {               ?>
+                                            <h4>Contact: <?php echo htmlentities($result2->email);?></h4>
+
+                                          <?php }}}} ?>
                                         </div>
                                     </ol>
 

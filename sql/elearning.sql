@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 23, 2021 at 05:13 PM
+-- Generation Time: Apr 25, 2021 at 09:39 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `elearning`
 --
-CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS `elearning` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `elearning`;
 
 -- --------------------------------------------------------
@@ -29,15 +29,18 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 22, 2021 at 04:44 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `assignments`;
 CREATE TABLE `assignments` (
   `assignment_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
+  `chapter` varchar(255) NOT NULL,
+  `a_marks` int(3) NOT NULL,
   `due_date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `assignments`:
@@ -50,7 +53,8 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 23, 2021 at 04:51 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -58,14 +62,14 @@ CREATE TABLE `class` (
   `class_id` int(11) NOT NULL,
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
-  `class_description` text,
+  `class_description` mediumtext,
   `categories` varchar(255) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `class_instructor` varchar(255) DEFAULT NULL,
   `class_secret` varchar(20) NOT NULL,
   `course_img_path` varchar(255) NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `class`:
@@ -78,8 +82,7 @@ CREATE TABLE `class` (
 --
 -- Table structure for table `class_enrolled`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
--- Last update: Apr 23, 2021 at 04:07 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -87,7 +90,7 @@ CREATE TABLE `class_enrolled` (
   `enrollment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `class_enrolled`:
@@ -114,7 +117,8 @@ CREATE TABLE `class_enrolled_count` (
 --
 -- Table structure for table `comments`
 --
--- Creation: Apr 22, 2021 at 03:28 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 09:38 AM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -122,9 +126,9 @@ CREATE TABLE `comments` (
   `comment_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment` text NOT NULL,
+  `comment` mediumtext NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `comments`:
@@ -139,16 +143,18 @@ CREATE TABLE `comments` (
 --
 -- Table structure for table `files`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
+-- Creation: Apr 25, 2021 at 08:26 AM
+-- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
   `file_id` int(11) NOT NULL,
   `assignments_id` int(11) NOT NULL,
-  `file_path` text NOT NULL,
+  `file_name` text NOT NULL,
+  `file_path` mediumtext NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `files`:
@@ -159,16 +165,35 @@ CREATE TABLE `files` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `gradeass`
+--
+-- Creation: Apr 25, 2021 at 07:55 AM
+--
+
+DROP TABLE IF EXISTS `gradeass`;
+CREATE TABLE `gradeass` (
+  `student_file_id` int(11) NOT NULL,
+  `marks` int(3) NOT NULL,
+  `comments` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `gradeass`:
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lectures`
 --
--- Creation: Apr 19, 2021 at 01:41 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `lectures`;
 CREATE TABLE `lectures` (
   `lecture_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `lectures`:
@@ -181,7 +206,8 @@ CREATE TABLE `lectures` (
 --
 -- Table structure for table `posts`
 --
--- Creation: Apr 22, 2021 at 03:38 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -193,7 +219,7 @@ CREATE TABLE `posts` (
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `posts`:
@@ -208,7 +234,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `student_files`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
+-- Creation: Apr 25, 2021 at 09:13 AM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -216,9 +242,11 @@ CREATE TABLE `student_files` (
   `student_file_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `assignment_id` int(11) NOT NULL,
-  `file_path` text NOT NULL,
+  `text_answer` text NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_path` mediumtext NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `student_files`:
@@ -233,7 +261,8 @@ CREATE TABLE `student_files` (
 --
 -- Table structure for table `users`
 --
--- Creation: Apr 19, 2021 at 08:27 AM
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 08:49 AM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -252,7 +281,7 @@ CREATE TABLE `users` (
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
   `about` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `users`:
