@@ -17,6 +17,7 @@ else {
         'logout',
         'register',
         'register-alert',
+        'register-alert-username',
         'landing',
         'accountmanager',
         'create_account'])
