@@ -29,7 +29,7 @@ class GStorage
      *
      * @param string $srcPath  The location of the file before upload
      * @param string $destPath  The location of the file after upload in the bucket
-     *
+     * 
      * @throws die The script will die and stop execution
      * @author Chanvichet Vong
      */
@@ -51,7 +51,7 @@ class GStorage
      *
      * @param string $srcPath  The location of the file before download in the bucket
      * @param string $destPath  The location of the file after download
-     *
+     * 
      * @throws die The script will die and stop execution
      * @author Chanvichet Vong
      */
