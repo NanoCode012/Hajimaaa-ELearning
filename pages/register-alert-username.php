@@ -81,6 +81,9 @@
                                         <label>Username</label>
                                         <input type="text" name="username" class="form-control" required>
                                     </div>
+                                    <div class="alert alert-danger" role="alert">
+                                      The username you have chosen already exists! Please choose a new one.
+                                    </div>
                                     <div class="form-group">
                                         <label>Password</label>
                                         <input type="password" name="password" class="form-control" required>

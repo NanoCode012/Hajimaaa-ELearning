@@ -89,6 +89,9 @@
                                         <label>Confirm password</label>
                                         <input type="password" name="cpassword" class="form-control" required>
                                     </div>
+                                    <div class="alert alert-danger" role="alert">
+                                      Passwords do not match! Please re-enter your information.
+                                    </div>
                                     <div class="social-login mb-3">
                                         <ul>
                                             <li class="right">
