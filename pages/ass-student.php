@@ -1,59 +1,52 @@
 <?php
 
-// error_reporting(0);
+$user_id = $_SESSION["user_id"];
+$class_id = $_GET['class_id'];
 
-if (!isset($_SESSION['user_id']))
-    {
-header('location:?p=login');
-}
-else{
-  $user_id = $_SESSION["user_id"];
-  $class_id=$_GET['class_id'];
-  if(isset($_POST['create']))
-  {
+include_once 'includes/utils/gcloud.php';
+$gstorage = new GStorage();
+
+if (isset($_POST['create'])) {
 
     $countfiles = count($_FILES['files']['name']);
-    function getSalt() {
-         $charset = '0123456789';
-         $randStringLen = 4;
+    function getSalt()
+    {
+        $charset = '0123456789';
+        $randStringLen = 4;
 
-         $randString = "";
-         for ($i = 0; $i < $randStringLen; $i++) {
-             $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
-         }
+        $randString = "";
+        for ($i = 0; $i < $randStringLen; $i++) {
+            $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
+        }
 
-         return $randString;
+        return $randString;
     }
 
-    for($i=0;$i<$countfiles;$i++){
-      $filename = $_FILES['files']['name'][$i];
-      $extension = substr($filename,strlen($filename)-4,strlen($filename));
-      $salt = getSalt();
-      $filename=md5($filename+$salt).$extension;
+    for ($i = 0; $i < $countfiles; $i++) {
+        $filename = $_FILES['files']['name'][$i];
+        $extension = substr($filename, strlen($filename) - 4, strlen($filename));
+        $salt = getSalt();
+        $filename = md5($filename + $salt) . $extension;
 
-      if(move_uploaded_file($_FILES["files"]["tmp_name"][$i],"assets/files/student_files/".$filename)){
-        // include 'includes/utils/gcloud.php';
-        // $gstorage = new GStorage();
-        // $gstorage->upload("assets/files/student_files/".$filename,"student_files/".$filename);
-      }
-      // $new_path="assets/files/student_files".$filename;
-      // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
-      // upload($tmp_dir, $new_path);
-      $text_answer=$_POST['text_answer'];
-      $assignment_id=$_POST['assignment_id'];
-      $filepath='student_files/'.$filename;
+        if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/student_files/" . $filename)) {
+            $gstorage->upload("assets/files/student_files/" . $filename, "student_files/" . $filename);
+        }
+        // $new_path="assets/files/student_files".$filename;
+        // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
+        // upload($tmp_dir, $new_path);
+        $text_answer = $_POST['text_answer'];
+        $assignment_id = $_POST['assignment_id'];
+        $filepath = 'student_files/' . $filename;
 
-      $sqlp="INSERT INTO student_files(student_id,assignment_id,text_answer,file_name,file_path) VALUES(:user_id,:assignment_id,:text_answer,:filename,:filepath)";
-      $queryp = $db_w->prepare($sqlp);
-      $queryp->bindParam(':user_id',$user_id,PDO::PARAM_STR);
-      $queryp->bindParam(':assignment_id',$assignment_id,PDO::PARAM_STR);
-      $queryp->bindParam(':text_answer',$text_answer,PDO::PARAM_STR);
-      $queryp->bindParam(':filename',$filename,PDO::PARAM_STR);
-      $queryp->bindParam(':filepath',$filepath,PDO::PARAM_STR);
-      $queryp->execute();
-      $lastInsertId = $db_w->lastInsertId();
-
-
+        $sqlp = "INSERT INTO student_files(student_id,assignment_id,text_answer,file_name,file_path) VALUES(:user_id,:assignment_id,:text_answer,:filename,:filepath)";
+        $queryp = $db_w->prepare($sqlp);
+        $queryp->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+        $queryp->bindParam(':assignment_id', $assignment_id, PDO::PARAM_STR);
+        $queryp->bindParam(':text_answer', $text_answer, PDO::PARAM_STR);
+        $queryp->bindParam(':filename', $filename, PDO::PARAM_STR);
+        $queryp->bindParam(':filepath', $filepath, PDO::PARAM_STR);
+        $queryp->execute();
+        $lastInsertId = $db_w->lastInsertId();
     }
 
 
@@ -63,24 +56,20 @@ else{
 
 
 
-   // Looping all files
+    // Looping all files
 
 
 
 
-  $lastInsertId = $db_w->lastInsertId();
-  if($lastInsertId)
-  {
-  $_SESSION['msg']="Assignment created successfully";
-  header('location:?p=ass-student');
-  }
-  else
-  {
-  $_SESSION['error']="Something went wrong. Please try again";
-  header('location:?p=ass-student');
-  }
-
-   }
+    $lastInsertId = $db_w->lastInsertId();
+    if ($lastInsertId) {
+        $_SESSION['msg'] = "Assignment created successfully";
+        header('location:?p=ass-student&class_id=' . $class_id);
+    } else {
+        $_SESSION['error'] = "Something went wrong. Please try again";
+        header('location:?p=ass-student&class_id=' . $class_id);
+    }
+}
 ?>
 
 
@@ -88,10 +77,10 @@ else{
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div id="preloader">
+    <!-- <div id="preloader">
         <div class="preloader"><span></span><span></span>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- ============================================================== -->
@@ -128,35 +117,36 @@ else{
                                 <div class="dashboard_container">
 
                                     <div class="dashboard_container_header">
-                                      <div class="dashboard_fl_1">
-                                        <?php
+                                        <div class="dashboard_fl_1">
+                                            <?php
 
-                                        $sql1 = "SELECT class_name,class_instructor from class where class_id=".$class_id;
-                                        $query1 = $db_r -> prepare($sql1);
-                                        $query1->execute();
-                                        $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=" . $class_id;
+                                            $query1 = $db_r->prepare($sql1);
+                                            $query1->execute();
+                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                        if($results1)
-                                        {
-                                        foreach($results1 as $result1)
-                                        {               ?>
-                                          <h1><?php echo htmlentities($result1->class_name);?></h1>
-                                          <h4 class="edu_title">Dr. <?php echo htmlentities($result1->class_instructor);?></h4>
-                                          <?php
+                                            if ($results1) {
+                                                foreach ($results1 as $result1) {               ?>
+                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
+                                            <h4 class="edu_title">Dr.
+                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
+                                            <?php
 
-                                          $sql2 = "SELECT email from users where user_type=1 and user_id=(SELECT user_id from class where class_id=:class_id)";
-                                          $query2 = $db_r -> prepare($sql2);
-                                          $query2->bindParam(':class_id',$class_id,PDO::PARAM_STR);
-                                          $query2->execute();
-                                          $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                    $sql2 = "SELECT email from users where user_type=1 and user_id=(SELECT user_id from class where class_id=:class_id)";
+                                                    $query2 = $db_r->prepare($sql2);
+                                                    $query2->bindParam(':class_id', $class_id, PDO::PARAM_STR);
+                                                    $query2->execute();
+                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
-                                          if($results2)
-                                          {
-                                          foreach($results2 as $result2)
-                                          {               ?>
-                                          <span class="dashboard_instructor"><?php echo htmlentities($result2->email);?></span>
-                                        <?php }}}} ?>
-                                      </div>
+                                                    if ($results2) {
+                                                        foreach ($results2 as $result2) {               ?>
+                                            <span
+                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
+                                            <?php }
+                                                    }
+                                                }
+                                            } ?>
+                                        </div>
 
                                     </div>
                                 </div>
@@ -170,13 +160,15 @@ else{
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    <a href="?p=now-student">Now</a>
+                                                    <a href="?p=now-student&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    <a href="?p=ass-student">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-student&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=lecturestudent">Lecture Notes</a>
+                                                    <a href="?p=lecturestudent&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
 
                                             </div>
@@ -258,34 +250,38 @@ else{
                                                 <!-- Single Course -->
 
 
-        <?php
+                                                <?php
 
-        $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=:class_id and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) ";
-        $query = $db_r -> prepare($sql);
-        $query->bindParam(':class_id',$class_id,PDO::PARAM_STR);
-        $query->execute();
-        $results=$query->fetchAll(PDO::FETCH_OBJ);
-        $y=array();
-        if($query->rowCount() > 0)
-        {
-        foreach($results as $result)
-        {
-            $assid = htmlentities($result->assignment_id);
+                                                $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=:class_id and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) ";
+                                                $query = $db_r->prepare($sql);
+                                                $query->bindParam(':class_id', $class_id, PDO::PARAM_STR);
+                                                $query->execute();
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                $y = array();
+                                                if ($query->rowCount() > 0) {
+                                                    foreach ($results as $result) {
+                                                        $assid = htmlentities($result->assignment_id);
 
 
-        ?>
+                                                ?>
 
 
-              <script> $data = json_encode($data); </script>
-                                                <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
-                                                    class="dashboard_single_course ass_hover_effect join-button pop-login" data-type="edit" data-service='{$data}'>
+                                                <script>
+                                                $data = json_encode($data);
+                                                </script>
+                                                <div onclick="location.href='#';" style="cursor: pointer; "
+                                                    data-toggle="modal" data-target="#exampleModal"
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login"
+                                                    data-type="edit" data-service='{$data}'>
 
 
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
                                                             <div class="dashboard_single_course_head_flex">
-                                                                <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
-                                                                <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+                                                                <span
+                                                                    class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
+                                                                <h4 class="dashboard_course_title">
+                                                                    <?php echo htmlentities($result->title); ?></h4>
 
                                                             </div>
                                                             <div class="dc_head_right">
@@ -293,25 +289,25 @@ else{
                                                             </div>
                                                         </div>
                                                         <div class="dashboard_single_course_des">
-                                                            <p><?php echo htmlentities($result->description);?></p>
+                                                            <p><?php echo htmlentities($result->description); ?></p>
                                                         </div>
                                                         <div class="dashboard_single_course_progress">
                                                             <div class="dashboard_single_course_progress_1">
 
-                                                              <?php
-                                                              $assid = htmlentities($result->assignment_id);
+                                                                <?php
+                                                                        $assid = htmlentities($result->assignment_id);
 
-                                                              $sql0 = "SELECT due_date from assignments where assignment_id = ". $assid;
-                                                              $query0 = $db_r -> prepare($sql0);
-                                                              $query0->execute();
-                                                              $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $sql0 = "SELECT due_date from assignments where assignment_id = " . $assid;
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute();
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                              if($query0->rowCount() > 0)
-                                                              {
-                                                              foreach($results0 as $result0)
-                                                              {               ?>
-                                                                <label>Due <?php echo htmlentities($result0->due_date);?></label>
-                                                                <?php }} ?>
+                                                                        if ($query0->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {               ?>
+                                                                <label>Due
+                                                                    <?php echo htmlentities($result0->due_date); ?></label>
+                                                                <?php }
+                                                                        } ?>
 
                                                             </div>
                                                             <!-- <div class="dashboard_single_course_progress_2">
@@ -327,41 +323,47 @@ else{
                                                                         // if($query2->rowCount() > 0)
                                                                         // {
                                                                         // foreach($results2 as $result2)
-                                                                        // {               ?>
+                                                                        // {               
+                                                                        ?>
 
-                                                                    <li class="list-inline-item"><i class="far fa-file mr-1"></i><?php //echo htmlentities($result2->no_of_files);?> Files</li>
+                                                                    <li class="list-inline-item"><i class="far fa-file mr-1"></i><?php //echo htmlentities($result2->no_of_files);
+                                                                                                                                    ?> Files</li>
 
-                                                                    <?php //}} ?>
+                                                                    <?php //}} 
+                                                                    ?>
                                                                 </ul>
                                                             </div> -->
                                                             <div class="dashboard_single_course_progress_2">
-                                                              <ul class="m-0">
+                                                                <ul class="m-0">
 
-                                                              <?php
+                                                                    <?php
 
-                                                              $sqlf = "SELECT file_name,file_path from files where assignments_id=".$assid;
-                                                              $queryf = $db_r -> prepare($sqlf);
-                                                              $queryf->execute();
-                                                              $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
-
-
-                                                              if($queryf->rowCount() > 0)
-                                                              { $x=0;
-                                                                include 'includes/utils/gcloud.php';
-                                                                $gstorage = new GStorage();
-                                                              foreach($resultsf as $resultf)
-                                                              {    $x++;
-
-                                                                if(!file_exists('assets/files/assignments/'.$resultf->file_name)){
-                                                                  $gstorage->download($resultf->file_path,'assets/files/assignments/'.$resultf->file_name);
-                                                                }
+                                                                            $sqlf = "SELECT file_name,file_path from files where assignments_id=" . $assid;
+                                                                            $queryf = $db_r->prepare($sqlf);
+                                                                            $queryf->execute();
+                                                                            $resultsf = $queryf->fetchAll(PDO::FETCH_OBJ);
 
 
-                                                                ?>
-                                                                <a class="list-inline-item " target="_blank" href="assets/files/assignments/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x ;?></a>
 
-                                                              <?php }} ?>
-                                                            </ul>
+                                                                            if ($queryf->rowCount() > 0) {
+                                                                                $x = 0;
+                                                                                foreach ($resultsf as $resultf) {
+                                                                                    $x++;
+
+                                                                                    if (!file_exists('assets/files/assignments/' . $resultf->file_name)) {
+                                                                                        $gstorage->download($resultf->file_path, 'assets/files/assignments/' . $resultf->file_name);
+                                                                                    }
+
+
+                                                                            ?>
+                                                                    <a class="list-inline-item " target="_blank"
+                                                                        href="assets/files/assignments/<?php echo $resultf->file_name; ?>"><i
+                                                                            class="far fa-file mr-1"></i> View File
+                                                                        <?php echo $x; ?></a>
+
+                                                                    <?php }
+                                                                            } ?>
+                                                                </ul>
 
 
                                                             </div>
@@ -369,7 +371,8 @@ else{
                                                     </div>
                                                 </div>
 
-        <?php }} ?>
+                                                <?php }
+                                                } ?>
 
 
 
@@ -401,77 +404,84 @@ else{
 
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=".$class_id;
-                                                $query = $db_r -> prepare($sql);
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=" . $class_id;
+                                                $query = $db_r->prepare($sql);
                                                 $query->execute();
-                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                                if($query->rowCount() > 0)
-                                                {
-                                                foreach($results as $result)
-                                                {               ?>
+                                                if ($query->rowCount() > 0) {
+                                                    foreach ($results as $result) {               ?>
 
-                                                  <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
-                                                      class="dashboard_single_course ass_hover_effect join-button pop-login">
+                                                <div onclick="location.href='#';" style="cursor: pointer; "
+                                                    data-toggle="modal" data-target="#exampleModal"
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login">
 
 
-                                                      <div class="dashboard_single_course_caption">
-                                                          <div class="dashboard_single_course_head">
-                                                              <div class="dashboard_single_course_head_flex">
-                                                                  <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
-                                                                  <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+                                                    <div class="dashboard_single_course_caption">
+                                                        <div class="dashboard_single_course_head">
+                                                            <div class="dashboard_single_course_head_flex">
+                                                                <span
+                                                                    class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
+                                                                <h4 class="dashboard_course_title">
+                                                                    <?php echo htmlentities($result->title); ?></h4>
 
-                                                              </div>
-                                                              <div class="dc_head_right">
-                                                                  <h4 class="dc_price_rate theme-cl"></h4>
-                                                              </div>
-                                                          </div>
-                                                          <div class="dashboard_single_course_des">
-                                                              <p><?php echo htmlentities($result->description);?></p>
-                                                          </div>
-                                                          <div class="dashboard_single_course_progress">
-                                                              <div class="dashboard_single_course_progress_1">
+                                                            </div>
+                                                            <div class="dc_head_right">
+                                                                <h4 class="dc_price_rate theme-cl"></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="dashboard_single_course_des">
+                                                            <p><?php echo htmlentities($result->description); ?></p>
+                                                        </div>
+                                                        <div class="dashboard_single_course_progress">
+                                                            <div class="dashboard_single_course_progress_1">
 
                                                                 <?php
-                                                                $assid = htmlentities($result->assignment_id);
-                                                                $sql0 = "SELECT due_date from assignments where assignment_id = ". $assid;
-                                                                $query0 = $db_r -> prepare($sql0);
-                                                                $query0->execute();
-                                                                $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $assid = htmlentities($result->assignment_id);
+                                                                        $sql0 = "SELECT due_date from assignments where assignment_id = " . $assid;
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute();
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                                if($query0->rowCount() > 0)
-                                                                {
-                                                                foreach($results0 as $result0)
-                                                                {               ?>
-                                                                  <label>Due <?php echo htmlentities($result0->due_date);?></label>
-                                                                  <?php }} ?>
+                                                                        if ($query0->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {               ?>
+                                                                <label>Due
+                                                                    <?php echo htmlentities($result0->due_date); ?></label>
+                                                                <?php }
+                                                                        } ?>
 
-                                                              </div>
-                                                              <div class="dashboard_single_course_progress_2">
+                                                            </div>
+                                                            <div class="dashboard_single_course_progress_2">
                                                                 <ul class="m-0">
 
-                                                                <?php
+                                                                    <?php
 
-                                                                $sqlf = "SELECT file_name from files where assignments_id=".$assid;
-                                                                $queryf = $db_r -> prepare($sqlf);
-                                                                $queryf->execute();
-                                                                $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
+                                                                            $sqlf = "SELECT file_name,file_path from files where assignments_id=" . $assid;
+                                                                            $queryf = $db_r->prepare($sqlf);
+                                                                            $queryf->execute();
+                                                                            $resultsf = $queryf->fetchAll(PDO::FETCH_OBJ);
 
-                                                                if($queryf->rowCount() > 0)
-                                                                { $x=0;
-                                                                foreach($resultsf as $resultf)
-                                                                {    $x++;           ?>
-                                                                  <a class="list-inline-item " target="_blank" href="uploads/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x;?></a>
+                                                                            if ($queryf->rowCount() > 0) {
+                                                                                $x = 0;
+                                                                                foreach ($resultsf as $resultf) {
+                                                                                    $x++;
+                                                                            ?>
+                                                                    <a class="list-inline-item " target="_blank"
+                                                                        href="assets/files/assignments/<?php echo $resultf->file_name; ?>"><i
+                                                                            class="far fa-file mr-1"></i> View File
+                                                                        <?php echo $x; ?></a>
 
-                                                                <?php }} ?>
-                                                              </ul>
+                                                                    <?php }
+                                                                            } ?>
+                                                                </ul>
 
 
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-        <?php }} ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php }
+                                                } ?>
 
 
 
@@ -501,78 +511,86 @@ else{
 
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=".$class_id;
-                                                $query = $db_r -> prepare($sql);
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=" . $class_id;
+                                                $query = $db_r->prepare($sql);
                                                 $query->execute();
-                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                                if($query->rowCount() > 0)
-                                                {
-                                                foreach($results as $result)
-                                                {               ?>
+                                                if ($query->rowCount() > 0) {
+                                                    foreach ($results as $result) {               ?>
 
 
-                                                  <div onclick="location.href='#';" style="cursor: pointer; " data-toggle="modal" data-target="#exampleModal"
-                                                      class="dashboard_single_course ass_hover_effect join-button pop-login">
+                                                <div onclick="location.href='#';" style="cursor: pointer; "
+                                                    data-toggle="modal" data-target="#exampleModal"
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login">
 
 
-                                                      <div class="dashboard_single_course_caption">
-                                                          <div class="dashboard_single_course_head">
-                                                              <div class="dashboard_single_course_head_flex">
-                                                                  <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
-                                                                  <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+                                                    <div class="dashboard_single_course_caption">
+                                                        <div class="dashboard_single_course_head">
+                                                            <div class="dashboard_single_course_head_flex">
+                                                                <span
+                                                                    class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
+                                                                <h4 class="dashboard_course_title">
+                                                                    <?php echo htmlentities($result->title); ?></h4>
 
-                                                              </div>
-                                                              <div class="dc_head_right">
-                                                                  <h4 class="dc_price_rate theme-cl"></h4>
-                                                              </div>
-                                                          </div>
-                                                          <div class="dashboard_single_course_des">
-                                                              <p><?php echo htmlentities($result->description);?></p>
-                                                          </div>
-                                                          <div class="dashboard_single_course_progress">
-                                                              <div class="dashboard_single_course_progress_1">
+                                                            </div>
+                                                            <div class="dc_head_right">
+                                                                <h4 class="dc_price_rate theme-cl"></h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="dashboard_single_course_des">
+                                                            <p><?php echo htmlentities($result->description); ?></p>
+                                                        </div>
+                                                        <div class="dashboard_single_course_progress">
+                                                            <div class="dashboard_single_course_progress_1">
 
                                                                 <?php
-                                                                $assid = htmlentities($result->assignment_id);
-                                                                $sql0 = "SELECT due_date from assignments where assignment_id = ". $assid;
-                                                                $query0 = $db_r -> prepare($sql0);
-                                                                $query0->execute();
-                                                                $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $assid = htmlentities($result->assignment_id);
+                                                                        $sql0 = "SELECT due_date from assignments where assignment_id = " . $assid;
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute();
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                                if($query0->rowCount() > 0)
-                                                                {
-                                                                foreach($results0 as $result0)
-                                                                {               ?>
-                                                                  <label>Due <?php echo htmlentities($result0->due_date);?></label>
-                                                                  <?php }} ?>
+                                                                        if ($query0->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {               ?>
+                                                                <label>Due
+                                                                    <?php echo htmlentities($result0->due_date); ?></label>
+                                                                <?php }
+                                                                        } ?>
 
-                                                              </div>
-                                                              <div class="dashboard_single_course_progress_2">
+                                                            </div>
+                                                            <div class="dashboard_single_course_progress_2">
                                                                 <ul class="m-0">
 
-                                                                <?php
+                                                                    <?php
 
-                                                                $sqlf = "SELECT file_name from files where assignments_id=".$assid;
-                                                                $queryf = $db_r -> prepare($sqlf);
-                                                                $queryf->execute();
-                                                                $resultsf=$queryf->fetchAll(PDO::FETCH_OBJ);
+                                                                            $sqlf = "SELECT file_name, file_path from files where assignments_id=" . $assid;
+                                                                            $queryf = $db_r->prepare($sqlf);
+                                                                            $queryf->execute();
+                                                                            $resultsf = $queryf->fetchAll(PDO::FETCH_OBJ);
 
-                                                                if($queryf->rowCount() > 0)
-                                                                { $x=0;
-                                                                foreach($resultsf as $resultf)
-                                                                {    $x++;           ?>
-                                                                  <a class="list-inline-item " target="_blank" href="uploads/<?php echo $resultf->file_name;?>"><i class="far fa-file mr-1"></i> View File <?php echo $x;?></a>
+                                                                            if ($queryf->rowCount() > 0) {
+                                                                                $x = 0;
+                                                                                foreach ($resultsf as $resultf) {
+                                                                                    $x++;
 
-                                                                <?php }} ?>
-                                                              </ul>
+                                                                            ?>
+                                                                    <a class="list-inline-item " target="_blank"
+                                                                        href="assets/files/assignments/<?php echo $resultf->file_name; ?>"><i
+                                                                            class="far fa-file mr-1"></i> View File
+                                                                        <?php echo $x; ?></a>
+
+                                                                    <?php }
+                                                                            } ?>
+                                                                </ul>
 
 
-                                                              </div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-        <?php }} ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php }
+                                                } ?>
 
 
                                             </div>
@@ -608,17 +626,15 @@ else{
                                                 <!-- Single Course -->
 
 
-                                    <?php
+                                                <?php
 
-                                    $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=".$class_id;
-                                    $query = $db_r -> prepare($sql);
-                                    $query->execute();
-                                    $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                                $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=" . $class_id;
+                                                $query = $db_r->prepare($sql);
+                                                $query->execute();
+                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                    if($query->rowCount() > 0)
-                                    {
-                                    foreach($results as $result)
-                                    {               ?>
+                                                if ($query->rowCount() > 0) {
+                                                    foreach ($results as $result) {               ?>
 
 
                                                 <div onclick="location.href='#';" style="cursor: pointer;"
@@ -628,8 +644,10 @@ else{
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
                                                             <div class="dashboard_single_course_head_flex">
-                                                                <span class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
-                                                                <h4 class="dashboard_course_title"><?php echo htmlentities($result->title);?></h4>
+                                                                <span
+                                                                    class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
+                                                                <h4 class="dashboard_course_title">
+                                                                    <?php echo htmlentities($result->title); ?></h4>
 
                                                             </div>
                                                             <div class="dc_head_right">
@@ -637,45 +655,47 @@ else{
                                                             </div>
                                                         </div>
                                                         <div class="dashboard_single_course_des">
-                                                            <p><?php echo htmlentities($result->description);?></p>
+                                                            <p><?php echo htmlentities($result->description); ?></p>
                                                         </div>
                                                         <div class="dashboard_single_course_progress">
                                                             <div class="dashboard_single_course_progress_1">
 
-                                                              <?php
+                                                                <?php
 
-                                                              $assid = htmlentities($result->assignment_id);
-                                                              $sql0 = "SELECT count(student_id) as no_of_files_submitted from student_files where student_id=:user_id and assignment_id=". $assid;
-                                                              $query0 = $db_r -> prepare($sql0);
-                                                              $query0->bindParam(':user_id',$user_id,PDO::PARAM_STR);
-                                                              $query0->execute();
-                                                              $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $assid = htmlentities($result->assignment_id);
+                                                                        $sql0 = "SELECT count(student_id) as no_of_files_submitted from student_files where student_id=:user_id and assignment_id=" . $assid;
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+                                                                        $query0->execute();
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                              if($query0->rowCount() > 0)
-                                                              {
-                                                              foreach($results0 as $result0)
-                                                              {               ?>
-                                                                <label><?php echo htmlentities($result0->no_of_files_submitted);?> Files Submitted</label>
-                                                                <?php }} ?>
+                                                                        if ($query0->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {               ?>
+                                                                <label><?php echo htmlentities($result0->no_of_files_submitted); ?>
+                                                                    Files Submitted</label>
+                                                                <?php }
+                                                                        } ?>
 
                                                             </div>
                                                             <div class="dashboard_single_course_progress_2">
                                                                 <ul class="m-0">
-                                                                  <?php
-                                                                  $user_id = $_SESSION["user_id"];
-                                                                  $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=".$assid;
-                                                                  $query1 = $db_r -> prepare($sql1);
-                                                                  $query1->bindParam(':user_id',$user_id,PDO::PARAM_STR);
-                                                                  $query1->execute();
-                                                                  $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                                                                    <?php
+                                                                            $user_id = $_SESSION["user_id"];
+                                                                            $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=" . $assid;
+                                                                            $query1 = $db_r->prepare($sql1);
+                                                                            $query1->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+                                                                            $query1->execute();
+                                                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                                                  if($query1->rowCount() > 0)
-                                                                  {
-                                                                  foreach($results1 as $result1)
-                                                                  {               ?>
-                                                                    <li class="list-inline-item">Submitted on </i><?php echo htmlentities($result1->time_created);?></li>
+                                                                            if ($query1->rowCount() > 0) {
+                                                                                foreach ($results1 as $result1) {               ?>
+                                                                    <li class="list-inline-item">Submitted on
+                                                                        </i><?php echo htmlentities($result1->time_created); ?>
+                                                                    </li>
 
-                                                                    <?php break;}} ?>
+                                                                    <?php break;
+                                                                                }
+                                                                            } ?>
 
 
 
@@ -686,7 +706,8 @@ else{
                                                     </div>
                                                 </div>
 
-                                    <?php }} ?>
+                                                <?php }
+                                                } ?>
 
 
 
@@ -796,7 +817,7 @@ else{
                     <button type="submit" class="btn btn-theme popupbtn" name="create">Submit</button>
                 </div>
 
-</form>
+                </form>
             </div>
         </div>
     </div>
@@ -824,7 +845,7 @@ else{
     }
     </script>
     <!--JS for tabs-->
-<!-- <script>
+    <!-- <script>
 $(function() {
 
         $('#exampleModal').on('show.bs.modal', function (event) {
@@ -847,6 +868,3 @@ $(function() {
 
 
 </script> -->
-
-
-<?php } ?>
