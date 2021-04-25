@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 24, 2021 at 10:06 PM
--- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.8
+-- Host: localhost:3306
+-- Generation Time: Apr 25, 2021 at 07:55 AM
+-- Server version: 5.7.24
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -28,58 +29,75 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
+-- Creation: Apr 25, 2021 at 07:55 AM
+--
 
 DROP TABLE IF EXISTS `assignments`;
-CREATE TABLE IF NOT EXISTS `assignments` (
-  `assignment_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `assignments` (
+  `assignment_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `chapter` varchar(255) NOT NULL,
   `a_marks` int(3) NOT NULL,
-  `due_date` datetime NOT NULL,
-  PRIMARY KEY (`assignment_id`),
-  KEY `post_id` (`post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `due_date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `assignments`:
+--   `post_id`
+--       `posts` -> `post_id`
+--
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `class`
 --
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 07:55 AM
+--
 
 DROP TABLE IF EXISTS `class`;
-CREATE TABLE IF NOT EXISTS `class` (
-  `class_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class` (
+  `class_id` int(11) NOT NULL,
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
-  `class_description` text,
+  `class_description` mediumtext,
   `categories` varchar(255) NOT NULL,
   `instructor_id` int(11) NOT NULL,
   `class_instructor` varchar(255) DEFAULT NULL,
   `class_secret` varchar(20) NOT NULL,
   `course_img_path` varchar(255) NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `class`:
 --   `instructor_id`
 --       `users` -> `user_id`
 --
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `class_enrolled`
 --
+-- Creation: Apr 25, 2021 at 07:55 AM
+--
 
 DROP TABLE IF EXISTS `class_enrolled`;
-CREATE TABLE IF NOT EXISTS `class_enrolled` (
-  `enrollment_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `class_enrolled` (
+  `enrollment_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `class_id` int(11) NOT NULL,
-  PRIMARY KEY (`enrollment_id`),
-  KEY `class_id` (`class_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `class_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `class_enrolled`:
+--   `class_id`
+--       `class` -> `class_id`
+--   `user_id`
+--       `users` -> `user_id`
+--
 
 -- --------------------------------------------------------
 
@@ -98,7 +116,7 @@ CREATE TABLE `class_enrolled_count` (
 --
 -- Table structure for table `comments`
 --
--- Creation: Apr 22, 2021 at 03:28 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -106,9 +124,9 @@ CREATE TABLE `comments` (
   `comment_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `comment` text NOT NULL,
+  `comment` mediumtext NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `comments`:
@@ -123,47 +141,55 @@ CREATE TABLE `comments` (
 --
 -- Table structure for table `files`
 --
+-- Creation: Apr 25, 2021 at 07:55 AM
+--
 
 DROP TABLE IF EXISTS `files`;
-CREATE TABLE IF NOT EXISTS `files` (
-  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `files` (
+  `file_id` int(11) NOT NULL,
   `assignments_id` int(11) NOT NULL,
-  `file_name` text NOT NULL,
-  `file_path` text NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`file_id`),
-  KEY `assignments_id` (`assignments_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `file_path` mediumtext NOT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
+--
 -- RELATIONSHIPS FOR TABLE `files`:
 --   `assignments_id`
 --       `assignments` -> `assignment_id`
 --
 
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `gradeass`
+--
+-- Creation: Apr 25, 2021 at 07:55 AM
+--
+
 DROP TABLE IF EXISTS `gradeass`;
-CREATE TABLE IF NOT EXISTS `gradeass` (
+CREATE TABLE `gradeass` (
   `student_file_id` int(11) NOT NULL,
   `marks` int(3) NOT NULL,
   `comments` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `gradeass`:
+--
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `lectures`
 --
--- Creation: Apr 19, 2021 at 01:41 PM
+-- Creation: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `lectures`;
 CREATE TABLE `lectures` (
   `lecture_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `lectures`:
@@ -171,24 +197,24 @@ CREATE TABLE `lectures` (
 --       `posts` -> `post_id`
 --
 
+-- --------------------------------------------------------
+
 --
--- Table structure for table `lectures`
 -- Table structure for table `posts`
--- Creation: Apr 22, 2021 at 03:38 PM
+--
+-- Creation: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `posts`;
-CREATE TABLE IF NOT EXISTS `posts` (
-  `post_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `post_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `post_type` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `time_created` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`post_id`),
-  KEY `class_id` (`class_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `posts`:
@@ -203,30 +229,38 @@ CREATE TABLE IF NOT EXISTS `posts` (
 --
 -- Table structure for table `student_files`
 --
+-- Creation: Apr 25, 2021 at 07:55 AM
+--
 
 DROP TABLE IF EXISTS `student_files`;
-CREATE TABLE IF NOT EXISTS `student_files` (
-  `student_file_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `student_files` (
+  `student_file_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `assignment_id` int(11) NOT NULL,
-  `file_name` text NOT NULL,
-  `file_path` text NOT NULL,
-  `text_answer` varchar(10000) NOT NULL,
-  `time_created` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`student_file_id`),
-  KEY `student_id` (`student_id`),
-  KEY `assignment_id` (`assignment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `file_path` mediumtext NOT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `student_files`:
+--   `student_id`
+--       `users` -> `user_id`
+--   `assignment_id`
+--       `assignments` -> `assignment_id`
+--
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
 --
+-- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 07:55 AM
+--
 
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(255) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `user_id` int(255) NOT NULL,
   `user_type` int(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `firstname` varchar(255) NOT NULL,
@@ -240,7 +274,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
   `about` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- RELATIONSHIPS FOR TABLE `users`:
@@ -256,11 +290,11 @@ DROP TABLE IF EXISTS `class_enrolled_count`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `class_enrolled_count`  AS  select `c`.`class_id` AS `class_id`,count(`ce`.`user_id`) AS `num_students` from (`class` `c` left join `class_enrolled` `ce` on((`c`.`class_id` = `ce`.`class_id`))) group by `c`.`class_id` ;
 
 --
--- Constraints for dumped tables
+-- Indexes for dumped tables
 --
 
 --
--- Constraints for table `assignments`
+-- Indexes for table `assignments`
 --
 ALTER TABLE `assignments`
   ADD PRIMARY KEY (`assignment_id`),
@@ -274,11 +308,12 @@ ALTER TABLE `class`
   ADD KEY `instructor_id` (`instructor_id`);
 
 --
--- Constraints for table `class_enrolled`
+-- Indexes for table `class_enrolled`
 --
 ALTER TABLE `class_enrolled`
-  ADD CONSTRAINT `class_enrolled_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
-  ADD CONSTRAINT `class_enrolled_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD PRIMARY KEY (`enrollment_id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `comments`
@@ -319,10 +354,10 @@ ALTER TABLE `student_files`
   ADD KEY `assignment_id` (`assignment_id`);
 
 --
--- Constraints for table `lectures`
+-- Indexes for table `users`
 --
-ALTER TABLE `lectures`
-  ADD CONSTRAINT `lectures_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`user_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
