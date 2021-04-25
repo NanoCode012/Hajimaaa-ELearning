@@ -7,18 +7,31 @@ $password = $_POST["password"];
 $cpassword = $_POST["cpassword"];
 $accSel = $_POST["accSel"];
 
-if($password == $cpassword) {
+$sql = 'SELECT COUNT(username) FROM users WHERE username=?';
+$stmt = $db_r->prepare($sql);
+$stmt->execute([$username]);
+$user = $stmt->fetch();
+$count_user = $user["COUNT(username)"];
 
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
+if($count_user > 0) {
+  header("Location: ?p=register-alert-username");
+  exit();
+} else {
 
-    $sql = "INSERT INTO `users`(`username`, `password`, `firstname`, `lastname`, `user_type`) VALUES (?, ?, ?, ?, ?)";
-    $db_w->prepare($sql)->execute([$username, $password_hash, $firstname, $lastname, $accSel]);
-    header("Location: ?p=login");
-    exit();
-}
-else {
-    header("Location: ?p=register");
-    exit();
+  if($password == $cpassword) {
+
+      $password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+      $sql = "INSERT INTO `users`(`username`, `password`, `firstname`, `lastname`, `user_type`) VALUES (?, ?, ?, ?, ?)";
+      $db_w->prepare($sql)->execute([$username, $password_hash, $firstname, $lastname, $accSel]);
+      header("Location: ?p=login");
+      exit();
+  }
+  else {
+      header("Location: ?p=register-alert-password");
+      exit();
+  }
+
 }
 
 
