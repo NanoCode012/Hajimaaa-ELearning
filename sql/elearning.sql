@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 25, 2021 at 07:55 AM
+-- Generation Time: Apr 25, 2021 at 09:39 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -30,6 +30,7 @@ USE `elearning`;
 -- Table structure for table `assignments`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `assignments`;
@@ -117,6 +118,7 @@ CREATE TABLE `class_enrolled_count` (
 -- Table structure for table `comments`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 09:38 AM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -141,13 +143,15 @@ CREATE TABLE `comments` (
 --
 -- Table structure for table `files`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 25, 2021 at 08:26 AM
+-- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
   `file_id` int(11) NOT NULL,
   `assignments_id` int(11) NOT NULL,
+  `file_name` text NOT NULL,
   `file_path` mediumtext NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -203,6 +207,7 @@ CREATE TABLE `lectures` (
 -- Table structure for table `posts`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -229,7 +234,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `student_files`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 25, 2021 at 09:13 AM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -237,6 +242,8 @@ CREATE TABLE `student_files` (
   `student_file_id` int(11) NOT NULL,
   `student_id` int(11) NOT NULL,
   `assignment_id` int(11) NOT NULL,
+  `text_answer` text NOT NULL,
+  `file_name` varchar(255) NOT NULL,
   `file_path` mediumtext NOT NULL,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -255,7 +262,7 @@ CREATE TABLE `student_files` (
 -- Table structure for table `users`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 25, 2021 at 08:49 AM
 --
 
 DROP TABLE IF EXISTS `users`;
