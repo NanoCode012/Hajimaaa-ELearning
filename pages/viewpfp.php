@@ -36,11 +36,7 @@ $zip = $user["zip"];
 $about = $user["about"];
 $title = $user["title"];
 
-$sql2 = 'SELECT COUNT(user_id) FROM class_enrolled WHERE user_id=?';
-$stmt2 = $db_r->prepare($sql2);
-$stmt2->execute([$current_user_id]);
-$classes_enrolled = $stmt2->fetch();
-$num_class = $classes_enrolled["COUNT(user_id)"];
+
 ?>
 
 
@@ -89,7 +85,7 @@ $num_class = $classes_enrolled["COUNT(user_id)"];
                                                 <div class="viewer_header">
                                                     <h1> <?php echo $fullname; ?> </h1>
                                                     <ul>
-                                                        <li><strong><?php echo $num_class; ?></strong> Classes <?php echo $class_text; ?></li>
+                                                        <li><strong>10</strong> Classes <?php echo $class_text; ?></li>
                                                     </ul>
                                                 </div>
                                                 <!-- archive -->
@@ -122,69 +118,65 @@ $num_class = $classes_enrolled["COUNT(user_id)"];
                                     </div>
                                     <div class="dashboard_container_body p-4">
                                         <!-- Basic info -->
-                                        <form action="?p=editpfp" method="post">
+                                        <form>
                                         <div class="submit-section">
                                             <div class="form-row">
 
                                                 <div class="form-group col-md-6">
                                                     <label>First Name</label>
-                                                    <input type="text" class="form-control" name="firstname" value="<?php echo $firstname; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $firstname; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Last Name</label>
-                                                    <input type="text" class="form-control" name="lastname" value="<?php echo $lastname; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $lastname; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Username</label>
-                                                    <input type="text" class="form-control" name="username" value="<?php echo $username; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $username; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Title</label>
-                                                    <input type="text" class="form-control" name="title" value="<?php echo $title; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $title; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Email</label>
-                                                    <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $email; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Phone</label>
-                                                    <input type="text" class="form-control" name="phone" value="<?php echo $phone; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $phone; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Address</label>
-                                                    <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
+                                                    <input type="text" class="form-control"
+                                                        value="<?php echo $address; ?>" readonly>
                                                 </div>
-
                                                 <div class="form-group col-md-6">
                                                     <label>City</label>
-                                                    <input type="text" class="form-control" name="city" value="<?php echo $city; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $city; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>State</label>
-                                                    <input type="text" class="form-control" name="state" value="<?php echo $state; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $state; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Zip</label>
-                                                    <input type="text" class="form-control" name="zip" value="<?php echo $zip; ?>">
+                                                    <input type="text" class="form-control" value="<?php echo $zip; ?>" readonly>
                                                 </div>
 
                                                 <div class="form-group col-md-12">
                                                     <label>About</label>
-                                                    <textarea class="form-control" name="about"><?php echo $about; ?></textarea>
+                                                    <textarea
+                                                        class="form-control" readonly><?php echo $about; ?></textarea>
                                                 </div>
-
-                                                <div class="form-group col-lg-12 col-md-12">
-                                                    <button class="btn btn-theme" type="submit">Save Changes</button>
-                                                </div>
-
                                             </div>
                                         </div>
                                       </form>

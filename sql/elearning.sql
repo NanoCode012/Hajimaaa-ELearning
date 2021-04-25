@@ -51,10 +51,20 @@ CREATE TABLE IF NOT EXISTS `class` (
   `class_id` int(11) NOT NULL AUTO_INCREMENT,
   `class_name` varchar(255) NOT NULL,
   `class_code` varchar(10) DEFAULT NULL,
+  `class_description` text,
+  `categories` varchar(255) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
   `class_instructor` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`class_id`)
+  `class_secret` varchar(20) NOT NULL,
+  `course_img_path` varchar(255) NOT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- RELATIONSHIPS FOR TABLE `class`:
+--   `instructor_id`
+--       `users` -> `user_id`
+--
 -- --------------------------------------------------------
 
 --
@@ -74,6 +84,43 @@ CREATE TABLE IF NOT EXISTS `class_enrolled` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `class_enrolled_count`
+-- (See below for the actual view)
+--
+DROP VIEW IF EXISTS `class_enrolled_count`;
+CREATE TABLE `class_enrolled_count` (
+`class_id` int(11)
+,`num_students` bigint(21)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+-- Creation: Apr 22, 2021 at 03:28 PM
+--
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE `comments` (
+  `comment_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONSHIPS FOR TABLE `comments`:
+--   `post_id`
+--       `posts` -> `post_id`
+--   `user_id`
+--       `users` -> `user_id`
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `files`
 --
 
@@ -89,11 +136,14 @@ CREATE TABLE IF NOT EXISTS `files` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
+-- RELATIONSHIPS FOR TABLE `files`:
+--   `assignments_id`
+--       `assignments` -> `assignment_id`
+--
 
+-- --------------------------------------------------------
 --
 -- Table structure for table `gradeass`
---
-
 DROP TABLE IF EXISTS `gradeass`;
 CREATE TABLE IF NOT EXISTS `gradeass` (
   `student_file_id` int(11) NOT NULL,
@@ -106,25 +156,32 @@ CREATE TABLE IF NOT EXISTS `gradeass` (
 --
 -- Table structure for table `lectures`
 --
+-- Creation: Apr 19, 2021 at 01:41 PM
+--
 
 DROP TABLE IF EXISTS `lectures`;
-CREATE TABLE IF NOT EXISTS `lectures` (
-  `lecture_id` int(11) NOT NULL AUTO_INCREMENT,
-  `post_id` int(11) NOT NULL,
-  PRIMARY KEY (`lecture_id`),
-  KEY `post_id` (`post_id`)
+CREATE TABLE `lectures` (
+  `lecture_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
+--
+-- RELATIONSHIPS FOR TABLE `lectures`:
+--   `post_id`
+--       `posts` -> `post_id`
+--
 
 --
+-- Table structure for table `lectures`
 -- Table structure for table `posts`
+-- Creation: Apr 22, 2021 at 03:38 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
 CREATE TABLE IF NOT EXISTS `posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
   `class_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `post_type` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -132,6 +189,14 @@ CREATE TABLE IF NOT EXISTS `posts` (
   PRIMARY KEY (`post_id`),
   KEY `class_id` (`class_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONSHIPS FOR TABLE `posts`:
+--   `class_id`
+--       `class` -> `class_id`
+--   `user_id`
+--       `users` -> `user_id`
+--
 
 -- --------------------------------------------------------
 
@@ -174,9 +239,148 @@ CREATE TABLE IF NOT EXISTS `users` (
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
-  `about` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`user_id`)
+  `about` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONSHIPS FOR TABLE `users`:
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `class_enrolled_count`
+--
+DROP TABLE IF EXISTS `class_enrolled_count`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `class_enrolled_count`  AS  select `c`.`class_id` AS `class_id`,count(`ce`.`user_id`) AS `num_students` from (`class` `c` left join `class_enrolled` `ce` on((`c`.`class_id` = `ce`.`class_id`))) group by `c`.`class_id` ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `assignments`
+--
+ALTER TABLE `assignments`
+  ADD PRIMARY KEY (`assignment_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
+-- Indexes for table `class`
+--
+ALTER TABLE `class`
+  ADD PRIMARY KEY (`class_id`),
+  ADD KEY `instructor_id` (`instructor_id`);
+
+--
+-- Constraints for table `class_enrolled`
+--
+ALTER TABLE `class_enrolled`
+  ADD CONSTRAINT `class_enrolled_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
+  ADD CONSTRAINT `class_enrolled_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `post_id` (`post_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `files`
+--
+ALTER TABLE `files`
+  ADD PRIMARY KEY (`file_id`),
+  ADD KEY `assignments_id` (`assignments_id`);
+
+--
+-- Indexes for table `lectures`
+--
+ALTER TABLE `lectures`
+  ADD PRIMARY KEY (`lecture_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`post_id`),
+  ADD KEY `class_id` (`class_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `student_files`
+--
+ALTER TABLE `student_files`
+  ADD PRIMARY KEY (`student_file_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `assignment_id` (`assignment_id`);
+
+--
+-- Constraints for table `lectures`
+--
+ALTER TABLE `lectures`
+  ADD CONSTRAINT `lectures_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `assignments`
+--
+ALTER TABLE `assignments`
+  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `class`
+--
+ALTER TABLE `class`
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `class_enrolled`
+--
+ALTER TABLE `class_enrolled`
+  MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `files`
+--
+ALTER TABLE `files`
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lectures`
+--
+ALTER TABLE `lectures`
+  MODIFY `lecture_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `student_files`
+--
+ALTER TABLE `student_files`
+  MODIFY `student_file_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -189,11 +393,24 @@ ALTER TABLE `assignments`
   ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
 
 --
+-- Constraints for table `class`
+--
+ALTER TABLE `class`
+  ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `users` (`user_id`);
+
+--
 -- Constraints for table `class_enrolled`
 --
 ALTER TABLE `class_enrolled`
   ADD CONSTRAINT `class_enrolled_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
   ADD CONSTRAINT `class_enrolled_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `files`
@@ -211,7 +428,8 @@ ALTER TABLE `lectures`
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`);
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
+  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `student_files`
