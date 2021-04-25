@@ -16,6 +16,7 @@ else {
         ['login',
         'logout',
         'register',
+        'register-alert',
         'landing',
         'accountmanager',
         'create_account'])

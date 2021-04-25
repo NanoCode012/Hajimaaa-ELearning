@@ -17,7 +17,7 @@ if($password == $cpassword) {
     exit();
 }
 else {
-    header("Location: ?p=register");
+    header("Location: ?p=register-alert");
     exit();
 }
 
