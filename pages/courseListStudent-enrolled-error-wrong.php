@@ -70,7 +70,6 @@
                                             if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
                                         ?>
 
-
                                             <!-- Single Course -->
                                             <div class="dashboard_single_course">
                                                 <div class="dashboard_single_course_thumb">
