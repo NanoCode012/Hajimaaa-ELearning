@@ -85,7 +85,7 @@
                                                     <div class="dashboard_single_course_progress">
                                                         <div class="dashboard_single_course_progress_2">
                                                             <ul class="m-0">
-                                                                <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=student_list&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
+                                                                <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=view_classmates&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
                                                                     Enrolled</a></li>
                                                                 <!-- <li class="list-inline-item"><i
                                                                     class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
