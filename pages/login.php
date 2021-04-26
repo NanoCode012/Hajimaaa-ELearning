@@ -2,7 +2,9 @@
 
 // Define variables and initialize with empty values
 $username = $password = "";
-$username_err = $password_err = "";
+
+$username_err = false;
+$password_err = false;
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -39,9 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_type"] = $user_type;
             $_SESSION["logged_in_username"] = $username;
             header("Location: ?p=profile");
+        } else {
+          $password_err = true;
         }
     } else {
-        //invalid username or password
+        $username_err = true;
     }
 }
 
@@ -94,12 +98,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form action="?p=login" method="post">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input name="username" type="text" class="form-control">
+                                        <input name="username" type="text" class="form-control" required>
                                     </div>
+                                    <?php
+                                    if ($username_err == true) {
+                                      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Username does not exist. Try again pal.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color:black;">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>';
+                                    }
+                                    ?>
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input name="password" type="password" class="form-control">
+                                        <input name="password" type="password" class="form-control" required>
                                     </div>
+                                    <?php
+                                    if ($password_err == true) {
+                                      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Incorrect password. Try again pal.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color:black;">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>';
+                                    }
+                                    ?>
                                     <div class="social-login mb-3">
                                         <ul>
                                             <li class="right">

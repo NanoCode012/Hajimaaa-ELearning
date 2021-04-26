@@ -23,6 +23,15 @@
                         </div>
                         <!-- /Row -->
 
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <h4 class="alert-heading">Enroll New Class Failed</h4>
+                          <p>The class you are trying to enroll is already enrolled. Please check your course list again.
+                          You can click the x on the top right hand corner to dismiss this text.</p>
+                          <button class="close" style="color:black;" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
