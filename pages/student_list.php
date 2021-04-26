@@ -96,8 +96,8 @@ $class_id =  $_GET["class_id"];
                                                       <th scope="row"><?php echo $fullname?></th>
                         															<td>
                         																<div class="dash_action_link">
-                        																	<a href="#" class="view">View</a>
-                        																	<a href="#" class="cancel">Remove</a>
+                        																	<a href="?p=viewpfp&user_id=<?php echo $row["user_id"];?>" class="view">View</a>
+                        																	<a href="?p=teacher_unenroll_student&user_id=<?php echo $row["user_id"];?>&class_id=<?php echo $class_id;?>" class="cancel">Remove</a>
                         																</div>
                         															</td>
                         														</tr>
