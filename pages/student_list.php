@@ -1,3 +1,9 @@
+<?php
+
+$class_id =  $_GET["class_id"];
+
+?>
+
 <body class="red-skin">
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
@@ -69,9 +75,25 @@
                         														</tr>
                         													</thead>
                         													<tbody>
+                                                    <?php
+                                                    $count = 0;
+                                                    $sql = "SELECT * FROM class_enrolled WHERE class_id = ?";
+                                                    $query = $db_r->prepare($sql);
+                                                    $query->execute([$class_id]);
+                                                    $rows = $query->fetchAll();
+                                                    foreach ($rows as $row) {
+                                                      $count++;
+                                                      $sql2 = "SELECT * FROM users WHERE user_id = ?";
+                                                      $stmt2 = $db_r->prepare($sql2);
+                                                      $stmt2->execute([$row["user_id"]]);
+                                                      $user = $stmt2->fetch();
+                                                      $firstname = $user["firstname"];
+                                                      $lastname = $user["lastname"];
+                                                      $fullname = ''.$firstname.' '.$lastname;
+                                                    ?>
                         														<tr>
                         															<th scope="row">1</th>
-                                                      <th scope="row">Passara Chanchotisatien</th>
+                                                      <th scope="row"><?php echo $fullname?></th>
                         															<td>
                         																<div class="dash_action_link">
                         																	<a href="#" class="view">View</a>
@@ -79,6 +101,7 @@
                         																</div>
                         															</td>
                         														</tr>
+                                                  <?php } ?>
                         													</tbody>
                         												</table>
                         											</div>
