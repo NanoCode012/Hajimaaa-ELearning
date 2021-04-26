@@ -1,6 +1,6 @@
 <?php
 
-$current_user_id = $_SESSION['user_id'];
+$current_user_id = $_GET["user_id"];
 
 $sql = 'SELECT user_id, user_type, username, firstname, lastname, email, phone, title, address, city, state, zip, about FROM users WHERE user_id=?';
 $stmt = $db_r->prepare($sql);
