@@ -265,30 +265,6 @@
                                                                 <?php }} ?>
 
                                                             </li>
-
-                                                            <!-- <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-file"></i>Lecture: 02</div>Startup
-                                                                Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Tutorial: 03
-                                                                </div>
-                                                                How To Call Google Map iFrame
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Tutorial: 04
-                                                                </div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-pencil-alt"></i>Assignment</div>
-                                                                How to
-                                                                Create Sticky Navigation Using JS
-                                                            </li> -->
                                                         </ul>
                                                     </div>
                                                     <!-- <hr>
