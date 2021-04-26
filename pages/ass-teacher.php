@@ -143,9 +143,9 @@ if (isset($_POST['create'])) {
                                                 <?php echo htmlentities($result1->class_instructor); ?></h4>
                                             <?php
 
-                                                    $sql2 = "SELECT email from users where user_id=" . $user_id;
+                                                    $sql2 = "SELECT email from users where user_id=?";
                                                     $query2 = $db_r->prepare($sql2);
-                                                    $query2->execute();
+                                                    $query2->execute([$user_id]);
                                                     $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
                                                     if ($results2) {
@@ -253,8 +253,8 @@ if (isset($_POST['create'])) {
                                             foreach ($results as $result) {               ?>
 
 
-                                        <div onclick="location.href='#';" style="cursor: pointer;"
-                                            class="dashboard_single_course ass_hover_effect">
+                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';"
+                                            style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
 
 
                                             <div class="dashboard_single_course_caption">
