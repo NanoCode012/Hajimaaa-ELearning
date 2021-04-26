@@ -58,11 +58,6 @@
                                     </div>
                                     <div class="dashboard_container_body">
 
-
-
-
-
-
                                         <?php
                                         $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.class_id IN (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
                                         $query = $db_r->prepare($sql);
@@ -75,17 +70,12 @@
                                             if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
                                         ?>
 
-
                                             <!-- Single Course -->
                                             <div class="dashboard_single_course">
                                                 <div class="dashboard_single_course_thumb">
                                                     <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
                                                     <div class="dashboard_action">
-                                                        <a href="#" <?php
-
-
-
-                                                                    ?> class="btn btn-ect">Delete</a>
+                                                        <a href="?p=unenroll_course&class_id=<?php echo $row['class_id']?>" class="btn btn-ect">Unenroll</a>
                                                         <a href="?p=now-student&class_id=<?= $row['class_id'] ?>" class="btn btn-ect">View</a>
                                                     </div>
                                                 </div>
