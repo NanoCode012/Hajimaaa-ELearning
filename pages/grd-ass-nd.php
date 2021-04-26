@@ -1,69 +1,28 @@
 <?php
-$e=$_SESSION['user_id'];
-$sql = 'SELECT p.class_id,p.title,p.description,p.time_created,c.class_name, c.class_instructor, c.class_code,c.class_id
-		FROM posts p, class c where p.class_id=c.class_id ';
-$query = $db_r->prepare($sql);
-$query->execute();
-$result = $query->fetch();
+$class_id = $_GET['class_id'];
+$assignment_id = $_GET['class_id'];
+$user_id = $_SESSION["user_id"];
 
-$cname=$result['class_name'];
-$teacher=$result['class_instructor'];
-$ccode=$result['class_code'];
-$title=$result['title'];
-$des=$result['description'];
-$cid=$result['class_id'];
+$query = 'SELECT a.*, p.* FROM assignments a, posts p WHERE a.assignment_id = ? AND p.post_id = a.post_id';
+$stmt = $db_r->prepare($query);
+$stmt->execute([$assignment_id]);
+$result = $stmt->fetch();
 
-$sql2 = 'SELECT COUNT(DISTINCT ce.user_id), p.class_id FROM class_enrolled ce, posts p where p.class_id=ce.class_id';
-$query2 = $db_r->prepare($sql2);
-$query2->execute();
-$result2 = $query2->fetch();
+$query = 'SELECT num_students FROM class_enrolled_count WHERE class_id = ?';
+$stmt = $db_r->prepare($query);
+$stmt->execute([$class_id]);
+$num_students = $stmt->fetchColumn();
 
-$num_students = $result2["COUNT(DISTINCT ce.user_id)"];
-$num_students = $num_students-1;
-
-
-$sql3 = 'SELECT email from users WHERE user_id=?';
-$query3 = $db_r->prepare($sql3);
-$query3->execute([$e]);
-$result3 = $query3->fetch();
-
-$email= $result3['email'];
-
-$sql4 = "SELECT p.post_id,p.post_type,p.class_id,p.title,p.description,p.time_created,a.assignment_id, a.due_date,a.a_marks, sf.student_id,sf.file_name,
-        sf.text_answer, sf.assignment_id, sf.student_file_id  FROM posts p JOIN (SELECT * FROM assignments) a ON p.post_id=a.post_id JOIN student_files sf ON a.assignment_id=sf.assignment_id";
-$query4 = $db_r->prepare($sql4);
-$query4->execute();
-$result4 = $query4->fetch();
-
-$files=$result4['file_name'];
-$textanswer=$result4['text_answer'];
-$sid=$result4['student_id'];
-$aid=$result4['assignment_id'];
-
-$due=$result4['due_date'];
-$a_marks=$result4['a_marks'];
-
-$sql5 = 'SELECT * from users where user_id NOT IN (SELECT student_id from student_files) and user_type=0;';
-$query5 = $db_r->prepare($sql5);
-$query5->execute();
-$result5 = $query5->fetchAll(PDO::FETCH_OBJ);
-
-$countnames=count($result5);
-
-$sql6 = 'SELECT COUNT(user_id) from class_enrolled where class_id=1';
-$query6 = $db_r->prepare($sql6);
-$query6->execute();
-$result6 = $query6->fetch();
-
-
-$allnames=$result6["COUNT(user_id)"];
-$studentso=$allnames;
-$notdone=$studentso-$countnames;
+$query = 'SELECT c.*, u.* FROM class_enrolled c, users u WHERE c.class_id = ? AND c.user_id = u.user_id AND c.user_id NOT IN (SELECT sf.student_id FROM student_files sf WHERE sf.assignment_id = ?)';
+$stmt = $db_r->prepare($query);
+$stmt->execute([$class_id, $assignment_id]);
+$students_not_done = $stmt->fetchAll();
+$num_students_not_done = $stmt->rowCount();
 ?>
 
 <body class="red-skin gray">
 
-    <?php include 'includes/nav.php'; ?>
+
 
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -73,7 +32,7 @@ $notdone=$studentso-$countnames;
         </div>
     </div>
 
-
+    <?php include 'includes/nav.php'; ?>
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -87,22 +46,50 @@ $notdone=$studentso-$countnames;
 
                 <div class="row justify-content-center">
 
-                    <div class="col-lg-9 col-md-9 col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
 
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <div class="trips_detail">
-                                            <h1 class="breadcrumb-title"><?php echo $cname ?></h1>
-											<h4> <?php echo $teacher;?></h4>
-                                            <h4>Contact:<?php echo ' '; echo $email;?></h4>
+                                <div class="dashboard_container">
 
+                                    <div class="dashboard_container_header">
+                                        <div class="dashboard_fl_1">
+                                            <?php
+
+                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=?";
+                                            $query1 = $db_r->prepare($sql1);
+                                            $query1->execute([$class_id]);
+                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+
+                                            if ($results1) {
+                                                foreach ($results1 as $result1) {               ?>
+                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
+                                            <h4 class="edu_title">Dr.
+                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
+                                            <?php
+
+                                                    $sql2 = "SELECT email from users where user_id=?";
+                                                    $query2 = $db_r->prepare($sql2);
+                                                    $query2->execute([$user_id]);
+                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
+
+                                                    if ($results2) {
+                                                        foreach ($results2 as $result2) {               ?>
+                                            <span
+                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
+                                            <?php }
+                                                    }
+                                                }
+                                            } ?>
                                         </div>
-                                    </ol>
 
-                                </nav>
+
+                                    </div>
+                                </div>
+
+
+
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
@@ -110,13 +97,15 @@ $notdone=$studentso-$countnames;
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    Now
+                                                    <a href="?p=now-teacher&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    Assignments
+                                                    <a
+                                                        href="?p=ass-teacher&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    Lecture Notes
+                                                    <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
 
                                             </div>
@@ -137,14 +126,8 @@ $notdone=$studentso-$countnames;
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </ol>
                                 </nav>
-
-
-
-
                             </div>
                         </div>
 
@@ -180,293 +163,83 @@ $notdone=$studentso-$countnames;
 
                                             <div class="col-lg-8 col-md-7">
                                                 <div class="ed_detail_wrap">
-                                                    <!--<ul class="cources_facts_list">
-                        <li class="facts-1">SEO</li>
-                        <li class="facts-5">Design</li>
-                      </ul>-->
                                                     <div class="ed_header_caption">
-                                                        <h1 class="ed_title">Assignment 1</h1>
-                                                        <span class="viewer_location"><?php echo $ccode ?></span>
-                                                    <ul>
-                                                        <!--<li><i class="ti-calendar"></i>10 - 20 weeks</li>
-                          <li><i class="ti-control-forward"></i>102 Lectures</li>-->
-                                                        <li><i class="ti-user"></i><?php echo $num_students ?> students enrolled</li>
-                                                    </ul>
+                                                        <h1 class="ed_title"><?= $result['title'] ?></h1>
+                                                    </div>
+                                                    <div class="ed_header_short"><?= $result['description'] ?>
+                                                    </div>
+                                                    <br>
+                                                    <div class="viewer_package_status">Due on <?= $result['due_date'] ?>
+                                                    </div>
+                                                    <div class="viewer_package_status"><?= $result['a_marks'] ?> Marks
+                                                    </div>
+
                                                 </div>
-                                                <div class="ed_header_short"><?php echo $des ?>
-                                                </div>
-												<br>
-                                                <div class="viewer_package_status">Due on <?php echo $due ?></div>
-                                                <!--<div class="viewer_package_status"><?php #echo $student_file_id ?></div>-->
-                                                <div class="viewer_package_status"><?php echo $a_marks ?> Marks</div>
+                                            </div>
+
+                                            <div class="input-group-append">
+
+                                                <button class="btn btn-outline-secondary"
+                                                    onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= $_GET['assignment_id'] ?>';"
+                                                    type="button">
+                                                    <h1 class="theme-cl">
+                                                        <?php echo $num_students - $num_students_not_done; ?></h1>
+                                                    <span class="theme-cl">Done</span>
+                                                </button>
 
                                             </div>
-                                        </div>
+                                            <div class="input-group-append">
+                                                <div class="text-center">
+                                                    <h1 class="ed_title">
+                                                        <?php echo $num_students_not_done; ?></h1>
+                                                    <span class="ed_title">Not Done</span>
 
-                                        <div class="input-group-append">
-										<button class="btn btn-outline-secondary" type="button">
-											<a href="index.php?p=grd-ass-d">
-                                                <h1 class="ed_title"><?php echo $notdone;?></h1><span class="ed_title">Done</span>
-
-                                            </button>
-
-                                        </div>
-                                        <div class="input-group-append">
-                                           <div class="text-center">
-                                                <h1 class="theme-cl"><?php echo $countnames;?></h1><span class="theme-cl">Not Done</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="dashboard_container">
-                                    <div class="dashboard_container_header">
-                                        <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="dashboard_container">
+                                        <div class="dashboard_container_header">
+                                            <div class="row">
 
-                                            <!-- seagreen-->
-											<?php
-										foreach($result5 as $row){
+                                                <!-- seagreen-->
+                                                <?php
+                                                foreach ($students_not_done as $row) {
+                                                ?>
+                                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                                    <div class="edu_cat_2 cat-2">
+                                                        <div class="edu_cat_icons">
+                                                            <a class="pic-main" href="#"><img
+                                                                    src="https://via.placeholder.com/70x70"
+                                                                    class="img-fluid" alt="" /></a>
+                                                        </div>
+                                                        <div class="edu_cat_data">
+                                                            <h4 class="title"><a
+                                                                    href="?p=std-nd&&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= $_GET['assignment_id'] ?>&student_id=<?= $row['user_id'] ?>">
+                                                                    <?= $row['firstname'] ?> <?= $row['lastname'] ?>
 
-											$firstname=($row->firstname);
-											$lastname=($row->lastname);
-
-										?>
-										<div class="col-lg-6 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-1">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="index.php?p=std-nd">
-														<?php echo $firstname. " ";echo $lastname;
-																?>
-
-														</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Not Done
-                                                            </li>
-                                                        </ul>
+                                                                </a></h4>
+                                                            <ul class="meta">
+                                                                <li class="video"><i class="fas fa-star filled"></i>Not
+                                                                    Done
+                                                                </li>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-<?php }?>
-                                            <!--yellow-->
+                                                <?php } ?>
 
-                                            <!-- <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-2">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+
+
                                             </div>
 
-                                            <!--Red>
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-3">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--green
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-4">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--blue
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-10">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--Purple
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-6">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--pink
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-7">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <!--dark green
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-8">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--orange
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-9">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-1">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--yellow
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-2">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!--Red>
-
-                                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                                <div class="edu_cat_2 cat-3">
-                                                    <div class="edu_cat_icons">
-                                                        <a class="pic-main" href="#"><img
-                                                                src="https://via.placeholder.com/70x70"
-                                                                class="img-fluid" alt="" /></a>
-                                                    </div>
-                                                    <div class="edu_cat_data">
-                                                        <h4 class="title"><a href="#">Student's name</a></h4>
-                                                        <ul class="meta">
-                                                            <li class="video"><i class="fas fa-star filled"></i>Done
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>-->
 
 
 
                                         </div>
-
 
 
 
@@ -478,21 +251,17 @@ $notdone=$studentso-$countnames;
 
 
 
+
+
+
+                                <!-- /Row -->
+
                             </div>
-
-
-
-
-
-
-                            <!-- /Row -->
 
                         </div>
+                        <!-- Row -->
 
                     </div>
-                    <!-- Row -->
-
-                </div>
         </section>
         <!-- ============================ Dashboard: My Order Start End ================================== -->
 
