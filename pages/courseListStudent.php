@@ -49,11 +49,6 @@
                                     </div>
                                     <div class="dashboard_container_body">
 
-
-
-
-
-
                                         <?php
                                         $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.class_id IN (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
                                         $query = $db_r->prepare($sql);
@@ -90,8 +85,8 @@
                                                     <div class="dashboard_single_course_progress">
                                                         <div class="dashboard_single_course_progress_2">
                                                             <ul class="m-0">
-                                                                <li class="list-inline-item"><i class="ti-user mr-1"></i><?php echo $row['class_count']; ?>
-                                                                    Enrolled</li>
+                                                                <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=student_list&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
+                                                                    Enrolled</a></li>
                                                                 <!-- <li class="list-inline-item"><i
                                                                     class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
                                                                                                     ?>
@@ -122,7 +117,7 @@
 
     </div>
 
-    <!-- Sign Up Modal -->
+    <!-- Start Modal -->
     <div class="modal fade" id="enrollNew" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
             <div class="modal-content" id="sign-up">
