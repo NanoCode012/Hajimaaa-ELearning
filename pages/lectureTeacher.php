@@ -130,30 +130,43 @@
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
+                                <div class="dashboard_container">
 
+                                    <div class="dashboard_container_header">
+                                        <div class="dashboard_fl_1">
+                                            <?php
 
-                                        <div class="col-lg-8 col-md-8 col-sm-12">
-                                            <div class="row">
-                                                <h1 class="breadcrumb-title"> Software Engineering</h1>
-                                                <h4>CSS323-2</h4>
-                                                <h4>Instructor : Dr. Skibidibaba Hibidibaba</h4>
-                                            </div>
+                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                          $query1 = $db_r -> prepare($sql1);
+                                          $query1->execute();
+                                          $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+
+                                          if($results1)
+                                          {
+                                          foreach($results1 as $result1)
+                                          {               ?>
+                                            <h1><?php echo htmlentities($result1->class_name);?></h1>
+                                            <h4 class="edu_title">Dr.
+                                                <?php echo htmlentities($result1->class_instructor);?></h4>
+                                            <?php
+
+                                            $sql2 = "SELECT email from users where user_id=2;";
+                                            $query2 = $db_r -> prepare($sql2);
+                                            $query2->execute();
+                                            $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+
+                                            if($results2)
+                                            {
+                                            foreach($results2 as $result2)
+                                            {               ?>
+                                            <span
+                                                class="dashboard_instructor"><?php echo htmlentities($result2->email);?></span>
+                                            <?php }}}} ?>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <div class="row">
-                                                <strong>
 
-                                                    <p>Email_ID : <a>biggusDickus@hotmail.com</a></p>
-                                                    <p>Contact : +66969696969</p>
-                                                </strong>
-                                            </div>
-                                        </div>
-
-                                    </ol>
-                                </nav>
+                                    </div>
+                                </div>
 
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
