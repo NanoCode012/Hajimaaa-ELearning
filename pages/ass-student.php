@@ -192,7 +192,8 @@ if (isset($_POST['create'])) {
                                                 <div onclick="location.href='#';" style="cursor: pointer; "
                                                     data-toggle="modal" data-target="#exampleModal"
                                                     class="dashboard_single_course ass_hover_effect join-button pop-login"
-                                                    data-type="edit" data-service='{$data}'>
+                                                    data-type="edit"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>">
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
                                                             <div class="dashboard_single_course_head_flex">
@@ -304,7 +305,8 @@ if (isset($_POST['create'])) {
 
                                                 <div onclick="location.href='#';" style="cursor: pointer; "
                                                     data-toggle="modal" data-target="#exampleModal"
-                                                    class="dashboard_single_course ass_hover_effect join-button pop-login">
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>">
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
                                                             <div class="dashboard_single_course_head_flex">
@@ -401,6 +403,7 @@ if (isset($_POST['create'])) {
 
                                                 <div onclick="location.href='#';" style="cursor: pointer; "
                                                     data-toggle="modal" data-target="#exampleModal"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>"
                                                     class="dashboard_single_course ass_hover_effect join-button pop-login">
 
                                                     <div class="dashboard_single_course_caption">
@@ -502,7 +505,8 @@ if (isset($_POST['create'])) {
                                                     foreach ($results as $result) {               ?>
 
                                                 <div onclick="location.href='#';" style="cursor: pointer;"
-                                                    class="dashboard_single_course ass_hover_effect">
+                                                    class="dashboard_single_course ass_hover_effect"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>">
 
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
@@ -654,6 +658,7 @@ if (isset($_POST['create'])) {
 
 
                 <div class="modal-footer">
+                    <input type="hidden" name="assignment_id">
                     <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-theme popupbtn" name="create">Submit</button>
                 </div>
@@ -686,26 +691,25 @@ if (isset($_POST['create'])) {
     }
     </script>
     <!--JS for tabs-->
-    <!-- <script>
-$(function() {
+    <script>
+    $(function() {
 
-        $('#exampleModal').on('show.bs.modal', function (event) {
+        $('#exampleModal').on('show.bs.modal', function(event) {
             var div = $(event.relatedTarget) // Button that triggered the modal
             var data = div.data('service') // Extract info from data-* attributes
-            var type = div.data('type')
+            console.log(data) // Log data value
+
             var modal = $(this)
+            modal.find('.modal-footer input').val(data['id'])
 
-            // Type: Edit
-            //modal.find('#title').text(capitalizeFirstLetter(type));
-            //modal.find('.modal-footer .btn-primary').attr('name', type)
-            if (type == 'edit') {
-                modal.find('.modal-footer input').val(data['assignment_id'])
+            // // Type: Edit
+            // //modal.find('#title').text(capitalizeFirstLetter(type));
+            // //modal.find('.modal-footer .btn-primary').attr('name', type)
+            // if (type == 'edit') {
+            //     modal.find('.modal-footer input').val(data['assignment_id'])
 
-            }
+            // }
 
         });
     });
-
-
-
-</script> -->
+    </script>
