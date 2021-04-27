@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 26, 2021 at 06:26 PM
+-- Generation Time: Apr 27, 2021 at 05:47 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -29,7 +29,7 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
@@ -52,7 +52,7 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -80,8 +80,7 @@ CREATE TABLE `class` (
 --
 -- Table structure for table `class_enrolled`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 26, 2021 at 03:14 PM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -116,7 +115,7 @@ CREATE TABLE `class_enrolled_count` (
 --
 -- Table structure for table `comments`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -141,7 +140,7 @@ CREATE TABLE `comments` (
 --
 -- Table structure for table `files`
 --
--- Creation: Apr 25, 2021 at 08:26 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `files`;
@@ -164,8 +163,7 @@ CREATE TABLE `files` (
 --
 -- Table structure for table `gradeass`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 26, 2021 at 05:59 PM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `gradeass`;
@@ -186,7 +184,7 @@ CREATE TABLE `gradeass` (
 --
 -- Table structure for table `lectures`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `lectures`;
@@ -206,7 +204,7 @@ CREATE TABLE `lectures` (
 --
 -- Table structure for table `posts`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -233,8 +231,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `student_files`
 --
--- Creation: Apr 25, 2021 at 09:13 AM
--- Last update: Apr 26, 2021 at 05:51 PM
+-- Creation: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -261,7 +258,8 @@ CREATE TABLE `student_files` (
 --
 -- Table structure for table `users`
 --
--- Creation: Apr 25, 2021 at 07:55 AM
+-- Creation: Apr 27, 2021 at 05:47 PM
+-- Last update: Apr 27, 2021 at 05:47 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -449,8 +447,8 @@ ALTER TABLE `class`
 -- Constraints for table `class_enrolled`
 --
 ALTER TABLE `class_enrolled`
-  ADD CONSTRAINT `class_enrolled_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
-  ADD CONSTRAINT `class_enrolled_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `class_enrolled_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `class_enrolled_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `comments`
@@ -481,8 +479,8 @@ ALTER TABLE `lectures`
 -- Constraints for table `posts`
 --
 ALTER TABLE `posts`
-  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`),
-  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `class` (`class_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `student_files`
