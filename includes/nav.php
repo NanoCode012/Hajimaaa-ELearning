@@ -1,3 +1,7 @@
+<?php
+$user_type = $_SESSION["user_type"];
+?>
+
 <!-- Start Navigation -->
 <div class="header header-light head-shadow">
     <div class="container">
@@ -11,9 +15,13 @@
             <div class="nav-menus-wrapper" style="transition-property: none;">
                 <ul class="nav-menu">
 
-                    <li><a href="#">Home<span class="submenu-indicator"></span></a>
-                    </li>
-
+                  <?php
+                  if ($user_type == 0) {
+                    echo '<li><a href="?p=courseListStudent">Course List<span class="submenu-indicator"></span></a></li>';
+                  } elseif ($user_type == 1) {
+                    echo '<li><a href="?p=courseListTeacher">Course List<span class="submenu-indicator"></span></a></li>';
+                  }
+                  ?>
                     <li><a href="?p=profile">Profile</a></li>
 
                 </ul>

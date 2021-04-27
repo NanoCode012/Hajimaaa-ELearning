@@ -40,7 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["user_id"] = $user_id;
             $_SESSION["user_type"] = $user_type;
             $_SESSION["logged_in_username"] = $username;
-            header("Location: ?p=profile");
+            if ($_SESSION["user_type"] == 0) {
+              header("location: ?p=courseListStudent");
+            } elseif ($_SESSION["user_type"] == 1) {
+              header("location: ?p=courseListTeacher");
+            }
         } else {
           $password_err = true;
         }
