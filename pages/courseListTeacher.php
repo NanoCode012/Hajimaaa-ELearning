@@ -73,11 +73,7 @@
                                             <div class="dashboard_single_course_thumb">
                                                 <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
                                                 <div class="dashboard_action">
-                                                    <a href="#" <?php
-
-
-
-                                                                    ?> class="btn btn-ect">Delete</a>
+                                                    <a href="?p=delete_class&class_id=<?php echo $row['class_id']?>" class="btn btn-ect">Delete</a>
                                                     <a href="?p=now-teacher&class_id=<?= $row['class_id'] ?>"
                                                         class="btn btn-ect">View</a>
                                                 </div>
@@ -109,20 +105,6 @@
                                             </div>
                                         </div>
                                         <?php }  ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     </div>
                                 </div>
