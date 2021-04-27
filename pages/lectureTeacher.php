@@ -45,7 +45,7 @@
         $salt = getSalt();
         // $filename=md5($filename+$salt).$extension;
         $filename=md5($filename).$extension;
-        move_uploaded_file($_FILES["files"]["tmp_name"][$i],"lectureUploads/".$filename);
+        move_uploaded_file($_FILES["files"]["tmp_name"][$i],"assets/files/lectures/".$filename);
 
         $sql1="INSERT INTO  files_lectures(file_name, lecture_id) VALUES(:filename,:lastInsertId)";
         // $sql1="INSERT INTO  files(file_name) VALUES(:filename)";
@@ -263,7 +263,6 @@
                                                                     <?php echo $x ;?></a>
 
                                                                 <?php }} ?>
-
                                                             </li>
                                                         </ul>
                                                     </div>
