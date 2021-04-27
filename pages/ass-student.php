@@ -701,7 +701,7 @@ if (isset($_POST['create'])) {
             console.log(data) // Log data value
 
             var modal = $(this)
-            modal.find('.modal-footer input').val(data['id'])
+            modal.find('.modal-footer input').val(data)
 
             // // Type: Edit
             // //modal.find('#title').text(capitalizeFirstLetter(type));
