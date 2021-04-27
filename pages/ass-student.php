@@ -600,7 +600,8 @@ if (isset($_POST['create'])) {
 
                 </div>
                 <div class="modal-body">
-                    <form role="form" method="post" enctype="multipart/form-data">
+                    <form action="?p=ass-student&class_id=<?= $_GET['class_id'] ?>" role="form" method="post"
+                        enctype="multipart/form-data">
                         <!-- <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Chapter:</label>
                             <input type="text" class="form-control popuptarea" id="recipient-name" name="chapter">
