@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 25, 2021 at 09:39 AM
+-- Generation Time: Apr 26, 2021 at 06:26 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -30,7 +30,6 @@ USE `elearning`;
 -- Table structure for table `assignments`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `assignments`;
@@ -54,7 +53,6 @@ CREATE TABLE `assignments` (
 -- Table structure for table `class`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 25, 2021 at 07:55 AM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -83,6 +81,7 @@ CREATE TABLE `class` (
 -- Table structure for table `class_enrolled`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 26, 2021 at 03:14 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -118,7 +117,6 @@ CREATE TABLE `class_enrolled_count` (
 -- Table structure for table `comments`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 25, 2021 at 09:38 AM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -144,7 +142,6 @@ CREATE TABLE `comments` (
 -- Table structure for table `files`
 --
 -- Creation: Apr 25, 2021 at 08:26 AM
--- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `files`;
@@ -168,6 +165,7 @@ CREATE TABLE `files` (
 -- Table structure for table `gradeass`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
+-- Last update: Apr 26, 2021 at 05:59 PM
 --
 
 DROP TABLE IF EXISTS `gradeass`;
@@ -179,6 +177,8 @@ CREATE TABLE `gradeass` (
 
 --
 -- RELATIONSHIPS FOR TABLE `gradeass`:
+--   `student_file_id`
+--       `student_files` -> `student_file_id`
 --
 
 -- --------------------------------------------------------
@@ -207,7 +207,6 @@ CREATE TABLE `lectures` (
 -- Table structure for table `posts`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 25, 2021 at 09:31 AM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -235,6 +234,7 @@ CREATE TABLE `posts` (
 -- Table structure for table `student_files`
 --
 -- Creation: Apr 25, 2021 at 09:13 AM
+-- Last update: Apr 26, 2021 at 05:51 PM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -262,7 +262,6 @@ CREATE TABLE `student_files` (
 -- Table structure for table `users`
 --
 -- Creation: Apr 25, 2021 at 07:55 AM
--- Last update: Apr 25, 2021 at 08:49 AM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -336,6 +335,12 @@ ALTER TABLE `comments`
 ALTER TABLE `files`
   ADD PRIMARY KEY (`file_id`),
   ADD KEY `assignments_id` (`assignments_id`);
+
+--
+-- Indexes for table `gradeass`
+--
+ALTER TABLE `gradeass`
+  ADD KEY `student_file_id` (`student_file_id`);
 
 --
 -- Indexes for table `lectures`
@@ -459,6 +464,12 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `files`
   ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`assignments_id`) REFERENCES `assignments` (`assignment_id`);
+
+--
+-- Constraints for table `gradeass`
+--
+ALTER TABLE `gradeass`
+  ADD CONSTRAINT `gradeass_ibfk_1` FOREIGN KEY (`student_file_id`) REFERENCES `student_files` (`student_file_id`);
 
 --
 -- Constraints for table `lectures`
