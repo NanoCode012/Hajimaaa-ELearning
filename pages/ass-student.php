@@ -25,8 +25,8 @@ if (isset($_POST['create'])) {
     for ($i = 0; $i < $countfiles; $i++) {
         $filename = $_FILES['files']['name'][$i];
         $extension = substr($filename, strlen($filename) - 4, strlen($filename));
-        $salt = getSalt();
-        $filename = md5($filename + $salt) . $extension;
+        //$salt = getSalt();
+        $filename = $filename.$extension;
 
         if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/student_files/" . $filename)) {
             $gstorage->upload("assets/files/student_files/" . $filename, "student_files/" . $filename);
@@ -295,7 +295,7 @@ if (isset($_POST['create'])) {
                                             <div class="dashboard_container_body">
                                                 <!-- Single Course -->
                                                 <?php
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=" . $class_id;
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) and class_id=" . $class_id;
                                                 $query = $db_r->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -393,7 +393,7 @@ if (isset($_POST['create'])) {
                                                 <!-- Single Course -->
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=" . $class_id;
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) and class_id=" . $class_id;
                                                 $query = $db_r->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -616,16 +616,14 @@ if (isset($_POST['create'])) {
                         </div>
 
 
-                        <div class="modal-footer">
-                            <input type="hidden" name="assignment_id" value="8">
-                        </div>
+
 
                         <div class="form-group">
                             <label class="col-form-label">Upload files:</label>
                             <div class="choose_file">
 
                                 <label for="choose_file">
-                                    <input type="file" id="choose_file" name="files[]" multiple>
+                                    <input type="file" id="choose_file" name="files[]">
                                     <span>Choose Files</span>
                                 </label>
                             </div>
@@ -713,4 +711,8 @@ if (isset($_POST['create'])) {
 
         });
     });
+<<<<<<< Updated upstream
     </script>
+=======
+    </script>
+>>>>>>> Stashed changes
