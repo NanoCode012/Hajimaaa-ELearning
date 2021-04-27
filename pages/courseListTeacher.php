@@ -85,6 +85,9 @@
                                                             class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo $row['class_name']; ?></h4>
+                                                            <ul class="cources_facts_list">
+                                            									<li class="facts-3"><?php echo $row["categories"]; ?></li>
+                                            								</ul>
                                                     </div>
                                                 </div>
                                                 <div class="dashboard_single_course_des">
@@ -95,6 +98,7 @@
                                                         <ul class="m-0">
                                                           <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=student_list&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
                                                                     Enrolled</a></li>
+                                                          <li class="list-inline-item"></i>Class Secret: <?php echo $row["class_secret"]; ?></li>
                                                             <!-- <li class="list-inline-item"><i
                                                                     class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
                                                                                                     ?>
