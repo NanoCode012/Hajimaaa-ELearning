@@ -1,3 +1,9 @@
+<?php
+
+$keyword = $_POST['search'];
+
+?>
+
 <body class="red-skin">
     <div id="preloader">
         <div class="preloader"><span></span><span></span></div>
@@ -57,9 +63,10 @@
 
 
                                         <?php
-                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.instructor_id = ? AND c.class_id = ce.class_id";
+                                        $search = "%$keyword%";
+                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.instructor_id = ? AND c.class_id = ce.class_id AND c.class_name LIKE ? ORDER BY c.class_name ASC ";
                                         $query = $db_r->prepare($sql);
-                                        $query->execute([$_SESSION['user_id']]);
+                                        $query->execute([$_SESSION['user_id'], $search]);
                                         $rows = $query->fetchAll();
                                         include 'includes/utils/gcloud.php';
                                         $gstorage = new GStorage();
