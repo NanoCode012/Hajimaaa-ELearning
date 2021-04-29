@@ -1,87 +1,81 @@
 <?php
-    // error_reporting(0);
-    if (!isset($_SESSION['user_id'])){
-        header('location:?p=login');
-    }
-    else{
+include 'includes/utils/gcloud.php';
+$gstorage = new GStorage();
 
-    if(isset($_POST["submit"])){
+if (isset($_POST["submit"])) {
 
-        $title = $_POST['title'];
-        $sqlp="INSERT INTO  posts(class_id,title,post_type) VALUES(1,:title,1)";
-        $queryp = $db_w->prepare($sqlp);
-        $queryp->bindParam(':title',$title,PDO::PARAM_STR);
-        $queryp->execute();
-        $lastInsertId = $db_w->lastInsertId();
+    $title = $_POST['title'];
+    $sqlp = "INSERT INTO  posts(class_id,user_id,post_type, title) VALUES(?, ?, ?, ?)";
+    $queryp = $db_w->prepare($sqlp);
+    $queryp->execute([$_GET['class_id'], $_SESSION['user_id'], 2, $title]);
+    $lastInsertId = $db_w->lastInsertId();
 
-        $sqlp="INSERT INTO  lectures(post_id) VALUES(:lastInsertId)";
-        $queryp = $db_w->prepare($sqlp);
-        $queryp->bindParam(':lastInsertId',$lastInsertId,PDO::PARAM_STR);
-        $queryp->execute();
-        $lastInsertId = $db_w->lastInsertId();
+    $sqlp = "INSERT INTO  lectures(post_id) VALUES(:lastInsertId)";
+    $queryp = $db_w->prepare($sqlp);
+    $queryp->bindParam(':lastInsertId', $lastInsertId, PDO::PARAM_STR);
+    $queryp->execute();
+    $lastInsertId = $db_w->lastInsertId();
 
-        // $fileExt = explode('.', [$fileName]);
-        // $fileActualExt = strtolower(end($fileExt));
+    // $fileExt = explode('.', [$fileName]);
+    // $fileActualExt = strtolower(end($fileExt));
 
-        // $fileAllowed = array('pdf', 'doc','ppt','jpg','png');
+    // $fileAllowed = array('pdf', 'doc','ppt','jpg','png');
 
-        $countfiles = count($_FILES['files']['name']);
-        function getSalt() {
-            $charset = '0123456789';
-            $randStringLen = 4;
+    $countfiles = count($_FILES['files']['name']);
+    function getSalt()
+    {
+        $charset = '0123456789';
+        $randStringLen = 4;
 
-            $randString = "";
-            for ($i = 0; $i < $randStringLen; $i++) {
-                $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
-            }
-
-            return $randString;
+        $randString = "";
+        for ($i = 0; $i < $randStringLen; $i++) {
+            $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
         }
 
-        // Looping all files
-        for($i=0;$i<$countfiles;$i++){
+        return $randString;
+    }
+
+    // Looping all files
+    for ($i = 0; $i < $countfiles; $i++) {
         $filename = $_FILES['files']['name'][$i];
-        $extension = substr($filename,strlen($filename)-4,strlen($filename));
+        $extension = substr($filename, strlen($filename) - 4, strlen($filename));
         $salt = getSalt();
         // $filename=md5($filename+$salt).$extension;
-        $filename=md5($filename).$extension;
-        move_uploaded_file($_FILES["files"]["tmp_name"][$i],"assets/files/lectures/".$filename);
-
-        $sql1="INSERT INTO  files_lectures(file_name, lecture_id) VALUES(:filename,:lastInsertId)";
-        // $sql1="INSERT INTO  files(file_name) VALUES(:filename)";
-        $query1 = $db_w->prepare($sql1);
-        $query1->bindParam(':filename',$filename,PDO::PARAM_STR);
-        $query1->bindParam(':lastInsertId',$lastInsertId,PDO::PARAM_STR);
-        $query1->execute();
-
-
+        $filename = md5($filename) . $extension;
+        if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/lectures/" . $filename)) {
+            $gstorage->upload("assets/files/lectures/" . $filename, 'lectures/' . $filename);
         }
 
-        // $file = $_FILES['file'];
-        // $fileName = $_FILES['file']['name'];
-        // $fileType = $_FILES["file"]["type"];
-        // $temp_location = $_FILES["file"]["tmp_name"];
-        // $fileSize = $_FILES["file"]["size"];
-        // $fileError = $_FILES["file"]["error"];
-        // $permDest = "lectureUploads/". $_FILES["file"]["name"];
-        // // check if file is allowed
-        // if(in_array($fileActualExt, $fileAllowed)){
-        //     if($fileError === 0){
-        //         if($fileSize < 1000000){
-        //             $fileUniqueName = uniqid('', true).".".$fileActualExt;
-        //             $permDest = "lectureUploads/".$fileUniqueName;
-        //             move_uploaded_file($temp_location, $permDest);
-        //             // header("Location: lectureTeacher.php?upload-success");
-        //         }else{
-        //             // $errors .= $fileTooLarge;
-        //         }
-        //     }else{
-        //         echo "Whoops!!! There was an error uploading your file, please try again later.";
-        //     }
-        // }else{
-        //     // $errors .= $wrongFormat;
-        // }
+        $sql1 = "INSERT INTO  files_lectures(file_name, file_path, lecture_id) VALUES(?,?,?)";
+        $query1 = $db_w->prepare($sql1);
+        $query1->execute([$filename, 'lectures/' . $filename, $lastInsertId]);
     }
+
+    // $file = $_FILES['file'];
+    // $fileName = $_FILES['file']['name'];
+    // $fileType = $_FILES["file"]["type"];
+    // $temp_location = $_FILES["file"]["tmp_name"];
+    // $fileSize = $_FILES["file"]["size"];
+    // $fileError = $_FILES["file"]["error"];
+    // $permDest = "lectureUploads/". $_FILES["file"]["name"];
+    // // check if file is allowed
+    // if(in_array($fileActualExt, $fileAllowed)){
+    //     if($fileError === 0){
+    //         if($fileSize < 1000000){
+    //             $fileUniqueName = uniqid('', true).".".$fileActualExt;
+    //             $permDest = "lectureUploads/".$fileUniqueName;
+    //             move_uploaded_file($temp_location, $permDest);
+    //             // header("Location: lectureTeacher.php?upload-success");
+    //         }else{
+    //             // $errors .= $fileTooLarge;
+    //         }
+    //     }else{
+    //         echo "Whoops!!! There was an error uploading your file, please try again later.";
+    //     }
+    // }else{
+    //     // $errors .= $wrongFormat;
+    // }
+}
 
 ?>
 
@@ -136,32 +130,31 @@
                                         <div class="dashboard_fl_1">
                                             <?php
 
-                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
-                                          $query1 = $db_r -> prepare($sql1);
-                                          $query1->execute();
-                                          $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                            $query1 = $db_r->prepare($sql1);
+                                            $query1->execute();
+                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                          if($results1)
-                                          {
-                                          foreach($results1 as $result1)
-                                          {               ?>
-                                            <h1><?php echo htmlentities($result1->class_name);?></h1>
+                                            if ($results1) {
+                                                foreach ($results1 as $result1) {               ?>
+                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
                                             <h4 class="edu_title">Dr.
-                                                <?php echo htmlentities($result1->class_instructor);?></h4>
+                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
                                             <?php
 
-                                            $sql2 = "SELECT email from users where user_id=2;";
-                                            $query2 = $db_r -> prepare($sql2);
-                                            $query2->execute();
-                                            $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                    $sql2 = "SELECT email from users where user_id=2;";
+                                                    $query2 = $db_r->prepare($sql2);
+                                                    $query2->execute();
+                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
-                                            if($results2)
-                                            {
-                                            foreach($results2 as $result2)
-                                            {               ?>
+                                                    if ($results2) {
+                                                        foreach ($results2 as $result2) {               ?>
                                             <span
-                                                class="dashboard_instructor"><?php echo htmlentities($result2->email);?></span>
-                                            <?php }}}} ?>
+                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
+                                            <?php }
+                                                    }
+                                                }
+                                            } ?>
                                         </div>
 
 
@@ -174,13 +167,15 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    <a href="?p=now-teacher">Now</a>
+                                                    <a href="?p=now-teacher&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    <a href="?p=ass-teacher">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-teacher&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=lectureteacher">Lecture Notes</a>
+                                                    <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
                                             </div>
                                             <div class="tab-indicator" style="left: calc(66.6667%);"></div>
@@ -232,13 +227,13 @@
                                         <div id="accordionExample" class="accordion shadow circullum">
 
                                             <?php
-                                                $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
-                                                $query = $db_r -> prepare($sql);
-                                                $query->execute();
-                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
+                                            $query = $db_r->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                                if($query->rowCount() > 0){
-                                                    foreach($results as $result){
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) {
                                             ?>
 
                                             <!-- Part 1 -->
@@ -250,8 +245,9 @@
                                                             aria-controls="collapseOne"
                                                             class="d-block position-relative text-dark collapsible-link py-2 heading_text">
                                                             <!-- VARIABLE TITLE -->
-                                                            <?php echo htmlentities($result->title);?>
-                                                            <?php //echo $results['post_id'];?>
+                                                            <?php echo htmlentities($result->title); ?>
+                                                            <?php //echo $results['post_id'];
+                                                                    ?>
                                                         </a></h6>
                                                 </div>
                                                 <div id="collapseOne" aria-labelledby="headingOne"
@@ -260,22 +256,26 @@
                                                         <ul class="lectures_lists">
                                                             <li>
                                                                 <?php
-                                                                    $lectid = htmlentities($result->lecture_id);
-                                                                    $sql0 = "SELECT file_name from files_lectures where lecture_id=".$lectid;
-                                                                    $query0 = $db_r -> prepare($sql0);
-                                                                    $query0->execute();
-                                                                    $results0=$query0->fetchAll(PDO::FETCH_OBJ);
-                                                                    $x=0;
-                                                                    if($query->rowCount() > 0){
-                                                                        foreach($results0 as $result0){
-                                                                          $x++;
-                                                                ?>
+                                                                        $lectid = htmlentities($result->lecture_id);
+                                                                        $sql0 = "SELECT file_name, file_path from files_lectures where lecture_id=?";
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute([$lectid]);
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $x = 0;
+                                                                        if ($query->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {
+                                                                                $x++;
+                                                                                if (!file_exists('assets/files/lectures/' . $result0->file_name)) {
+                                                                                    $gstorage->download($result0->file_path, 'assets/files/lectures/' . $result0->file_name);
+                                                                                }
+                                                                        ?>
                                                                 <a class="lectures_lists_title" target="_blank"
-                                                                    href="assets/files/lectures/<?php echo $result0->file_name;?>"><i
+                                                                    href="assets/files/lectures/<?php echo $result0->file_name; ?>"><i
                                                                         class="ti-file"></i>View File
-                                                                    <?php echo $x ;?></a>
+                                                                    <?php echo $x; ?></a>
 
-                                                                <?php }} ?>
+                                                                <?php }
+                                                                        } ?>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -284,7 +284,8 @@
                                                         id="deleteLect">Delete</button> -->
                                                 </div>
                                             </div>
-                                            <?php }} ?>
+                                            <?php }
+                                            } ?>
 
                                             <!-- Part 3 -->
                                             <!-- <div class="card">
@@ -362,7 +363,8 @@
                     <h5 class="modal-title" id="exampleModalLabel">[COURSE NAME]: Upload Lecture</h5>
 
                 </div>
-                <form method="post" enctype="multipart/form-data" action="?p=lectureTeacher">
+                <form method="post" enctype="multipart/form-data"
+                    action="?p=lectureTeacher&class_id=<?= $_GET['class_id'] ?>">
                     <div class="modal-body">
                         <!-- <form method="POST" enctype="multipart/form-data"> -->
                         <div class="form-group">
@@ -424,20 +426,3 @@
     }
     </script>
     <!--JS for tabs-->
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/js/slick.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/counterup.min.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <!-- ============================================================== -->
-    <!-- This page plugins -->
-    <!-- ============================================================== -->
-    <script src="assets/js/metisMenu.min.js"></script>
-    <script>
-    $('#side-menu').metisMenu();
-    </script>
-    <?php } ?>

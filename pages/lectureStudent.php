@@ -55,13 +55,15 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    <a href="?p=now-student">Now</a>
+                                                    <a href="?p=now-student&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=ass-student">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-student&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div class="active">
-                                                    <a href="?p=lecturestudent">Lecture Notes</a>
+                                                    <a href="?p=lecturestudent&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
                                             </div>
                                             <div class="tab-indicator" style="left: calc(66.6667%);"></div>
@@ -109,13 +111,13 @@
                                         <div id="accordionExample" class="accordion shadow circullum">
 
                                             <?php
-                                                $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
-                                                $query = $db_r -> prepare($sql);
-                                                $query->execute();
-                                                $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
+                                            $query = $db_r->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                                if($query->rowCount() > 0){
-                                                    foreach($results as $result){
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) {
                                             ?>
 
                                             <!-- Part 1 -->
@@ -127,8 +129,9 @@
                                                             aria-controls="collapseOne"
                                                             class="d-block position-relative text-dark collapsible-link py-2 heading_text">
                                                             <!-- VARIABLE TITLE -->
-                                                            <?php echo htmlentities($result->title);?>
-                                                            <?php //echo $results['post_id'];?>
+                                                            <?php echo htmlentities($result->title); ?>
+                                                            <?php //echo $results['post_id'];
+                                                                    ?>
                                                         </a></h6>
                                                 </div>
                                                 <div id="collapseOne" aria-labelledby="headingOne"
@@ -137,22 +140,26 @@
                                                         <ul class="lectures_lists">
                                                             <li>
                                                                 <?php
-                                                                    $lectid = htmlentities($result->lecture_id);
-                                                                    $sql0 = "SELECT file_name from files_lectures where lecture_id=".$lectid;
-                                                                    $query0 = $db_r -> prepare($sql0);
-                                                                    $query0->execute();
-                                                                    $results0=$query0->fetchAll(PDO::FETCH_OBJ);
-                                                                    $x=0;
-                                                                    if($query->rowCount() > 0){
-                                                                        foreach($results0 as $result0){
-                                                                          $x++;
-                                                                ?>
+                                                                        $lectid = htmlentities($result->lecture_id);
+                                                                        $sql0 = "SELECT file_name, file_path from files_lectures where lecture_id=" . $lectid;
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute();
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $x = 0;
+                                                                        if ($query->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {
+                                                                                $x++;
+                                                                                if (!file_exists('assets/files/lectures/' . $result0->file_name)) {
+                                                                                    $gstorage->download($result0->file_path, 'assets/files/lectures/' . $result0->file_name);
+                                                                                }
+                                                                        ?>
                                                                 <a class="lectures_lists_title" target="_blank"
-                                                                    href="assets/files/lectures/<?php echo $result0->file_name;?>"><i
+                                                                    href="assets/files/lectures/<?php echo $result0->file_name; ?>"><i
                                                                         class="ti-file"></i>View File
-                                                                    <?php echo $x ;?></a>
+                                                                    <?php echo $x; ?></a>
 
-                                                                <?php }} ?>
+                                                                <?php }
+                                                                        } ?>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -161,7 +168,8 @@
                                                         id="deleteLect">Delete</button> -->
                                                 </div>
                                             </div>
-                                            <?php }} ?>
+                                            <?php }
+                                            } ?>
                                         </div>
                                     </div>
                                 </div>
