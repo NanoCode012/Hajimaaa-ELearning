@@ -235,7 +235,7 @@ if (isset($_POST['submit'])) {
                                                         ?>
                                                         <li>
                                                             <a target="_blank"
-                                                                href="<?= $student_file['file_path']; ?>"><?= $student_file['file_name']; ?></a>
+                                                                href="assets/files/<?= $student_file['file_path']; ?>"><?= $student_file['file_name']; ?></a>
                                                         </li>
                                                         <?php } ?>
 
