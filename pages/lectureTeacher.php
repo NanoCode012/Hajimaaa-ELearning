@@ -214,8 +214,8 @@ if (isset($_POST["submit"])) {
                                                     <!-- <button type="button" class="btn btn-primary btn-sm"
                                                         data-target="#myInquiry" data-toggle="modal"
                                                         data-ordernumber="1122"> Upload Files</button> -->
-                                                    <button type="button" class="btn btn-outline-theme"
-                                                        id="deleteLect">Delete</button>
+                                                    <!-- <button type="button" class="btn btn-outline-theme"
+                                                        id="deleteLect">Delete</button> -->
                                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                                         data-target="#exampleModal" data-whatever="@getbootstrap">Upload
                                                         Lecture</button>
