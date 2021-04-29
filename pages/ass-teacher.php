@@ -214,6 +214,25 @@ if (isset($_POST['create'])) {
 
                                 <!-- Course Style 1 For Student -->
                                 <!-- due this week -->
+                                <div class="dashboard_container">
+                                    <div class="dashboard_container_header">
+                                        <div class="dashboard_fl_1">
+
+                                        </div>
+                                        <div class="dashboard_fl_2">
+                                            <ul class="mb0">
+
+                                                <li class="list-inline-item">
+
+                                                    <button type="button" class="btn btn-sm pop-login"
+                                                        data-toggle="modal" data-target="#exampleModal"
+                                                        data-whatever="@getbootstrap">Create an assignment</button>
+
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                  </div>
 
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
@@ -227,10 +246,7 @@ if (isset($_POST['create'])) {
                                                 </li>
                                                 <li class="list-inline-item">
 
-                                                    <button type="button" class="btn btn-sm pop-login"
-                                                        data-toggle="modal" data-target="#exampleModal"
-                                                        data-whatever="@getbootstrap">Create an assignment</button>
-
+                                                    
                                                 </li>
                                             </ul>
                                         </div>

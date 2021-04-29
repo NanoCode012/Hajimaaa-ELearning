@@ -24,9 +24,9 @@ if (isset($_POST['create'])) {
 
     for ($i = 0; $i < $countfiles; $i++) {
         $filename = $_FILES['files']['name'][$i];
-        $extension = substr($filename, strlen($filename) - 4, strlen($filename));
-        $salt = getSalt();
-        $filename = md5($filename + $salt) . $extension;
+        // $extension = substr($filename, strlen($filename) - 4, strlen($filename));
+        // $salt = getSalt();
+        // $filename = $filename . $extension;
 
         if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/student_files/" . $filename)) {
             $gstorage->upload("assets/files/student_files/" . $filename, "student_files/" . $filename);
@@ -192,7 +192,8 @@ if (isset($_POST['create'])) {
                                                 <div onclick="location.href='#';" style="cursor: pointer; "
                                                     data-toggle="modal" data-target="#exampleModal"
                                                     class="dashboard_single_course ass_hover_effect join-button pop-login"
-                                                    data-type="edit" data-service='{$data}'>
+                                                    data-type="edit"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>">
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
                                                             <div class="dashboard_single_course_head_flex">
@@ -294,7 +295,7 @@ if (isset($_POST['create'])) {
                                             <div class="dashboard_container_body">
                                                 <!-- Single Course -->
                                                 <?php
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=" . $class_id;
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) and class_id=" . $class_id;
                                                 $query = $db_r->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -304,7 +305,8 @@ if (isset($_POST['create'])) {
 
                                                 <div onclick="location.href='#';" style="cursor: pointer; "
                                                     data-toggle="modal" data-target="#exampleModal"
-                                                    class="dashboard_single_course ass_hover_effect join-button pop-login">
+                                                    class="dashboard_single_course ass_hover_effect join-button pop-login"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>">
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
                                                             <div class="dashboard_single_course_head_flex">
@@ -391,7 +393,7 @@ if (isset($_POST['create'])) {
                                                 <!-- Single Course -->
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=" . $class_id;
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) and class_id=" . $class_id;
                                                 $query = $db_r->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -401,6 +403,7 @@ if (isset($_POST['create'])) {
 
                                                 <div onclick="location.href='#';" style="cursor: pointer; "
                                                     data-toggle="modal" data-target="#exampleModal"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>"
                                                     class="dashboard_single_course ass_hover_effect join-button pop-login">
 
                                                     <div class="dashboard_single_course_caption">
@@ -502,7 +505,8 @@ if (isset($_POST['create'])) {
                                                     foreach ($results as $result) {               ?>
 
                                                 <div onclick="location.href='#';" style="cursor: pointer;"
-                                                    class="dashboard_single_course ass_hover_effect">
+                                                    class="dashboard_single_course ass_hover_effect"
+                                                    data-service="<?= htmlentities($result->assignment_id) ?>">
 
                                                     <div class="dashboard_single_course_caption">
                                                         <div class="dashboard_single_course_head">
@@ -596,7 +600,8 @@ if (isset($_POST['create'])) {
 
                 </div>
                 <div class="modal-body">
-                    <form role="form" method="post" enctype="multipart/form-data">
+                    <form action="?p=ass-student&class_id=<?= $_GET['class_id'] ?>" role="form" method="post"
+                        enctype="multipart/form-data">
                         <!-- <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Chapter:</label>
                             <input type="text" class="form-control popuptarea" id="recipient-name" name="chapter">
@@ -611,16 +616,14 @@ if (isset($_POST['create'])) {
                         </div>
 
 
-                        <div class="modal-footer">
-                            <input type="hidden" name="assignment_id" value="8">
-                        </div>
+
 
                         <div class="form-group">
                             <label class="col-form-label">Upload files:</label>
                             <div class="choose_file">
 
                                 <label for="choose_file">
-                                    <input type="file" id="choose_file" name="files[]" multiple>
+                                    <input type="file" id="choose_file" name="files[]">
                                     <span>Choose Files</span>
                                 </label>
                             </div>
@@ -654,6 +657,7 @@ if (isset($_POST['create'])) {
 
 
                 <div class="modal-footer">
+                    <input type="hidden" name="assignment_id">
                     <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-theme popupbtn" name="create">Submit</button>
                 </div>
@@ -686,26 +690,25 @@ if (isset($_POST['create'])) {
     }
     </script>
     <!--JS for tabs-->
-    <!-- <script>
-$(function() {
+    <script>
+    $(function() {
 
-        $('#exampleModal').on('show.bs.modal', function (event) {
+        $('#exampleModal').on('show.bs.modal', function(event) {
             var div = $(event.relatedTarget) // Button that triggered the modal
             var data = div.data('service') // Extract info from data-* attributes
-            var type = div.data('type')
+            console.log(data) // Log data value
+
             var modal = $(this)
+            modal.find('.modal-footer input').val(data)
 
-            // Type: Edit
-            //modal.find('#title').text(capitalizeFirstLetter(type));
-            //modal.find('.modal-footer .btn-primary').attr('name', type)
-            if (type == 'edit') {
-                modal.find('.modal-footer input').val(data['assignment_id'])
+            // // Type: Edit
+            // //modal.find('#title').text(capitalizeFirstLetter(type));
+            // //modal.find('.modal-footer .btn-primary').attr('name', type)
+            // if (type == 'edit') {
+            //     modal.find('.modal-footer input').val(data['assignment_id'])
 
-            }
+            // }
 
         });
     });
-
-
-
-</script> -->
+    </script>
