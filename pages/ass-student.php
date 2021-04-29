@@ -548,22 +548,62 @@ if (isset($_POST['create'])) {
                                                                 <ul class="m-0">
                                                                     <?php
                                                                             $user_id = $_SESSION["user_id"];
-                                                                            $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=" . $assid;
+                                                                            $sql1 = "SELECT marks from gradeass where student_file_id=(SELECT student_file_id from student_files where student_id=:user_id and assignment_id=:assid) ";
                                                                             $query1 = $db_r->prepare($sql1);
                                                                             $query1->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+                                                                            $query1->bindParam(':assid', $assid, PDO::PARAM_STR);
                                                                             $query1->execute();
                                                                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
                                                                             if ($query1->rowCount() > 0) {
                                                                                 foreach ($results1 as $result1) {               ?>
-                                                                    <li class="list-inline-item">Submitted on
-                                                                        </i><?php echo htmlentities($result1->time_created); ?>
+                                                                    <li class="list-inline-item" style="font-weight:bold;">Grade :
+                                                                        <?php echo htmlentities($result1->marks); ?>
+
+
+
+                                                                        <?php
+                                                                                $user_id = $_SESSION["user_id"];
+                                                                                $sql5 = "SELECT a_marks from assignments where assignment_id=:assid";
+                                                                                $query5 = $db_r->prepare($sql5);
+
+                                                                                $query5->bindParam(':assid', $assid, PDO::PARAM_STR);
+                                                                                $query5->execute();
+                                                                                $results5 = $query5->fetchAll(PDO::FETCH_OBJ);
+
+                                                                                if ($query5->rowCount() > 0) {
+                                                                                    foreach ($results5 as $result5) {               ?>
+
+
+                                                                         Out of <?php echo htmlentities($result5->a_marks); ?>
+
+                                                                         <?php break;
+                                                                                     }
+                                                                                 } ?>
                                                                     </li>
 
                                                                     <?php break;
                                                                                 }
                                                                             } ?>
+                                                                            <?php
+                                                                                    $user_id = $_SESSION["user_id"];
+                                                                                    $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=" . $assid;
+                                                                                    $query1 = $db_r->prepare($sql1);
+                                                                                    $query1->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+                                                                                    $query1->execute();
+                                                                                    $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+
+                                                                                    if ($query1->rowCount() > 0) {
+                                                                                        foreach ($results1 as $result1) {               ?>
+                                                                            <li class="list-inline-item">Submitted on
+                                                                                <?php echo htmlentities($result1->time_created); ?>
+                                                                            </li>
+
+                                                                            <?php break;
+                                                                                        }
+                                                                                    } ?>
                                                                 </ul>
+
                                                             </div>
                                                         </div>
                                                     </div>
