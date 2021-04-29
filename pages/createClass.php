@@ -102,7 +102,19 @@
 
                       <div class="form-group col-md-12">
                         <label>Category</label>
-                        <input type="text" class="form-control" placeholder="Ex. Science, Physics, Math.." name="category">
+                        <select id="cars" class="form-control styled-select" multiple>
+                          <option value="audi">Computer Science</option>
+                          <option value="audi">Programming Language</option>
+                          <option value="volvo">Web Development</option>
+                          <option value="audi">Mobile Development</option>
+                          <option value="saab">Data Science</option>
+                          <option value="opel">Network and Security</option>
+                          <option value="opel">Hardware</option>
+                          <option value="audi">Languages</option>
+                          <option value="audi">Art and Design</option>
+                          <option value="audi">Business and Management</option>
+                          <option value="audi">Finance and Accounting</option>
+                        </select>
                       </div>
 
                     </div>
