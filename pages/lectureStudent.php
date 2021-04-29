@@ -21,7 +21,7 @@
 
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
-            <div class="container-fluid">
+            <div class="container">
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -55,13 +55,15 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    <a href="?p=now-student">Now</a>
+                                                    <a href="?p=now-student&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=ass-student">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-student&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div class="active">
-                                                    <a href="?p=lecturestudent">Lecture Notes</a>
+                                                    <a href="?p=lecturestudent&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
                                             </div>
                                             <div class="tab-indicator" style="left: calc(66.6667%);"></div>
@@ -86,143 +88,94 @@
                                 <!-- <div class="tab-pane fade" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab"> -->
                                 <div class="tab-pane" id="curriculum" role="tabpanel" aria-labelledby="curriculum-tab">
                                     <div class="edu_wraper">
-                                        <h4 class="edu_title">Course Curriculum</h4>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <h4 class="edu_title">Course Curriculum
+                                                    <!-- <button type="button" class="add" data-target="#myInquiry"
+                                                data-toggle="modal" data-ordernumber="1122">Add New Lecture</button> -->
+                                                </h4>
+                                            </div>
+                                            <!-- TRIGGERING MODAL -->
+                                            <!-- <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <div class="lectureControl">
+                                                    <button type="button" class="btn btn-outline-theme"
+                                                        id="deleteLect">Delete</button>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#exampleModal" data-whatever="@getbootstrap">Upload
+                                                        Lecture</button>
+                                                </div>
+                                            </div> -->
+                                        </div>
+
+
                                         <div id="accordionExample" class="accordion shadow circullum">
+
+                                            <?php
+                                            include 'includes/utils/gcloud.php';
+                                            $gstorage = new GStorage();
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
+                                            $query = $db_r->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) {
+                                            ?>
 
                                             <!-- Part 1 -->
                                             <div class="card">
                                                 <div id="headingOne" class="card-header bg-white shadow-sm border-0">
+                                                    <!-- aria-expanded="true" -->
                                                     <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
                                                             data-target="#collapseOne" aria-expanded="true"
                                                             aria-controls="collapseOne"
-                                                            class="d-block position-relative text-dark collapsible-link py-2">Lecture
-                                                            3: Weeeeeeee</a></h6>
+                                                            class="d-block position-relative text-dark collapsible-link py-2 heading_text">
+                                                            <!-- VARIABLE TITLE -->
+                                                            <?php echo htmlentities($result->title); ?>
+                                                            <?php //echo $results['post_id'];
+                                                                    ?>
+                                                        </a></h6>
                                                 </div>
                                                 <div id="collapseOne" aria-labelledby="headingOne"
                                                     data-parent="#accordionExample" class="collapse show">
                                                     <div class="card-body pl-3 pr-3">
                                                         <ul class="lectures_lists">
                                                             <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-file"></i>Lecture: 01</div>Web
-                                                                Designing Beginner
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-file"></i>Lecture: 02</div>Startup
-                                                                Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Tutorial: 03</div>
-                                                                How To Call Google Map iFrame
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Tutorial: 04</div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-pencil-alt"></i>Assignment</div>How to
-                                                                Create Sticky Navigation Using JS
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                                <?php
+                                                                        $lectid = htmlentities($result->lecture_id);
+                                                                        $sql0 = "SELECT file_name, file_path from files_lectures where lecture_id=" . $lectid;
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute();
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $x = 0;
+                                                                        if ($query->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {
+                                                                                $x++;
+                                                                                if (!file_exists('assets/files/lectures/' . $result0->file_name)) {
+                                                                                    $gstorage->download($result0->file_path, 'assets/files/lectures/' . $result0->file_name);
+                                                                                }
+                                                                        ?>
+                                                                <a class="lectures_lists_title" target="_blank"
+                                                                    href="assets/files/lectures/<?php echo $result0->file_name; ?>"><i
+                                                                        class="ti-file"></i>View File
+                                                                    <?php echo $x; ?></a>
 
-                                            <!-- Part 2 -->
-                                            <div class="card">
-                                                <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
-                                                    <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
-                                                            data-target="#collapseTwo" aria-expanded="false"
-                                                            aria-controls="collapseTwo"
-                                                            class="d-block position-relative collapsed text-dark collapsible-link py-2">Lecture
-                                                            2: Hibidibaba</a></h6>
-                                                </div>
-                                                <div id="collapseTwo" aria-labelledby="headingTwo"
-                                                    data-parent="#accordionExample" class="collapse">
-                                                    <div class="card-body pl-3 pr-3">
-                                                        <ul class="lectures_lists">
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 01</div>Web
-                                                                Designing Beginner
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 02</div>
-                                                                Startup Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 03</div>How
-                                                                To Call Google Map iFrame
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 04</div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 05</div>How
-                                                                to Create Sticky Navigation Using JS
+                                                                <?php }
+                                                                        } ?>
                                                             </li>
                                                         </ul>
                                                     </div>
+                                                    <!-- <hr>
+                                                    <button type="button" class="btn btn-outline-theme deleteBtn"
+                                                        id="deleteLect">Delete</button> -->
                                                 </div>
                                             </div>
-
-                                            <!-- Part 3 -->
-                                            <div class="card">
-                                                <div id="headingThree" class="card-header bg-white shadow-sm border-0">
-                                                    <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
-                                                            data-target="#collapseThree" aria-expanded="false"
-                                                            aria-controls="collapseThree"
-                                                            class="d-block position-relative collapsed text-dark collapsible-link py-2">Lecture
-                                                            1: Skibidibaba</a></h6>
-                                                </div>
-                                                <div id="collapseThree" aria-labelledby="headingThree"
-                                                    data-parent="#accordionExample" class="collapse">
-                                                    <div class="card-body pl-3 pr-3">
-                                                        <ul class="lectures_lists">
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 01</div>Web
-                                                                Designing Beginner
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 02</div>
-                                                                Startup Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 03</div>How
-                                                                To Call Google Map iFrame
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 04</div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 05</div>How
-                                                                to Create Sticky Navigation Using JS
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <?php }
+                                            } ?>
                                         </div>
                                     </div>
-                                    <!-- /Row -->
                                 </div>
                             </div>
-                            <!-- Row -->
                         </div>
         </section>
         <!-- ============================ Dashboard: My Order Start End ================================== -->

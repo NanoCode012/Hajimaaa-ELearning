@@ -130,7 +130,6 @@ if (isset($_POST['create'])) {
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
                                             <?php
-
                                             $sql1 = "SELECT class_name,class_instructor from class where class_id=?";
                                             $query1 = $db_r->prepare($sql1);
                                             $query1->execute([$class_id]);
@@ -258,8 +257,6 @@ if (isset($_POST['create'])) {
 
 
                                         <?php
-
-
                                         $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=" . $class_id;
                                         $query = $db_r->prepare($sql);
                                         $query->execute();
@@ -310,7 +307,6 @@ if (isset($_POST['create'])) {
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
                                                             <?php
-
                                                                     $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=" . $class_id;
                                                                     $query1 = $db_r->prepare($sql1);
                                                                     $query1->execute();
@@ -345,7 +341,6 @@ if (isset($_POST['create'])) {
                                                 </div>
                                             </div>
                                         </div>
-
                                         <?php }
                                         } ?>
 
@@ -378,7 +373,6 @@ if (isset($_POST['create'])) {
                                         <!-- Single Course -->
 
                                         <?php
-
                                         $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=" . $class_id;
                                         $query = $db_r->prepare($sql);
                                         $query->execute();
@@ -493,7 +487,6 @@ if (isset($_POST['create'])) {
 
 
                                         <?php
-
                                         $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=" . $class_id;
                                         $query = $db_r->prepare($sql);
                                         $query->execute();
@@ -544,7 +537,6 @@ if (isset($_POST['create'])) {
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
                                                             <?php
-
                                                                     $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=" . $class_id;
                                                                     $query1 = $db_r->prepare($sql1);
                                                                     $query1->execute();
