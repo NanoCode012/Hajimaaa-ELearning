@@ -2,7 +2,9 @@
 
 // Define variables and initialize with empty values
 $username = $password = "";
-$username_err = $password_err = "";
+
+$username_err = false;
+$password_err = false;
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -21,12 +23,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-    $sql = 'SELECT user_id, username, password FROM users WHERE username=?';
+    $sql = 'SELECT user_id, user_type, username, password FROM users WHERE username=?';
     $stmt = $db_r->prepare($sql);
     $stmt->execute([$username]);
     $user = $stmt->fetch();
     if ($user) {
         $user_id = $user["user_id"];
+        $user_type = $user["user_type"];
         $password_hash = $user["password"];
         $db_username = $user["username"];
 
@@ -35,11 +38,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             session_start();
             $_SESSION["loggedin"] = true;
             $_SESSION["user_id"] = $user_id;
+            $_SESSION["user_type"] = $user_type;
             $_SESSION["logged_in_username"] = $username;
-            header("Location: ?p=profile");
+            if ($_SESSION["user_type"] == 0) {
+              header("location: ?p=courseListStudent");
+            } elseif ($_SESSION["user_type"] == 1) {
+              header("location: ?p=courseListTeacher");
+            }
+        } else {
+          $password_err = true;
         }
     } else {
-        //invalid username or password
+        $username_err = true;
     }
 }
 
@@ -92,12 +102,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <form action="?p=login" method="post">
                                     <div class="form-group">
                                         <label>Username</label>
-                                        <input name="username" type="text" class="form-control">
+                                        <input name="username" type="text" class="form-control" required>
                                     </div>
+                                    <?php
+                                    if ($username_err == true) {
+                                      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Username does not exist. Try again pal.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color:black;">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>';
+                                    }
+                                    ?>
                                     <div class="form-group">
                                         <label>Password</label>
-                                        <input name="password" type="password" class="form-control">
+                                        <input name="password" type="password" class="form-control" required>
                                     </div>
+                                    <?php
+                                    if ($password_err == true) {
+                                      echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        Incorrect password. Try again pal.
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="color:black;">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>';
+                                    }
+                                    ?>
                                     <div class="social-login mb-3">
                                         <ul>
                                             <li class="right">

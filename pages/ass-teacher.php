@@ -1,87 +1,85 @@
 <?php
 
-// error_reporting(0);
+$class_id = $_GET['class_id'];
+$user_id = $_SESSION["user_id"];
 
-if (!isset($_SESSION['user_id']))
+include 'includes/utils/gcloud.php';
+$gstorage = new GStorage();
+
+if (isset($_POST['create'])) {
+
+
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $sqlp = "INSERT INTO  posts(class_id,user_id, title,description,post_type) VALUES(:class_id,:user_id, :title,:description,2)";
+    $queryp = $db_w->prepare($sqlp);
+    $queryp->bindParam(':class_id', $class_id, PDO::PARAM_STR);
+    $queryp->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+    $queryp->bindParam(':title', $title, PDO::PARAM_STR);
+    $queryp->bindParam(':description', $description, PDO::PARAM_STR);
+    $queryp->execute();
+    $lastInsertId = $db_w->lastInsertId();
+
+    $chapter = $_POST['chapter'];
+    $due_date = $_POST['due_date'];
+    $a_marks = $_POST['a_marks'];
+    $sqla = "INSERT INTO  assignments(post_id,chapter,due_date,a_marks) VALUES(:lastInsertId,:chapter,:due_date,:a_marks)";
+    $querya = $db_w->prepare($sqla);
+    $querya->bindParam(':chapter', $chapter, PDO::PARAM_STR);
+    $querya->bindParam(':due_date', $due_date, PDO::PARAM_STR);
+    $querya->bindParam(':lastInsertId', $lastInsertId, PDO::PARAM_STR);
+    $querya->bindParam(':a_marks', $a_marks, PDO::PARAM_STR);
+    $querya->execute();
+    $lastInsertId = $db_w->lastInsertId();
+
+
+
+
+    $countfiles = count($_FILES['files']['name']);
+    function getSalt()
     {
-header('location:?p=login');
-}
-else{
+        $charset = '0123456789';
+        $randStringLen = 4;
 
-if(isset($_POST['create']))
-{
+        $randString = "";
+        for ($i = 0; $i < $randStringLen; $i++) {
+            $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
+        }
 
-$title=$_POST['title'];
-$description=$_POST['description'];
-$sqlp="INSERT INTO  posts(class_id,title,description,post_type) VALUES(1,:title,:description,2)";
-$queryp = $db_w->prepare($sqlp);
-$queryp->bindParam(':title',$title,PDO::PARAM_STR);
-$queryp->bindParam(':description',$description,PDO::PARAM_STR);
-$queryp->execute();
-$lastInsertId = $db_w->lastInsertId();
+        return $randString;
+    }
 
-$chapter=$_POST['chapter'];
-$due_date=$_POST['due_date'];
-// $a_marks=$_POST['a_marks'];
-$sqla="INSERT INTO  assignments(post_id,chapter,due_date/*,a_marks*/) VALUES(:lastInsertId,:chapter,:due_date/*,:a_marks*/)";
-$querya = $db_w->prepare($sqla);
-$querya->bindParam(':chapter',$chapter,PDO::PARAM_STR);
-$querya->bindParam(':due_date',$due_date,PDO::PARAM_STR);
-$querya->bindParam(':lastInsertId',$lastInsertId,PDO::PARAM_STR);
-// $querya->bindParam(':a_marks',$a_marks,PDO::PARAM_STR);
-$querya->execute();
-$lastInsertId = $db_w->lastInsertId();
-
-
-
-
-$countfiles = count($_FILES['files']['name']);
-function getSalt() {
-     $charset = '0123456789';
-     $randStringLen = 4;
-
-     $randString = "";
-     for ($i = 0; $i < $randStringLen; $i++) {
-         $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
-     }
-
-     return $randString;
-}
-
- // Looping all files
- for($i=0;$i<$countfiles;$i++){
-   $filename = $_FILES['files']['name'][$i];
-   $extension = substr($filename,strlen($filename)-4,strlen($filename));
-   $salt = getSalt();
-   $filename=md5($filename+$salt).$extension;
-   move_uploaded_file($_FILES["files"]["tmp_name"][$i],"uploads/".$filename);
-   // $new_path="assets/files/assignments".$filename;
-   // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
-   // upload($tmp_dir, $new_path);
-
-   $sql1="INSERT INTO  files(file_name,assignments_id) VALUES(:filename,:lastInsertId)";
-   $query1 = $db_w->prepare($sql1);
-   $query1->bindParam(':filename',$filename,PDO::PARAM_STR);
-   $query1->bindParam(':lastInsertId',$lastInsertId,PDO::PARAM_STR);
-   $query1->execute();
-
-
- }
+    // Looping all files
+    for ($i = 0; $i < $countfiles; $i++) {
+        $filename = $_FILES['files']['name'][$i];
+        $extension = substr($filename, strlen($filename) - 4, strlen($filename));
+        $salt = getSalt();
+        $filename = md5($filename + $salt) . $extension;
+        if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/assignments/" . $filename)) {
+            $gstorage->upload("assets/files/assignments/" . $filename, "assignments/" . $filename);
+        }
+        // $new_path="assets/files/assignments".$filename;
+        // $tmp_dir=$_FILES["files"]["tmp_name"][$i];
+        // upload($tmp_dir, $new_path);
+        $filepath = 'assignments/' . $filename;
+        $sql1 = "INSERT INTO  files(file_name,file_path,assignments_id) VALUES(:filename,:filepath,:lastInsertId)";
+        $query1 = $db_w->prepare($sql1);
+        $query1->bindParam(':filename', $filename, PDO::PARAM_STR);
+        $query1->bindParam(':filepath', $filepath, PDO::PARAM_STR);
+        $query1->bindParam(':lastInsertId', $lastInsertId, PDO::PARAM_STR);
+        $query1->execute();
+    }
 
 
 
-$lastInsertId = $db_w->lastInsertId();
-if($lastInsertId)
-{
-$_SESSION['msg']="Assignment created successfully";
-header('location:?p=ass-teacher');
-}
-else
-{
-$_SESSION['error']="Something went wrong. Please try again";
-header('location:?p=ass-teacher');
-}
-
+    $lastInsertId = $db_w->lastInsertId();
+    if ($lastInsertId) {
+        $_SESSION['msg'] = "Assignment created successfully";
+        header('location:?p=ass-teacher&class_id=' . $class_id);
+    } else {
+        $_SESSION['error'] = "Something went wrong. Please try again";
+        header('location:?p=ass-teacher&class_id=' . $class_id);
+    }
 }
 ?>
 
@@ -90,10 +88,10 @@ header('location:?p=ass-teacher');
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
-    <div id="preloader">
+    <!-- <div id="preloader">
         <div class="preloader"><span></span><span></span>
         </div>
-    </div>
+    </div> -->
 
 
     <!-- ============================================================== -->
@@ -132,33 +130,31 @@ header('location:?p=ass-teacher');
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
                                             <?php
+                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=?";
+                                            $query1 = $db_r->prepare($sql1);
+                                            $query1->execute([$class_id]);
+                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                          $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
-                                          $query1 = $db_r -> prepare($sql1);
-                                          $query1->execute();
-                                          $results1=$query1->fetchAll(PDO::FETCH_OBJ);
-
-                                          if($results1)
-                                          {
-                                          foreach($results1 as $result1)
-                                          {               ?>
-                                            <h1><?php echo htmlentities($result1->class_name);?></h1>
+                                            if ($results1) {
+                                                foreach ($results1 as $result1) {               ?>
+                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
                                             <h4 class="edu_title">Dr.
-                                                <?php echo htmlentities($result1->class_instructor);?></h4>
+                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
                                             <?php
 
-                                            $sql2 = "SELECT email from users where user_id=2;";
-                                            $query2 = $db_r -> prepare($sql2);
-                                            $query2->execute();
-                                            $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                    $sql2 = "SELECT email from users where user_id=?";
+                                                    $query2 = $db_r->prepare($sql2);
+                                                    $query2->execute([$user_id]);
+                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
-                                            if($results2)
-                                            {
-                                            foreach($results2 as $result2)
-                                            {               ?>
+                                                    if ($results2) {
+                                                        foreach ($results2 as $result2) {               ?>
                                             <span
-                                                class="dashboard_instructor"><?php echo htmlentities($result2->email);?></span>
-                                            <?php }}}} ?>
+                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
+                                            <?php }
+                                                    }
+                                                }
+                                            } ?>
                                         </div>
 
 
@@ -174,13 +170,15 @@ header('location:?p=ass-teacher');
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    <a href="?p=now-teacher">Now</a>
+                                                    <a href="?p=now-teacher&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    <a href="?p=ass-teacher">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-teacher&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=lectureteacher">Lecture Notes</a>
+                                                    <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
 
                                             </div>
@@ -243,30 +241,26 @@ header('location:?p=ass-teacher');
 
 
                                         <?php
+                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=" . $class_id;
+                                        $query = $db_r->prepare($sql);
+                                        $query->execute();
+                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                                        if ($query->rowCount() > 0) {
+                                            foreach ($results as $result) {               ?>
 
 
-$sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=1";
-$query = $db_r -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{               ?>
-
-
-                                        <div onclick="location.href='#';" style="cursor: pointer;"
-                                            class="dashboard_single_course ass_hover_effect">
+                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';"
+                                            style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
 
 
                                             <div class="dashboard_single_course_caption">
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
                                                         <span
-                                                            class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                            class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
                                                         <h4 class="dashboard_course_title">
-                                                            <?php echo htmlentities($result->title);?></h4>
+                                                            <?php echo htmlentities($result->title); ?></h4>
 
                                                     </div>
                                                     <div class="dc_head_right">
@@ -274,69 +268,65 @@ foreach($results as $result)
                                                     </div>
                                                 </div>
                                                 <div class="dashboard_single_course_des">
-                                                    <p><?php echo htmlentities($result->description);?></p>
+                                                    <p><?php echo htmlentities($result->description); ?></p>
                                                 </div>
                                                 <div class="dashboard_single_course_progress">
                                                     <div class="dashboard_single_course_progress_1">
 
                                                         <?php
-                                                      $assid = htmlentities($result->assignment_id);
-                                                      $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = ". $assid;
-                                                      $query0 = $db_r -> prepare($sql0);
-                                                      $query0->execute();
-                                                      $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                $assid = htmlentities($result->assignment_id);
+                                                                $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = " . $assid;
+                                                                $query0 = $db_r->prepare($sql0);
+                                                                $query0->execute();
+                                                                $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                      if($query0->rowCount() > 0)
-                                                      {
-                                                      foreach($results0 as $result0)
-                                                      {               ?>
-                                                        <label><?php echo htmlentities($result0->no_of_students_submitted);?>
+                                                                if ($query0->rowCount() > 0) {
+                                                                    foreach ($results0 as $result0) {               ?>
+                                                        <label><?php echo htmlentities($result0->no_of_students_submitted); ?>
                                                             Students Submitted</label>
-                                                        <?php }} ?>
+                                                        <?php }
+                                                                } ?>
 
                                                     </div>
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
                                                             <?php
+                                                                    $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=" . $class_id;
+                                                                    $query1 = $db_r->prepare($sql1);
+                                                                    $query1->execute();
+                                                                    $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                                          $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=1";
-                                                          $query1 = $db_r -> prepare($sql1);
-                                                          $query1->execute();
-                                                          $results1=$query1->fetchAll(PDO::FETCH_OBJ);
-
-                                                          if($query1->rowCount() > 0)
-                                                          {
-                                                          foreach($results1 as $result1)
-                                                          {               ?>
+                                                                    if ($query1->rowCount() > 0) {
+                                                                        foreach ($results1 as $result1) {               ?>
                                                             <li class="list-inline-item"><i
-                                                                    class="ti-user mr-1"></i><?php echo htmlentities($result1->no_of_students);?>
+                                                                    class="ti-user mr-1"></i><?php echo htmlentities($result1->no_of_students); ?>
                                                                 Assigned</li>
 
-                                                            <?php }} ?>
+                                                            <?php }
+                                                                    } ?>
                                                             <?php
 
-                                                                $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = ". $assid;
-                                                                $query2 = $db_r -> prepare($sql2);
-                                                                $query2->execute();
-                                                                $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                                    $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = " . $assid;
+                                                                    $query2 = $db_r->prepare($sql2);
+                                                                    $query2->execute();
+                                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
-                                                                if($query2->rowCount() > 0)
-                                                                {
-                                                                foreach($results2 as $result2)
-                                                                {               ?>
+                                                                    if ($query2->rowCount() > 0) {
+                                                                        foreach ($results2 as $result2) {               ?>
 
                                                             <li class="list-inline-item"><i
-                                                                    class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files);?>
+                                                                    class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files); ?>
                                                                 Files</li>
 
-                                                            <?php }} ?>
+                                                            <?php }
+                                                                    } ?>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <?php }} ?>
+                                        <?php }
+                                        } ?>
 
 
 
@@ -367,16 +357,13 @@ foreach($results as $result)
                                         <!-- Single Course -->
 
                                         <?php
-
-                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=1";
-                                        $query = $db_r -> prepare($sql);
+                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=" . $class_id;
+                                        $query = $db_r->prepare($sql);
                                         $query->execute();
-                                        $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                        if($query->rowCount() > 0)
-                                        {
-                                        foreach($results as $result)
-                                        {               ?>
+                                        if ($query->rowCount() > 0) {
+                                            foreach ($results as $result) {               ?>
 
                                         <div onclick="location.href='#';" style="cursor: pointer;"
                                             class="dashboard_single_course ass_hover_effect">
@@ -386,9 +373,9 @@ foreach($results as $result)
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
                                                         <span
-                                                            class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                            class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
                                                         <h4 class="dashboard_course_title">
-                                                            <?php echo htmlentities($result->title);?></h4>
+                                                            <?php echo htmlentities($result->title); ?></h4>
 
                                                     </div>
                                                     <div class="dc_head_right">
@@ -396,68 +383,66 @@ foreach($results as $result)
                                                     </div>
                                                 </div>
                                                 <div class="dashboard_single_course_des">
-                                                    <p><?php echo htmlentities($result->description);?></p>
+                                                    <p><?php echo htmlentities($result->description); ?></p>
                                                 </div>
                                                 <div class="dashboard_single_course_progress">
                                                     <div class="dashboard_single_course_progress_1">
 
                                                         <?php
-                                                        $assid = htmlentities($result->assignment_id);
-                                                        $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = ". $assid;
-                                                        $query0 = $db_r -> prepare($sql0);
-                                                        $query0->execute();
-                                                        $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                $assid = htmlentities($result->assignment_id);
+                                                                $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = " . $assid;
+                                                                $query0 = $db_r->prepare($sql0);
+                                                                $query0->execute();
+                                                                $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                        if($query0->rowCount() > 0)
-                                                        {
-                                                        foreach($results0 as $result0)
-                                                        {               ?>
-                                                        <label><?php echo htmlentities($result0->no_of_students_submitted);?>
+                                                                if ($query0->rowCount() > 0) {
+                                                                    foreach ($results0 as $result0) {               ?>
+                                                        <label><?php echo htmlentities($result0->no_of_students_submitted); ?>
                                                             Students Submitted</label>
-                                                        <?php }} ?>
+                                                        <?php }
+                                                                } ?>
 
                                                     </div>
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
                                                             <?php
 
-                                                            $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=1";
-                                                            $query1 = $db_r -> prepare($sql1);
-                                                            $query1->execute();
-                                                            $results1=$query1->fetchAll(PDO::FETCH_OBJ);
+                                                                    $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=" . $class_id;
+                                                                    $query1 = $db_r->prepare($sql1);
+                                                                    $query1->execute();
+                                                                    $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                                            if($query1->rowCount() > 0)
-                                                            {
-                                                            foreach($results1 as $result1)
-                                                            {               ?>
+                                                                    if ($query1->rowCount() > 0) {
+                                                                        foreach ($results1 as $result1) {               ?>
                                                             <li class="list-inline-item"><i
-                                                                    class="ti-user mr-1"></i><?php echo htmlentities($result1->no_of_students);?>
+                                                                    class="ti-user mr-1"></i><?php echo htmlentities($result1->no_of_students); ?>
                                                                 Assigned</li>
 
-                                                            <?php }} ?>
+                                                            <?php }
+                                                                    } ?>
                                                             <?php
 
-                                                                  $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = ". $assid;
-                                                                  $query2 = $db_r -> prepare($sql2);
-                                                                  $query2->execute();
-                                                                  $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                                    $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = " . $assid;
+                                                                    $query2 = $db_r->prepare($sql2);
+                                                                    $query2->execute();
+                                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
-                                                                  if($query2->rowCount() > 0)
-                                                                  {
-                                                                  foreach($results2 as $result2)
-                                                                  {               ?>
+                                                                    if ($query2->rowCount() > 0) {
+                                                                        foreach ($results2 as $result2) {               ?>
 
                                                             <li class="list-inline-item"><i
-                                                                    class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files);?>
+                                                                    class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files); ?>
                                                                 Files</li>
 
-                                                            <?php }} ?>
+                                                            <?php }
+                                                                    } ?>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php }} ?>
+                                        <?php }
+                                        } ?>
 
 
 
@@ -486,16 +471,13 @@ foreach($results as $result)
 
 
                                         <?php
-
-                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=1";
-                                        $query = $db_r -> prepare($sql);
+                                        $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=" . $class_id;
+                                        $query = $db_r->prepare($sql);
                                         $query->execute();
-                                        $results=$query->fetchAll(PDO::FETCH_OBJ);
+                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
 
-                                        if($query->rowCount() > 0)
-                                        {
-                                        foreach($results as $result)
-                                        {               ?>
+                                        if ($query->rowCount() > 0) {
+                                            foreach ($results as $result) {               ?>
 
 
                                         <div onclick="location.href='#';" style="cursor: pointer;"
@@ -506,9 +488,9 @@ foreach($results as $result)
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
                                                         <span
-                                                            class="dashboard_instructor"><?php echo htmlentities($result->chapter);?></span>
+                                                            class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
                                                         <h4 class="dashboard_course_title">
-                                                            <?php echo htmlentities($result->title);?></h4>
+                                                            <?php echo htmlentities($result->title); ?></h4>
 
                                                     </div>
                                                     <div class="dc_head_right">
@@ -516,69 +498,66 @@ foreach($results as $result)
                                                     </div>
                                                 </div>
                                                 <div class="dashboard_single_course_des">
-                                                    <p><?php echo htmlentities($result->description);?></p>
+                                                    <p><?php echo htmlentities($result->description); ?></p>
                                                 </div>
                                                 <div class="dashboard_single_course_progress">
                                                     <div class="dashboard_single_course_progress_1">
 
                                                         <?php
-                                                        $assid = htmlentities($result->assignment_id);
-                                                        $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = ". $assid;
-                                                        $query0 = $db_r -> prepare($sql0);
-                                                        $query0->execute();
-                                                        $results0=$query0->fetchAll(PDO::FETCH_OBJ);
+                                                                $assid = htmlentities($result->assignment_id);
+                                                                $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = " . $assid;
+                                                                $query0 = $db_r->prepare($sql0);
+                                                                $query0->execute();
+                                                                $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
 
-                                                        if($query0->rowCount() > 0)
-                                                        {
-                                                        foreach($results0 as $result0)
-                                                        {               ?>
-                                                        <label><?php echo htmlentities($result0->no_of_students_submitted);?>
+                                                                if ($query0->rowCount() > 0) {
+                                                                    foreach ($results0 as $result0) {               ?>
+                                                        <label><?php echo htmlentities($result0->no_of_students_submitted); ?>
                                                             Students Submitted</label>
-                                                        <?php }} ?>
+                                                        <?php }
+                                                                } ?>
 
                                                     </div>
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
                                                             <?php
+                                                                    $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=" . $class_id;
+                                                                    $query1 = $db_r->prepare($sql1);
+                                                                    $query1->execute();
+                                                                    $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                                            $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=1";
-                                                            $query1 = $db_r -> prepare($sql1);
-                                                            $query1->execute();
-                                                            $results1=$query1->fetchAll(PDO::FETCH_OBJ);
-
-                                                            if($query1->rowCount() > 0)
-                                                            {
-                                                            foreach($results1 as $result1)
-                                                            {               ?>
+                                                                    if ($query1->rowCount() > 0) {
+                                                                        foreach ($results1 as $result1) {               ?>
                                                             <li class="list-inline-item"><i
-                                                                    class="ti-user mr-1"></i><?php echo htmlentities($result1->no_of_students);?>
+                                                                    class="ti-user mr-1"></i><?php echo htmlentities($result1->no_of_students); ?>
                                                                 Assigned</li>
 
-                                                            <?php }} ?>
+                                                            <?php }
+                                                                    } ?>
                                                             <?php
 
-                                                                  $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = ". $assid;
-                                                                  $query2 = $db_r -> prepare($sql2);
-                                                                  $query2->execute();
-                                                                  $results2=$query2->fetchAll(PDO::FETCH_OBJ);
+                                                                    $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = " . $assid;
+                                                                    $query2 = $db_r->prepare($sql2);
+                                                                    $query2->execute();
+                                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
 
-                                                                  if($query2->rowCount() > 0)
-                                                                  {
-                                                                  foreach($results2 as $result2)
-                                                                  {               ?>
+                                                                    if ($query2->rowCount() > 0) {
+                                                                        foreach ($results2 as $result2) {               ?>
 
                                                             <li class="list-inline-item"><i
-                                                                    class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files);?>
+                                                                    class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files); ?>
                                                                 Files</li>
 
-                                                            <?php }} ?>
+                                                            <?php }
+                                                                    } ?>
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <?php }} ?>
+                                        <?php }
+                                        } ?>
 
 
                                     </div>
@@ -616,7 +595,8 @@ foreach($results as $result)
 
                 </div>
                 <div class="modal-body">
-                    <form role="form" method="post" enctype="multipart/form-data">
+                    <form action="?p=ass-teacher&class_id=<?= $_GET['class_id'] ?>" role="form" method="post"
+                        enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Chapter:</label>
                             <input type="text" class="form-control popuptarea" id="recipient-name" name="chapter">

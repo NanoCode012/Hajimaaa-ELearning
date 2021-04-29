@@ -1,3 +1,49 @@
+<?php
+
+$current_user_id = $_SESSION['user_id'];
+
+$sql = 'SELECT user_id, user_type, username, firstname, lastname, email, phone, title, address, city, state, zip, about FROM users WHERE user_id=?';
+$stmt = $db_r->prepare($sql);
+$stmt->execute([$current_user_id]);
+$user = $stmt->fetch();
+
+$user_id = $user["user_id"];
+$username = $user["username"];
+
+$firstname = $user["firstname"];
+$lastname = $user["lastname"];
+$user_type = $user["user_type"];
+
+$short_acc_type = $account_type = "";
+
+$fullname = $firstname . " " . $lastname;
+
+if($user_type == 0) {
+  $account_type = "Student";
+  $class_text = " Enrolled in";
+} else if ($user_type == 1) {
+  $account_type = "Teacher";
+  $class_text = " Teaching";
+}
+
+
+$email = $user["email"];
+$phone = $user["phone"];
+$address = $user["address"];
+$city = $user["city"];
+$state = $user["state"];
+$zip = $user["zip"];
+$about = $user["about"];
+$title = $user["title"];
+
+$sql2 = 'SELECT COUNT(user_id) FROM class_enrolled WHERE user_id=?';
+$stmt2 = $db_r->prepare($sql2);
+$stmt2->execute([$current_user_id]);
+$classes_enrolled = $stmt2->fetch();
+$num_class = $classes_enrolled["COUNT(user_id)"];
+?>
+
+
 <body class="red-skin">
     <div id="preloader">
         <div class="preloader"><span></span><span></span></div>
@@ -38,66 +84,30 @@
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_body p-4">
                                         <div class="viewer_detail_wraps">
-                                            <div class="viewer_detail_thumb">
-                                                <img src="assets/img/girlsample_pfp.png" class="img-fluid" alt="" />
-                                                <div class="viewer_status">STU</div>
-                                            </div>
                                             <div class="caption">
-                                                <div class="viewer_package_status">Student</div>
+                                                <div class="viewer_package_status"> <?php echo $account_type ?> </div>
                                                 <div class="viewer_header">
-                                                    <h4>Marrion Willsoriam</h4>
-                                                    <span class="viewer_location">Montreal, Canada</span>
+                                                    <h1> <?php echo $fullname; ?> </h1>
                                                     <ul>
-                                                        <li><strong>10</strong> Classes Enrolled In</li>
+                                                        <li><strong><?php echo $num_class; ?></strong> Classes <?php echo $class_text; ?></li>
                                                     </ul>
                                                 </div>
+                                                <!-- archive -->
                                                 <div class="viewer_header">
                                                     <ul class="badge_info">
-                                                        <li class="started"><i class="ti-rocket"></i></li>
+                                                        <!-- <li class="started"><i class="ti-rocket"></i></li>
                                                         <li class="medium"><i class="ti-cup"></i></li>
                                                         <li class="platinum"><i class="ti-thumb-up"></i></li>
                                                         <li class="elite unlock"><i class="ti-medall"></i></li>
-                                                        <li class="power unlock"><i class="ti-crown"></i></li>
+                                                        <li class="power unlock"><i class="ti-crown"></i></li> -->
                                                     </ul>
+                                                <!-- /archive -->
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /Row -->
-
-                        <!-- Row -->
-                        <div class="row">
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="dashboard_stats_wrap widget-1">
-                                    <div class="dashboard_stats_wrap_content">
-                                        <h4>10</h4> <span>Classes Enrolled In</span>
-                                    </div>
-                                    <div class="dashboard_stats_wrap-icon"><i class="ti-location-pin"></i></div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="dashboard_stats_wrap widget-2">
-                                    <div class="dashboard_stats_wrap_content">
-                                        <h4>20</h4> <span>Assignments Due Soon</span>
-                                    </div>
-                                    <div class="dashboard_stats_wrap-icon"><i class="ti-pie-chart"></i></div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-6 col-sm-12">
-                                <div class="dashboard_stats_wrap widget-4">
-                                    <div class="dashboard_stats_wrap_content">
-                                        <h4>10</h4> <span>Assignments Remaining</span>
-                                    </div>
-                                    <div class="dashboard_stats_wrap-icon"><i class="ti-user"></i></div>
-                                </div>
-                            </div>
-
                         </div>
                         <!-- /Row -->
 
@@ -112,102 +122,74 @@
                                     </div>
                                     <div class="dashboard_container_body p-4">
                                         <!-- Basic info -->
+                                        <form action="?p=editpfp" method="post">
                                         <div class="submit-section">
                                             <div class="form-row">
 
                                                 <div class="form-group col-md-6">
-                                                    <label>Your Name</label>
-                                                    <input type="text" class="form-control" value="Shaurya Preet">
+                                                    <label>First Name</label>
+                                                    <input type="text" class="form-control" name="firstname" value="<?php echo $firstname; ?>">
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Last Name</label>
+                                                    <input type="text" class="form-control" name="lastname" value="<?php echo $lastname; ?>">
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Username</label>
+                                                    <input type="text" class="form-control" name="username" value="<?php echo $username; ?>">
+                                                </div>
+
+                                                <div class="form-group col-md-6">
+                                                    <label>Title</label>
+                                                    <input type="text" class="form-control" name="title" value="<?php echo $title; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Email</label>
-                                                    <input type="email" class="form-control" value="preet77@gmail.com">
-                                                </div>
-
-                                                <div class="form-group col-md-6">
-                                                    <label>Your Title</label>
-                                                    <input type="text" class="form-control" value="Web Designer">
+                                                    <input type="text" class="form-control" name="email" value="<?php echo $email; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Phone</label>
-                                                    <input type="text" class="form-control" value="123 456 5847">
+                                                    <input type="text" class="form-control" name="phone" value="<?php echo $phone; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Address</label>
-                                                    <input type="text" class="form-control"
-                                                        value="522, Arizona, Canada">
+                                                    <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>City</label>
-                                                    <input type="text" class="form-control" value="Montquebe">
+                                                    <input type="text" class="form-control" name="city" value="<?php echo $city; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>State</label>
-                                                    <input type="text" class="form-control" value="Canada">
+                                                    <input type="text" class="form-control" name="state" value="<?php echo $state; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-6">
                                                     <label>Zip</label>
-                                                    <input type="text" class="form-control" value="160052">
+                                                    <input type="text" class="form-control" name="zip" value="<?php echo $zip; ?>">
                                                 </div>
 
                                                 <div class="form-group col-md-12">
                                                     <label>About</label>
-                                                    <textarea
-                                                        class="form-control">Maecenas quis consequat libero, a feugiat eros. Nunc ut lacinia tortor morbi ultricies laoreet ullamcorper phasellus semper</textarea>
+                                                    <textarea class="form-control" name="about"><?php echo $about; ?></textarea>
+                                                </div>
+
+                                                <div class="form-group col-lg-12 col-md-12">
+                                                    <button class="btn btn-theme" type="submit">Save Changes</button>
                                                 </div>
 
                                             </div>
                                         </div>
+                                      </form>
                                         <!-- Basic info -->
-
-                                        <!-- Social Account info -->
-                                        <div class="form-submit">
-                                            <h4 class="pl-2 mt-2">Social Accounts</h4>
-                                            <div class="submit-section">
-                                                <div class="form-row">
-
-                                                    <div class="form-group col-md-6">
-                                                        <label>Facebook</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://facebook.com/">
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label>Twitter</label>
-                                                        <input type="email" class="form-control"
-                                                            value="https://twitter.com/">
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label>Google Plus</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://googleplus.com">
-                                                    </div>
-
-                                                    <div class="form-group col-md-6">
-                                                        <label>LinkedIn</label>
-                                                        <input type="text" class="form-control"
-                                                            value="https://linkedin.com/">
-                                                    </div>
-
-                                                    <div class="form-group col-lg-12 col-md-12">
-                                                        <button class="btn btn-theme" type="submit">Save
-                                                            Changes</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- / Social Account info -->
-
                                     </div>
-
                                 </div>
                             </div>
                         </div>
