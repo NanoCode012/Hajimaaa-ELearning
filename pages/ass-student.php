@@ -24,9 +24,9 @@ if (isset($_POST['create'])) {
 
     for ($i = 0; $i < $countfiles; $i++) {
         $filename = $_FILES['files']['name'][$i];
-        $extension = substr($filename, strlen($filename) - 4, strlen($filename));
-        //$salt = getSalt();
-        $filename = $filename.$extension;
+        // $extension = substr($filename, strlen($filename) - 4, strlen($filename));
+        // $salt = getSalt();
+        // $filename = $filename . $extension;
 
         if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/student_files/" . $filename)) {
             $gstorage->upload("assets/files/student_files/" . $filename, "student_files/" . $filename);
@@ -711,8 +711,4 @@ if (isset($_POST['create'])) {
 
         });
     });
-<<<<<<< Updated upstream
     </script>
-=======
-    </script>
->>>>>>> Stashed changes
