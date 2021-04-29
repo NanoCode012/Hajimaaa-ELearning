@@ -1,5 +1,91 @@
+<?php
+include 'includes/utils/gcloud.php';
+$gstorage = new GStorage();
+
+if (isset($_POST["submit"])) {
+
+    $title = $_POST['title'];
+    $sqlp = "INSERT INTO  posts(class_id,user_id,post_type, title) VALUES(?, ?, ?, ?)";
+    $queryp = $db_w->prepare($sqlp);
+    $queryp->execute([$_GET['class_id'], $_SESSION['user_id'], 2, $title]);
+    $lastInsertId = $db_w->lastInsertId();
+
+    $sqlp = "INSERT INTO  lectures(post_id) VALUES(:lastInsertId)";
+    $queryp = $db_w->prepare($sqlp);
+    $queryp->bindParam(':lastInsertId', $lastInsertId, PDO::PARAM_STR);
+    $queryp->execute();
+    $lastInsertId = $db_w->lastInsertId();
+
+    // $fileExt = explode('.', [$fileName]);
+    // $fileActualExt = strtolower(end($fileExt));
+
+    // $fileAllowed = array('pdf', 'doc','ppt','jpg','png');
+
+    $countfiles = count($_FILES['files']['name']);
+    function getSalt()
+    {
+        $charset = '0123456789';
+        $randStringLen = 4;
+
+        $randString = "";
+        for ($i = 0; $i < $randStringLen; $i++) {
+            $randString .= $charset[mt_rand(0, strlen($charset) - 1)];
+        }
+
+        return $randString;
+    }
+
+    // Looping all files
+    for ($i = 0; $i < $countfiles; $i++) {
+        $filename = $_FILES['files']['name'][$i];
+        $extension = substr($filename, strlen($filename) - 4, strlen($filename));
+        $salt = getSalt();
+        // $filename=md5($filename+$salt).$extension;
+        $filename = md5($filename) . $extension;
+        if (move_uploaded_file($_FILES["files"]["tmp_name"][$i], "assets/files/lectures/" . $filename)) {
+            $gstorage->upload("assets/files/lectures/" . $filename, 'lectures/' . $filename);
+        }
+
+        $sql1 = "INSERT INTO  files_lectures(file_name, file_path, lecture_id) VALUES(?,?,?)";
+        $query1 = $db_w->prepare($sql1);
+        $query1->execute([$filename, 'lectures/' . $filename, $lastInsertId]);
+    }
+
+    // $file = $_FILES['file'];
+    // $fileName = $_FILES['file']['name'];
+    // $fileType = $_FILES["file"]["type"];
+    // $temp_location = $_FILES["file"]["tmp_name"];
+    // $fileSize = $_FILES["file"]["size"];
+    // $fileError = $_FILES["file"]["error"];
+    // $permDest = "lectureUploads/". $_FILES["file"]["name"];
+    // // check if file is allowed
+    // if(in_array($fileActualExt, $fileAllowed)){
+    //     if($fileError === 0){
+    //         if($fileSize < 1000000){
+    //             $fileUniqueName = uniqid('', true).".".$fileActualExt;
+    //             $permDest = "lectureUploads/".$fileUniqueName;
+    //             move_uploaded_file($temp_location, $permDest);
+    //             // header("Location: lectureTeacher.php?upload-success");
+    //         }else{
+    //             // $errors .= $fileTooLarge;
+    //         }
+    //     }else{
+    //         echo "Whoops!!! There was an error uploading your file, please try again later.";
+    //     }
+    // }else{
+    //     // $errors .= $wrongFormat;
+    // }
+}
+
+?>
+
 <body class="red-skin gray">
     <?php include 'includes/nav.php'; ?>
+
+    <!-- FILE UPLOAD CODE -->
+    <?php
+
+    ?>
 
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -28,7 +114,7 @@
 
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
-            <div class="container-fluid">
+            <div class="container">
 
                 <!-- Row -->
                 <div class="row">
@@ -38,30 +124,42 @@
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
+                                <div class="dashboard_container">
 
+                                    <div class="dashboard_container_header">
+                                        <div class="dashboard_fl_1">
+                                            <?php
 
-                                        <div class="col-lg-8 col-md-8 col-sm-12">
-                                            <div class="row">
-                                                <h1 class="breadcrumb-title"> Software Engineering</h1>
-                                                <h4>CSS323-2</h4>
-                                                <h4>Instructor : Dr. Skibidibaba Hibidibaba</h4>
-                                            </div>
+                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
+                                            $query1 = $db_r->prepare($sql1);
+                                            $query1->execute();
+                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+
+                                            if ($results1) {
+                                                foreach ($results1 as $result1) {               ?>
+                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
+                                            <h4 class="edu_title">Dr.
+                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
+                                            <?php
+
+                                                    $sql2 = "SELECT email from users where user_id=2;";
+                                                    $query2 = $db_r->prepare($sql2);
+                                                    $query2->execute();
+                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
+
+                                                    if ($results2) {
+                                                        foreach ($results2 as $result2) {               ?>
+                                            <span
+                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
+                                            <?php }
+                                                    }
+                                                }
+                                            } ?>
                                         </div>
 
-                                        <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <div class="row">
-                                                <strong>
 
-                                                    <p>Email_ID : <a>biggusDickus@hotmail.com</a></p>
-                                                    <p>Contact : +66969696969</p>
-                                                </strong>
-                                            </div>
-                                        </div>
-
-                                    </ol>
-                                </nav>
+                                    </div>
+                                </div>
 
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
@@ -69,15 +167,17 @@
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
-                                                    <a href="?p=now-teacher">Now</a>
+                                                    <a href="?p=now-teacher&class_id=<?= $_GET['class_id'] ?>">Now</a>
                                                 </div>
                                                 <div class="active">
-                                                    <a href="?p=ass-teacher">Assignments</a>
+                                                    <a
+                                                        href="?p=ass-teacher&class_id=<?= $_GET['class_id'] ?>">Assignments</a>
                                                 </div>
                                                 <div>
-                                                    <a href="?p=lectureteacher">Lecture Notes</a>
+                                                    <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
+                                                        Notes</a>
                                                 </div>
-                                                </div>
+                                            </div>
                                             <div class="tab-indicator" style="left: calc(66.6667%);"></div>
 
                                             <div class="tab-body">
@@ -114,8 +214,8 @@
                                                     <!-- <button type="button" class="btn btn-primary btn-sm"
                                                         data-target="#myInquiry" data-toggle="modal"
                                                         data-ordernumber="1122"> Upload Files</button> -->
-                                                    <button type="button" class="btn btn-outline-theme"
-                                                        id="deleteLect">Delete</button>
+                                                    <!-- <button type="button" class="btn btn-outline-theme"
+                                                        id="deleteLect">Delete</button> -->
                                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                                         data-target="#exampleModal" data-whatever="@getbootstrap">Upload
                                                         Lecture</button>
@@ -126,20 +226,28 @@
 
                                         <div id="accordionExample" class="accordion shadow circullum">
 
+                                            <?php
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
+                                            $query = $db_r->prepare($sql);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result) {
+                                            ?>
+
                                             <!-- Part 1 -->
                                             <div class="card">
                                                 <div id="headingOne" class="card-header bg-white shadow-sm border-0">
+                                                    <!-- aria-expanded="true" -->
                                                     <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
                                                             data-target="#collapseOne" aria-expanded="true"
                                                             aria-controls="collapseOne"
                                                             class="d-block position-relative text-dark collapsible-link py-2 heading_text">
-                                                            Lecture 3: Weeeeeeee
-                                                            <!-- <div class='btn_trash'>
-                                                                <button><i class='ti-trash'></i></button>
-                                                            </div>
-                                                            <div class='btn_pencil'>
-                                                                <button><i class='ti-pencil'></i></button>
-                                                            </div> -->
+                                                            <!-- VARIABLE TITLE -->
+                                                            <?php echo htmlentities($result->title); ?>
+                                                            <?php //echo $results['post_id'];
+                                                                    ?>
                                                         </a></h6>
                                                 </div>
                                                 <div id="collapseOne" aria-labelledby="headingOne"
@@ -147,102 +255,40 @@
                                                     <div class="card-body pl-3 pr-3">
                                                         <ul class="lectures_lists">
                                                             <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-file"></i>Lecture: 01</div>Web
-                                                                Designing Beginner
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-file"></i>Lecture: 02</div>Startup
-                                                                Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Tutorial: 03
-                                                                </div>
-                                                                How To Call Google Map iFrame
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Tutorial: 04
-                                                                </div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-pencil-alt"></i>Assignment</div>
-                                                                How to
-                                                                Create Sticky Navigation Using JS
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                                <?php
+                                                                        $lectid = htmlentities($result->lecture_id);
+                                                                        $sql0 = "SELECT file_name, file_path from files_lectures where lecture_id=?";
+                                                                        $query0 = $db_r->prepare($sql0);
+                                                                        $query0->execute([$lectid]);
+                                                                        $results0 = $query0->fetchAll(PDO::FETCH_OBJ);
+                                                                        $x = 0;
+                                                                        if ($query->rowCount() > 0) {
+                                                                            foreach ($results0 as $result0) {
+                                                                                $x++;
+                                                                                if (!file_exists('assets/files/lectures/' . $result0->file_name)) {
+                                                                                    $gstorage->download($result0->file_path, 'assets/files/lectures/' . $result0->file_name);
+                                                                                }
+                                                                        ?>
+                                                                <a class="lectures_lists_title" target="_blank"
+                                                                    href="assets/files/lectures/<?php echo $result0->file_name; ?>"><i
+                                                                        class="ti-file"></i>View File
+                                                                    <?php echo $x; ?></a>
 
-                                            <!-- Part 2 -->
-                                            <div class="card">
-                                                <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
-                                                    <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
-                                                            data-target="#collapseTwo" aria-expanded="false"
-                                                            aria-controls="collapseTwo"
-                                                            class="d-block position-relative collapsed text-dark collapsible-link py-2">Lecture
-                                                            2: Hibidibaba</a></h6>
-                                                </div>
-                                                <div id="collapseTwo" aria-labelledby="headingTwo"
-                                                    data-parent="#accordionExample" class="collapse">
-                                                    <div class="card-body pl-3 pr-3">
-                                                        <!-- <div class="col-lg-12 col-md-12 col-sm-12"> -->
-                                                        <!-- <div class="btn-group btn-group-lg btn-group-justified"
-                                                            role="group"> -->
-                                                        <!-- <div class="btn-group"> -->
-                                                        <!-- <button type="button" class="btn btn-primary btn-lg"
-                                                                title="Edit"><span class="ti-pencil"></span></button> -->
-                                                        <!-- </div> -->
-                                                        <!-- <div class="btn-group"> -->
-                                                        <!-- <button type="button" class="btn btn-primary btn-lg"
-                                                                title="Delete"><span class="ti-trash"></span></button> -->
-                                                        <!-- </div> -->
-                                                        <!-- </div> -->
-                                                        <!-- </div> -->
-                                                        <!-- <br></br> -->
-                                                        <ul class="lectures_lists">
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 01
-                                                                </div>Web
-                                                                Designing Beginner
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 02
-                                                                </div>
-                                                                Startup Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 03
-                                                                </div>How
-                                                                To Call Google Map iFrame
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 04
-                                                                </div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 05
-                                                                </div>How
-                                                                to Create Sticky Navigation Using JS
+                                                                <?php }
+                                                                        } ?>
                                                             </li>
                                                         </ul>
                                                     </div>
+                                                    <!-- <hr>
+                                                    <button type="button" class="btn btn-outline-theme deleteBtn"
+                                                        id="deleteLect">Delete</button> -->
                                                 </div>
                                             </div>
+                                            <?php }
+                                            } ?>
 
                                             <!-- Part 3 -->
-                                            <div class="card">
+                                            <!-- <div class="card">
                                                 <div id="headingThree" class="card-header bg-white shadow-sm border-0">
                                                     <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
                                                             data-target="#collapseThree" aria-expanded="false"
@@ -287,7 +333,7 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -317,34 +363,32 @@
                     <h5 class="modal-title" id="exampleModalLabel">[COURSE NAME]: Upload Lecture</h5>
 
                 </div>
-                <div class="modal-body">
-                    <form>
+                <form method="post" enctype="multipart/form-data"
+                    action="?p=lectureTeacher&class_id=<?= $_GET['class_id'] ?>">
+                    <div class="modal-body">
+                        <!-- <form method="POST" enctype="multipart/form-data"> -->
                         <div class="form-group">
-                            <label for="recipient-name" class="col-form-label">Lecture title:</label>
-                            <input type="text" class="form-control popuptarea" id="recipient-name">
+                            <label for="recipient-name" class="col-form-label" id="lectTitle">Lecture title:</label>
+                            <input type="text" class="form-control popuptarea" id="recipient-name" name="title">
                         </div>
-                        <div class="form-group">
-                            <label for="message-text" class="col-form-label">Lecture description/ Comments:</label>
-                            <textarea class="form-control popuptarea" id="message-text"></textarea>
-                        </div>
-
 
                         <div class="form-group">
                             <label class="col-form-label">Upload files:</label>
                             <div class="choose_file">
-
                                 <label for="choose_file">
-                                    <input type="file" id="choose_file" multiple>
-                                    <!-- <span>Choose Files</span> -->
+                                    <input type="file" id="choose_lecture" name="files[]" multiple>
+                                    <span>Choose Files</span>
                                 </label>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-theme popupbtn">Create Lecture</button>
-                </div>
+                        <!-- </form> -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
+                        <button type="submit" name="submit" value="Upload"
+                            class="btn btn-theme popupbtn">Upload</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -382,19 +426,3 @@
     }
     </script>
     <!--JS for tabs-->
-
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/js/slick.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/counterup.min.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <!-- ============================================================== -->
-    <!-- This page plugins -->
-    <!-- ============================================================== -->
-    <script src="assets/js/metisMenu.min.js"></script>
-    <script>
-    $('#side-menu').metisMenu();
-    </script>
