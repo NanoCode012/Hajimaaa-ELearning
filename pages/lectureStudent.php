@@ -111,6 +111,8 @@
                                         <div id="accordionExample" class="accordion shadow circullum">
 
                                             <?php
+                                            include 'includes/utils/gcloud.php';
+                                            $gstorage = new GStorage();
                                             $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
                                             $query = $db_r->prepare($sql);
                                             $query->execute();
