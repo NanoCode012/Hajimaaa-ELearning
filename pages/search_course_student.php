@@ -1,3 +1,7 @@
+<?php
+$keyword = $_POST['search'];
+?>
+
 <body class="red-skin">
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
@@ -50,12 +54,13 @@
                                     <div class="dashboard_container_body">
 
                                         <?php
-                                        
-                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce
-                                        where c.class_id IN
-                                        (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
+                                        $search = "%$keyword%";
+                                        $sql = "SELECT c.*, ce.num_students AS class_count
+                                        from class c, class_enrolled_count ce where c.class_id
+                                        IN (SELECT class_id FROM class_enrolled WHERE user_id = ?)
+                                        AND c.class_id = ce.class_id AND c.class_name LIKE ?";
                                         $query = $db_r->prepare($sql);
-                                        $query->execute([$_SESSION['user_id']]);
+                                        $query->execute([$_SESSION['user_id'], $search]);
                                         $rows = $query->fetchAll();
                                         include 'includes/utils/gcloud.php';
                                         $gstorage = new GStorage();
