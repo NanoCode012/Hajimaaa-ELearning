@@ -680,4 +680,3 @@ if (isset($_POST['create'])) {
     }
     </script>
     <!--JS for tabs-->
-    <?php } ?>
