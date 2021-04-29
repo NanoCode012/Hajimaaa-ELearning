@@ -20,7 +20,7 @@ function izrand($length = 10, $numeric = false) {
 $course_title = $_POST["course_title"];
 $course_code = $_POST["course_code"];
 $course_description = $_POST["course_description"];
-$category = $_POST["category"];
+$category = 'sth';
 
 $instructor_id = $_SESSION['user_id'];
 
