@@ -199,12 +199,9 @@ $num_students_not_done = $stmt->rowCount();
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="dashboard_container">
                                         <div class="dashboard_container_header">
                                             <div class="row">
-
                                                 <!-- seagreen-->
                                                 <?php
                                                 foreach ($students_not_done as $row) {
@@ -226,43 +223,17 @@ $num_students_not_done = $stmt->rowCount();
                                                     </div>
                                                 </div>
                                                 <?php } ?>
-
-
-
                                             </div>
-
-
-
-
                                         </div>
-
-
-
                                     </div>
-
-
-
-                                </div>
-
-
-
-
-
-
                                 <!-- /Row -->
-
                             </div>
-
                         </div>
                         <!-- Row -->
-
                     </div>
         </section>
         <!-- ============================ Dashboard: My Order Start End ================================== -->
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
