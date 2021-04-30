@@ -18,7 +18,6 @@
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                           <h4 class="alert-heading">Enroll New Class Failed</h4>
                           <p>The class you are trying to enroll does not exist. Please check whether your code is correct.
@@ -52,7 +51,6 @@
                                         </div>
                                     </div>
                                     <div class="dashboard_container_body">
-
                                         <?php
                                         $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.class_id IN (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
                                         $query = $db_r->prepare($sql);
@@ -69,7 +67,6 @@
                                             $querycat->execute([$row['class_id']]);
                                             $categories = $querycat->fetchAll();
                                         ?>
-
                                             <!-- Single Course -->
                                             <div class="dashboard_single_course">
                                                 <div class="dashboard_single_course_thumb">
@@ -106,36 +103,24 @@
                                                             <ul class="m-0">
                                                               <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=view_classmates&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
                                                                   Enrolled</a></li>
-                                                                <!-- <li class="list-inline-item"><i
-                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
-                                                                                                    ?>
-                                                                Assignments Remaining</li> -->
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         <?php }  ?>
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- /Row -->
-
                     </div>
-
                 </div>
                 <!-- Row -->
-
             </div>
         </section>
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
     </div>
-
     <!-- Start Modal -->
     <div class="modal fade" id="enrollNew" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
@@ -151,10 +136,8 @@
                             <div class="form-group">
                                 <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
                             </div>
-
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>

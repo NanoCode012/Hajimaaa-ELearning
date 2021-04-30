@@ -67,7 +67,6 @@
                                             $querycat->execute([$row['class_id']]);
                                             $categories = $querycat->fetchAll();
                                         ?>
-
                                             <!-- Single Course -->
                                             <div class="dashboard_single_course">
                                                 <div class="dashboard_single_course_thumb">
@@ -104,36 +103,24 @@
                                                             <ul class="m-0">
                                                               <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=view_classmates&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
                                                                   Enrolled</a></li>
-                                                                <!-- <li class="list-inline-item"><i
-                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
-                                                                                                    ?>
-                                                                Assignments Remaining</li> -->
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         <?php }  ?>
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- /Row -->
-
                     </div>
-
                 </div>
                 <!-- Row -->
-
             </div>
         </section>
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
     </div>
-
     <!-- Start Modal -->
     <div class="modal fade" id="enrollNew" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
@@ -152,7 +139,6 @@
 
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
