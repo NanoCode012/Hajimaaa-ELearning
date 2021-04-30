@@ -4,11 +4,8 @@
     </div>
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
-
         <section class="gray pt-0">
-
             <div class="container">
-
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -25,7 +22,6 @@
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -66,6 +62,11 @@
                                         foreach ($rows as $row) {
                                             $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
                                             if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
+
+                                            $sqlcat = "SELECT * FROM categories WHERE class_id = ?";
+                                            $querycat = $db_r->prepare($sqlcat);
+                                            $querycat->execute([$row['class_id']]);
+                                            $categories = $querycat->fetchAll();
                                         ?>
 
                                         <!-- Single Course -->
@@ -86,7 +87,17 @@
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo $row['class_name']; ?></h4>
                                                             <ul class="cources_facts_list">
-                                            									<li class="facts-3"><?php echo $row["categories"]; ?></li>
+                                                              <?php
+                                                              $count = 1;
+                                                              foreach ($categories as $category) {
+                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
+                                                                $count = $count + 1;
+                                                                if ($count == 6) {
+                                                                  $count = 5;
+                                                                }
+                                                              }
+                                                              ?>
+
                                             								</ul>
                                                     </div>
                                                 </div>

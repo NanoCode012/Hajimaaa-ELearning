@@ -17,6 +17,8 @@ function izrand($length = 10, $numeric = false) {
     return $random_string;
 }
 
+$categories = $_POST["categorySelect"];
+
 $course_title = $_POST["course_title"];
 $course_code = $_POST["course_code"];
 $course_description = $_POST["course_description"];
@@ -69,6 +71,22 @@ $gstorage_path = "course_images/" . $class_secret . ".png";
 
 $sql = "INSERT INTO `class`(`instructor_id`, `class_name`, `class_code`, `class_description`, `class_instructor`, `class_secret`, `course_img_path`, `categories`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $db_w->prepare($sql)->execute([$instructor_id, $course_title, $course_code, $course_description, $instructor_fullname, $class_secret, $gstorage_path, $category]);
+
+/* append categories */
+
+$sql = "SELECT `class_id` FROM `class` WHERE `class_name`= ? AND `class_secret`= ? ";
+$stmt = $db_r->prepare($sql);
+$stmt->execute([$course_title, $class_secret]);
+$class = $stmt->fetch();
+$class_id = $class["class_id"];
+
+foreach ($categories as $category) {
+    //echo "$category\n";
+    $category = $category."";
+    $sql = "INSERT INTO `categories`(`class_id`, `category_name`) VALUES (?, ?)";
+    $db_w->prepare($sql)->execute([$class_id, $category]);
+}
+
 header("Location: ?p=courseListTeacher");
 
 ?>

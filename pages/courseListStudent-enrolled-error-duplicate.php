@@ -1,15 +1,11 @@
 <body class="red-skin">
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
-
         <section class="gray pt-0">
-
             <div class="container">
-
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -22,7 +18,6 @@
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                           <h4 class="alert-heading">Enroll New Class Failed</h4>
                           <p>The class you are trying to enroll is already enrolled. Please check your course list again.
@@ -31,11 +26,9 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
@@ -68,6 +61,11 @@
                                         foreach ($rows as $row) {
                                             $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
                                             if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
+
+                                            $sqlcat = "SELECT * FROM categories WHERE class_id = ?";
+                                            $querycat = $db_r->prepare($sqlcat);
+                                            $querycat->execute([$row['class_id']]);
+                                            $categories = $querycat->fetchAll();
                                         ?>
 
                                             <!-- Single Course -->
@@ -83,8 +81,19 @@
                                                     <div class="dashboard_single_course_head">
                                                         <div class="dashboard_single_course_head_flex">
                                                             <span class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
-                                                            <h4 class="dashboard_course_title">
-                                                                <?php echo $row['class_name']; ?></h4>
+                                                            <h4 class="dashboard_course_title"><?php echo $row['class_name']; ?></h4>
+                                                            <ul class="cources_facts_list">
+                                                              <?php
+                                                              $count = 1;
+                                                              foreach ($categories as $category) {
+                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
+                                                                $count = $count + 1;
+                                                                if ($count == 6) {
+                                                                  $count = 5;
+                                                                }
+                                                              }
+                                                              ?>
+                                                            </ul>
                                                         </div>
                                                     </div>
                                                     <div class="dashboard_single_course_des">

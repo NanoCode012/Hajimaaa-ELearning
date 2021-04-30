@@ -3,22 +3,17 @@
 $keyword = $_POST['search'];
 
 ?>
-
 <body class="red-skin">
     <div id="preloader">
         <div class="preloader"><span></span><span></span></div>
     </div>
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
-
         <section class="gray pt-0">
-
             <div class="container">
-
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -31,7 +26,6 @@ $keyword = $_POST['search'];
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -74,6 +68,10 @@ $keyword = $_POST['search'];
                                         foreach ($rows as $row) {
                                             $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
                                             if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
+                                            $sqlcat = "SELECT * FROM categories WHERE class_id = ?";
+                                            $querycat = $db_r->prepare($sqlcat);
+                                            $querycat->execute([$row['class_id']]);
+                                            $categories = $querycat->fetchAll();
                                         ?>
 
                                         <!-- Single Course -->
@@ -91,11 +89,19 @@ $keyword = $_POST['search'];
                                                     <div class="dashboard_single_course_head_flex">
                                                         <span
                                                             class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
-                                                        <h4 class="dashboard_course_title">
-                                                            <?php echo $row['class_name']; ?></h4>
+                                                        <h4 class="dashboard_course_title"><?php echo $row['class_name']; ?></h4>
                                                             <ul class="cources_facts_list">
-                                            									<li class="facts-3"><?php echo $row["categories"]; ?></li>
-                                            								</ul>
+                                                              <?php
+                                                              $count = 1;
+                                                              foreach ($categories as $category) {
+                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
+                                                                $count = $count + 1;
+                                                                if ($count == 6) {
+                                                                  $count = 5;
+                                                                }
+                                                              }
+                                                              ?>
+                                                            </ul>
                                                     </div>
                                                 </div>
                                                 <div class="dashboard_single_course_des">
@@ -107,38 +113,25 @@ $keyword = $_POST['search'];
                                                           <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=student_list&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
                                                                     Enrolled</a></li>
                                                           <li class="list-inline-item"></i>Class Secret: <?php echo $row["class_secret"]; ?></li>
-                                                            <!-- <li class="list-inline-item"><i
-                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
-                                                                                                    ?>
-                                                                Assignments Remaining</li> -->
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <?php }  ?>
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- /Row -->
-
                     </div>
-
                 </div>
                 <!-- Row -->
-
             </div>
         </section>
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
     </div>
-
-    <!-- Log In Modal -->
+    <!-- Create Class Modal -->
     <div class="modal fade" id="create-class" tabindex="-1" role="dialog" aria-labelledby="registermodal"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="width:800px;">

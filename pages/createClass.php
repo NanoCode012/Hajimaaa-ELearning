@@ -1,10 +1,8 @@
 <body class="red-skin">
-
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
     <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
-
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
@@ -17,7 +15,6 @@
   <!-- ============================================================== -->
   <!-- Top header  -->
   <!-- ============================================================== -->
-
   <section class="gray pt-0">
     <div class="container">
       <!-- Row -->
@@ -36,7 +33,6 @@
             </div>
           </div>
           <!-- /Row -->
-
           <!-- Row -->
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -73,14 +69,11 @@
                     </div>
                   </div>
                   <!-- Basic info -->
-
                 </div>
-
               </div>
             </div>
           </div>
           <!-- /Row -->
-
           <!-- Row -->
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -94,61 +87,53 @@
                   <!-- Basic info -->
                   <div class="submit-section">
                     <div class="form-row">
-
                       <div class="form-group col-md-12">
                         <label>About Course</label>
                         <textarea class="form-control" placeholder="Description" name="course_description"></textarea>
                       </div>
-
                       <div class="form-group col-md-12">
                         <label>Category</label>
-                        <select id="cars" class="form-control styled-select" multiple>
-                          <option value="audi">Computer Science</option>
-                          <option value="audi">Programming Language</option>
-                          <option value="volvo">Web Development</option>
-                          <option value="audi">Mobile Development</option>
-                          <option value="saab">Data Science</option>
-                          <option value="opel">Network and Security</option>
-                          <option value="opel">Hardware</option>
-                          <option value="audi">Languages</option>
-                          <option value="audi">Art and Design</option>
-                          <option value="audi">Business and Management</option>
-                          <option value="audi">Finance and Accounting</option>
+                        <select class="form-control styled-select" multiple name="categorySelect[]">
+                          <option value="Computer Science">Computer Science</option>
+                          <option value="Programming Language">Programming Language</option>
+                          <option value="Web Development">Web Development</option>
+                          <option value="Mobile Development">Mobile Development</option>
+                          <option value="Data Science">Data Science</option>
+                          <option value="Artificial Intelligence">Artificial Intelligence</option>
+                          <option value="Network and Security">Network and Security</option>
+                          <option value="Hardware">Hardware</option>
+                          <option value="Language">Languages</option>
+                          <option value="Art and Design">Art and Design</option>
+                          <option value="Business and Management">Business and Management</option>
+                          <option value="Finance and Accounting">Finance and Accounting</option>
+                          <option value="Music">Music</option>
+                          <option value="Self Development">Self Development</option>
+                          <option value="TU Subject">TU Subject</option>
                         </select>
                       </div>
-
                     </div>
                   </div>
                   <!-- Basic info -->
-
                 </div>
-
               </div>
             </div>
           </div>
           <!-- /Row -->
-
           <div class="row">
             <div class="form-group col-lg-12 col-md-12">
-              <button class="btn btn-theme" type="submit">Save Course</button>
+              <button class="btn btn-theme" name="submit" type="submit">Save Course</button>
             </div>
           </div>
         </form>
         </div>
-
       </div>
       <!-- Row -->
-
     </div>
   </section>
-
-
   <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
 </div>
 <!-- ============================================================== -->
 <!-- End Wrapper -->
 <!-- ============================================================== -->
-
 <script src="assets/js/dropzone.js"></script>
 </body>
