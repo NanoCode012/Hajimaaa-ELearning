@@ -39,12 +39,6 @@ $student_file = $stmt->fetch();
         <section class="gray pt-0">
 
             <div class="container">
-
-
-                <div class="row justify-content-center">
-
-                    <div class="col-lg-9 col-md-9 col-sm-12">
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -215,10 +209,8 @@ $student_file = $stmt->fetch();
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Row -->
 
-                </div>
+                    <!-- Row -->
         </section>
         <!-- ============================ Dashboard: My Order Start End ================================== -->
 
