@@ -94,20 +94,21 @@
                       <div class="form-group col-md-12">
                         <label>Category</label>
                         <select class="form-control styled-select" multiple name="categorySelect[]" required>
+                          <option value="Science">Science</option>
+                          <option value="Math">Math</option>
                           <option value="Computer Science">Computer Science</option>
                           <option value="Programming Language">Programming Language</option>
                           <option value="Web Development">Web Development</option>
                           <option value="Mobile Development">Mobile Development</option>
-                          <option value="Data Science">Data Science</option>
                           <option value="Artificial Intelligence">Artificial Intelligence</option>
                           <option value="Network and Security">Network and Security</option>
                           <option value="Hardware">Hardware</option>
+                          <option value="Electronics">Electronics</option>
+                          <option value="Electrical Engineering">Electrical Engineering</option>
+                          <option value="Civil Engineering">Civil Engineering</option>
                           <option value="Language">Languages</option>
                           <option value="Art and Design">Art and Design</option>
                           <option value="Business and Management">Business and Management</option>
-                          <option value="Finance and Accounting">Finance and Accounting</option>
-                          <option value="Music">Music</option>
-                          <option value="Self Development">Self Development</option>
                           <option value="TU Subject">TU Subject</option>
                         </select>
                       </div>

@@ -1,3 +1,9 @@
+<?php
+
+$category = $_GET["category"];
+
+?>
+
 <body class="red-skin">
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>

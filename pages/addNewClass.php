@@ -74,17 +74,18 @@ $db_w->prepare($sql)->execute([$instructor_id, $course_title, $course_code, $cou
 
 /* append categories */
 
-$sql = "SELECT `class_id` FROM `class` WHERE `class_name`= ? AND `class_secret`= ? ";
+$sql = "SELECT `class_id`, `instructor_id` FROM `class` WHERE `class_name`= ? AND `class_secret`= ? ";
 $stmt = $db_r->prepare($sql);
 $stmt->execute([$course_title, $class_secret]);
 $class = $stmt->fetch();
 $class_id = $class["class_id"];
+$instructor_id = $class["instructor_id"];
 
 foreach ($categories as $category) {
     //echo "$category\n";
     $category = $category."";
-    $sql = "INSERT INTO `categories`(`class_id`, `category_name`) VALUES (?, ?)";
-    $db_w->prepare($sql)->execute([$class_id, $category]);
+    $sql = "INSERT INTO `categories`(`class_id`, `instructor_id`, `category_name`) VALUES (?, ?, ?)";
+    $db_w->prepare($sql)->execute([$class_id, $instructor_id, $category]);
 }
 
 header("Location: ?p=courseListTeacher");
