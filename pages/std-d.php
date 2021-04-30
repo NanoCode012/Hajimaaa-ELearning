@@ -59,11 +59,6 @@ if (isset($_POST['submit'])) {
 
             <div class="container">
 
-
-                <div class="row justify-content-center">
-
-                    <div class="col-lg-9 col-md-9 col-sm-12">
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
@@ -290,7 +285,6 @@ if (isset($_POST['submit'])) {
                     </div>
                     <!-- Row -->
 
-                </div>
         </section>
         <!-- ============================ Dashboard: My Order Start End ================================== -->
 
