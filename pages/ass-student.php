@@ -366,10 +366,7 @@ if (isset($_POST['create'])) {
                                                 </div>
                                                 <div class="dashboard_fl_2">
                                                     <ul class="mb0">
-                                                        <li class="list-inline-item">
-
-                                                        </li>
-
+                                                        <li class="list-inline-item"></li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -449,7 +446,6 @@ if (isset($_POST['create'])) {
                                                 </div>
                                                 <?php }
                                                 } ?>
-
                                             </div>
                                         </div>
                                         <!-- /due in more than two weeks -->
@@ -516,7 +512,6 @@ if (isset($_POST['create'])) {
                                                                     Files Submitted</label>
                                                                 <?php }
                                                                         } ?>
-
                                                             </div>
                                                             <div class="dashboard_single_course_progress_2">
                                                                 <ul class="m-0">
@@ -574,12 +569,10 @@ if (isset($_POST['create'])) {
                                                                                         }
                                                                                     } ?>
                                                                 </ul>
-
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <?php }
                                                 } ?>
                                             </div>
@@ -595,7 +588,6 @@ if (isset($_POST['create'])) {
             </div>
         </section>
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
