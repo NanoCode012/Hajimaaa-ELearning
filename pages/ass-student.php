@@ -49,17 +49,7 @@ if (isset($_POST['create'])) {
         $lastInsertId = $db_w->lastInsertId();
     }
 
-
-
-
-
-
-
-
     // Looping all files
-
-
-
 
     $lastInsertId = $db_w->lastInsertId();
     if ($lastInsertId) {
@@ -72,7 +62,6 @@ if (isset($_POST['create'])) {
 }
 ?>
 
-
 <body class="red-skin gray">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -81,7 +70,6 @@ if (isset($_POST['create'])) {
         <div class="preloader"><span></span><span></span>
         </div>
     </div> -->
-
 
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
@@ -93,7 +81,6 @@ if (isset($_POST['create'])) {
         <!-- ============================================================== -->
         <!-- Top header  -->
         <!-- ============================================================== -->
-
 
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
@@ -344,7 +331,6 @@ if (isset($_POST['create'])) {
                                                                 <ul class="m-0">
 
                                                                     <?php
-
                                                                             $sqlf = "SELECT file_name,file_path from files where assignments_id=" . $assid;
                                                                             $queryf = $db_r->prepare($sqlf);
                                                                             $queryf->execute();
@@ -363,8 +349,6 @@ if (isset($_POST['create'])) {
                                                                     <?php }
                                                                             } ?>
                                                                 </ul>
-
-
                                                             </div>
                                                         </div>
                                                     </div>
@@ -469,13 +453,9 @@ if (isset($_POST['create'])) {
                                             </div>
                                         </div>
                                         <!-- /due in more than two weeks -->
-
                                     </div>
-
                                     <div class="tab-pane fade" id="profile" role="tabpanel"
                                         aria-labelledby="profile-tab">
-
-
                                         <div class="dashboard_container">
                                             <div class="dashboard_container_header">
                                                 <div class="dashboard_fl_1">
@@ -484,7 +464,6 @@ if (isset($_POST['create'])) {
                                                 <div class="dashboard_fl_2">
                                                     <ul class="mb0">
                                                         <li class="list-inline-item">
-
                                                         </li>
                                                         <li class="list-inline-item">
                                                         </li>
@@ -492,15 +471,12 @@ if (isset($_POST['create'])) {
                                                 </div>
                                             </div>
                                             <div class="dashboard_container_body">
-
                                                 <!-- Single Course -->
                                                 <?php
-
                                                 $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=" . $class_id;
                                                 $query = $db_r->prepare($sql);
                                                 $query->execute();
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
-
                                                 if ($query->rowCount() > 0) {
                                                     foreach ($results as $result) {               ?>
 
@@ -526,9 +502,7 @@ if (isset($_POST['create'])) {
                                                         </div>
                                                         <div class="dashboard_single_course_progress">
                                                             <div class="dashboard_single_course_progress_1">
-
                                                                 <?php
-
                                                                         $assid = htmlentities($result->assignment_id);
                                                                         $sql0 = "SELECT count(student_id) as no_of_files_submitted from student_files where student_id=:user_id and assignment_id=" . $assid;
                                                                         $query0 = $db_r->prepare($sql0);
@@ -560,8 +534,6 @@ if (isset($_POST['create'])) {
                                                                     <li class="list-inline-item" style="font-weight:bold;">Grade :
                                                                         <?php echo htmlentities($result1->marks); ?>
 
-
-
                                                                         <?php
                                                                                 $user_id = $_SESSION["user_id"];
                                                                                 $sql5 = "SELECT a_marks from assignments where assignment_id=:assid";
@@ -573,7 +545,6 @@ if (isset($_POST['create'])) {
 
                                                                                 if ($query5->rowCount() > 0) {
                                                                                     foreach ($results5 as $result5) {               ?>
-
 
                                                                          Out of <?php echo htmlentities($result5->a_marks); ?>
 
@@ -654,10 +625,6 @@ if (isset($_POST['create'])) {
                             <label for="message-text" class="col-form-label">Comments:</label>
                             <textarea class="form-control popuptarea" id="message-text" name="text_answer"></textarea>
                         </div>
-
-
-
-
                         <div class="form-group">
                             <label class="col-form-label">Upload files:</label>
                             <div class="choose_file">
@@ -690,11 +657,7 @@ if (isset($_POST['create'])) {
 
                         </div> -->
 
-
-
-
                 </div>
-
 
                 <div class="modal-footer">
                     <input type="hidden" name="assignment_id">
@@ -706,10 +669,6 @@ if (isset($_POST['create'])) {
             </div>
         </div>
     </div>
-
-
-
-
     <!--JS for tabs-->
     <script>
     let tabHeader = document.getElementsByClassName("tab-header")[0];

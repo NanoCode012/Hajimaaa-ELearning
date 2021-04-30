@@ -52,19 +52,12 @@
                                           <h4 class="edu_title">Instructor: <?php echo $get['class_instructor'] ?>
                                           </h4>
                                           <span class="dashboard_instructor">Contact: Email@email.com</span>
-
                                       </div>
-
-
                                   </div>
                               </div>
-
-
-
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
-
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div class="active">
@@ -78,22 +71,14 @@
                                                     <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
                                                         Notes</a>
                                                 </div>
-
                                             </div>
                                             <div class="tab-indicator"></div>
-
                                             <div class="tab-body">
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -101,18 +86,13 @@
                                 </nav>
                             </div>
                         </div>
-
                         <!-- /tabs-->
                         <!-- /Row -->
-
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <!-- due this week -->
-
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
@@ -129,13 +109,11 @@
                                                         data-toggle="modal" data-target="#exampleModal"
                                                         data-whatever="@getbootstrap">Post &nbsp <span
                                                             class="icofont-ui-add"> </span></button>
-
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="dashboard_container_body">
-
                                         <!-- Single Course -->
                                         <?php
                                         $stmt = $db_r->prepare(' SELECT p.post_id, post_type, class_id,title,description,time_created,assignment_id,due_date FROM posts p LEFT JOIN Assignments a ON a.post_id=p.post_id WHERE class_id=? ORDER BY time_created  DESC');
@@ -146,16 +124,12 @@
                                             href="?p=view-post&class_id=<?= $_GET['class_id'] ?>&post_id=<?php echo $row['post_id'] ?>">
                                             <div style="cursor: pointer;"
                                                 class="dashboard_single_course ass_hover_effect">
-
-
-
                                                 <div class="dashboard_single_course_caption">
                                                     <div class="dashboard_single_course_head">
                                                         <div class="dashboard_single_course_head_flex">
                                                             <span class="dashboard_instructor"></span>
                                                             <h4 class="dashboard_course_title">
                                                                 <?php echo $row['title'] ?> </h4>
-
                                                         </div>
                                                         <div class="dc_head_right">
                                                             <h4 class="dc_price_rate theme-cl"></h4>
@@ -172,9 +146,6 @@
                                                                 class="btn btn-theme-2"> Delete
                                         </a>*/ ?>
                                     </div>
-
-
-
                                 </div>
                                 <?php
                                                             if ($row['post_type'] == '1') {
@@ -211,37 +182,21 @@
                     </div>
                     </a>
                     <?php } ?>
-
-
-
-
-
                 </div>
             </div>
-
-
-
-
     </div>
     </div>
     <!-- /Row -->
-
     </div>
-
     </div>
     <!-- Row -->
-
     </div>
     </section>
-
     <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
-
     <!-- popup window -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -249,7 +204,6 @@
             <div class="modal-content popupform">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Post </h5>
-
                 </div>
                 <div class="modal-body">
                     <form method="post" action="?p=Create_post">
@@ -261,8 +215,6 @@
                             <label for="message-text" class="col-form-label">Post description:</label>
                             <textarea class="form-control popuptarea" id="message-text" name="description"></textarea>
                         </div>
-
-
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="class_id" value="<?= $_GET['class_id'] ?>">
@@ -273,7 +225,6 @@
             </div>
         </div>
     </div>
-
     <!--JS for tabs-->
     <script>
     let tabHeader = document.getElementsByClassName("tab-header")[0];

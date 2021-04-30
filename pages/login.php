@@ -54,8 +54,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 ?>
-
-
 <body class="red-skin gray">
     <!-- Preloader - style you can find in spinners.css -->
     <div id="preloader">

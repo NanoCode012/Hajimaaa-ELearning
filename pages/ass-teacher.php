@@ -138,19 +138,12 @@ if (isset($_POST['create'])) {
                                           <h4 class="edu_title">Instructor: <?php echo $get['class_instructor'] ?>
                                           </h4>
                                           <span class="dashboard_instructor">Contact: Email@email.com</span>
-
                                       </div>
-
-
                                   </div>
                               </div>
-
-
-
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
-
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
@@ -164,22 +157,15 @@ if (isset($_POST['create'])) {
                                                     <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
                                                         Notes</a>
                                                 </div>
-
                                             </div>
                                             <div class="tab-indicator" style="left: calc(33.3333%);"></div>
 
                                             <div class="tab-body">
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -187,37 +173,28 @@ if (isset($_POST['create'])) {
                                 </nav>
                             </div>
                         </div>
-
                         <!-- /tabs-->
                         <!-- /Row -->
-
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <!-- due this week -->
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
-
                                         </div>
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
-
                                                 <li class="list-inline-item">
-
                                                     <button type="button" class="btn btn-sm pop-login"
                                                         data-toggle="modal" data-target="#exampleModal"
                                                         data-whatever="@getbootstrap">Create an assignment</button>
-
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                   </div>
-
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
@@ -226,20 +203,14 @@ if (isset($_POST['create'])) {
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-
                                                 </li>
                                                 <li class="list-inline-item">
-
-
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="dashboard_container_body">
-
                                         <!-- Single Course -->
-
-
                                         <?php
                                         $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=" . $class_id;
                                         $query = $db_r->prepare($sql);
@@ -252,7 +223,6 @@ if (isset($_POST['create'])) {
 
                                         <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';"
                                             style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
-
 
                                             <div class="dashboard_single_course_caption">
                                                 <div class="dashboard_single_course_head">
@@ -272,7 +242,6 @@ if (isset($_POST['create'])) {
                                                 </div>
                                                 <div class="dashboard_single_course_progress">
                                                     <div class="dashboard_single_course_progress_1">
-
                                                         <?php
                                                                 $assid = htmlentities($result->assignment_id);
                                                                 $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = " . $assid;
@@ -305,7 +274,6 @@ if (isset($_POST['create'])) {
                                                             <?php }
                                                                     } ?>
                                                             <?php
-
                                                                     $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = " . $assid;
                                                                     $query2 = $db_r->prepare($sql2);
                                                                     $query2->execute();
@@ -327,12 +295,6 @@ if (isset($_POST['create'])) {
                                         </div>
                                         <?php }
                                         } ?>
-
-
-
-
-
-
 
                                     </div>
                                 </div>
@@ -355,7 +317,6 @@ if (isset($_POST['create'])) {
                                     <div class="dashboard_container_body">
 
                                         <!-- Single Course -->
-
                                         <?php
                                         $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and class_id=" . $class_id;
                                         $query = $db_r->prepare($sql);
@@ -367,8 +328,6 @@ if (isset($_POST['create'])) {
 
                                         <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';" style="cursor: pointer;"
                                             class="dashboard_single_course ass_hover_effect">
-
-
                                             <div class="dashboard_single_course_caption">
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
@@ -376,7 +335,6 @@ if (isset($_POST['create'])) {
                                                             class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo htmlentities($result->title); ?></h4>
-
                                                     </div>
                                                     <div class="dc_head_right">
                                                         <h4 class="dc_price_rate theme-cl"></h4>
@@ -387,7 +345,6 @@ if (isset($_POST['create'])) {
                                                 </div>
                                                 <div class="dashboard_single_course_progress">
                                                     <div class="dashboard_single_course_progress_1">
-
                                                         <?php
                                                                 $assid = htmlentities($result->assignment_id);
                                                                 $sql0 = "SELECT count(DISTINCT student_id) as no_of_students_submitted from student_files where assignment_id = " . $assid;
@@ -401,12 +358,10 @@ if (isset($_POST['create'])) {
                                                             Students Submitted</label>
                                                         <?php }
                                                                 } ?>
-
                                                     </div>
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
                                                             <?php
-
                                                                     $sql1 = "SELECT count(user_id) as no_of_students from class_enrolled where class_id=" . $class_id;
                                                                     $query1 = $db_r->prepare($sql1);
                                                                     $query1->execute();
@@ -421,7 +376,6 @@ if (isset($_POST['create'])) {
                                                             <?php }
                                                                     } ?>
                                                             <?php
-
                                                                     $sql2 = "SELECT count(file_id) as no_of_files from files where CHAR_LENGTH(file_name)!=32 and assignments_id = " . $assid;
                                                                     $query2 = $db_r->prepare($sql2);
                                                                     $query2->execute();
@@ -429,11 +383,9 @@ if (isset($_POST['create'])) {
 
                                                                     if ($query2->rowCount() > 0) {
                                                                         foreach ($results2 as $result2) {               ?>
-
                                                             <li class="list-inline-item"><i
                                                                     class="far fa-file mr-1"></i><?php echo htmlentities($result2->no_of_files); ?>
                                                                 Files</li>
-
                                                             <?php }
                                                                     } ?>
                                                         </ul>
@@ -443,13 +395,8 @@ if (isset($_POST['create'])) {
                                         </div>
                                         <?php }
                                         } ?>
-
-
-
-
                                     </div>
                                 </div>
-
                                 <!-- due in more than two weeks -->
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
@@ -459,17 +406,12 @@ if (isset($_POST['create'])) {
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-
                                                 </li>
-
                                             </ul>
                                         </div>
                                     </div>
                                     <div class="dashboard_container_body">
-
                                         <!-- Single Course -->
-
-
                                         <?php
                                         $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and class_id=" . $class_id;
                                         $query = $db_r->prepare($sql);
@@ -479,11 +421,8 @@ if (isset($_POST['create'])) {
                                         if ($query->rowCount() > 0) {
                                             foreach ($results as $result) {               ?>
 
-
                                         <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';" style="cursor: pointer;"
                                             class="dashboard_single_course ass_hover_effect">
-
-
                                             <div class="dashboard_single_course_caption">
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
@@ -491,7 +430,6 @@ if (isset($_POST['create'])) {
                                                             class="dashboard_instructor"><?php echo htmlentities($result->chapter); ?></span>
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo htmlentities($result->title); ?></h4>
-
                                                     </div>
                                                     <div class="dc_head_right">
                                                         <h4 class="dc_price_rate theme-cl"></h4>
@@ -558,28 +496,18 @@ if (isset($_POST['create'])) {
 
                                         <?php }
                                         } ?>
-
-
                                     </div>
                                 </div>
                                 <!-- /due in more than two weeks -->
-
-
                             </div>
                         </div>
                         <!-- /Row -->
-
                     </div>
-
                 </div>
                 <!-- Row -->
-
             </div>
         </section>
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
@@ -646,10 +574,6 @@ if (isset($_POST['create'])) {
                                 max="2022-12-31">
 
                         </div>
-
-
-
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
