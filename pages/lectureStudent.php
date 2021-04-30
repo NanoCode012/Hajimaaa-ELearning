@@ -29,26 +29,7 @@
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <nav aria-label="breadcrumb">
-                                    <ol class="breadcrumb">
-                                        <div class="col-lg-8 col-md-8 col-sm-12">
-                                            <div class="row">
-                                                <h1 class="breadcrumb-title"> Software Engineering</h1>
-                                                <h4>CSS323-2</h4>
-                                                <h4>Instructor : Dr. Skibidibaba Hibidibaba</h4>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-12">
-                                            <div class="row">
-                                                <strong>
-                                                    <p>Email_ID : <a>biggusDickus@hotmail.com</a></p>
-                                                    <p>Contact : +66969696969</p>
-                                                </strong>
-                                            </div>
-                                        </div>
-
-                                    </ol>
-                                </nav>
+                              <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->

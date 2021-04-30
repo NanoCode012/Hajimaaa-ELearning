@@ -6,21 +6,17 @@
         <div class="preloader"><span></span><span></span>
         </div>
     </div>
-
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <div id="main-wrapper">
-
         <?php include 'includes/nav.php'; ?>
         <div class="clearfix"></div>
         <!-- ============================================================== -->
         <!-- Top header  -->
         <!-- ============================================================== -->
-
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
-
             <div class="container">
                 <!-- Row -->
                 <div class="row">
@@ -33,7 +29,6 @@
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
-
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div class="active">
@@ -49,7 +44,6 @@
                                                 </div>
                                             </div>
                                             <div class="tab-indicator"></div>
-
                                             <div class="tab-body">
                                                 <div class="active">
                                                 </div>

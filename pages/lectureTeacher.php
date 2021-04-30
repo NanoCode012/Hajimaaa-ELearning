@@ -94,73 +94,28 @@ if (isset($_POST["submit"])) {
         <div class="preloader"><span></span><span></span>
         </div>
     </div>
-
-
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <div id="main-wrapper">
-
         <!-- ============================================================== -->
         <!-- Top header  -->
         <!-- ============================================================== -->
-
-
         <div class="clearfix"></div>
         <!-- ============================================================== -->
         <!-- Top header  -->
         <!-- ============================================================== -->
-
-
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
             <div class="container">
-
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-
                         <!-- Row -->
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <div class="dashboard_container">
-
-                                    <div class="dashboard_container_header">
-                                        <div class="dashboard_fl_1">
-                                            <?php
-
-                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
-                                            $query1 = $db_r->prepare($sql1);
-                                            $query1->execute();
-                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-
-                                            if ($results1) {
-                                                foreach ($results1 as $result1) {               ?>
-                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
-                                            <h4 class="edu_title">Dr.
-                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
-                                            <?php
-
-                                                    $sql2 = "SELECT email from users where user_id=2;";
-                                                    $query2 = $db_r->prepare($sql2);
-                                                    $query2->execute();
-                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
-
-                                                    if ($results2) {
-                                                        foreach ($results2 as $result2) {               ?>
-                                            <span
-                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
-                                            <?php }
-                                                    }
-                                                }
-                                            } ?>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
+                              <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
@@ -179,7 +134,6 @@ if (isset($_POST["submit"])) {
                                                 </div>
                                             </div>
                                             <div class="tab-indicator" style="left: calc(66.6667%);"></div>
-
                                             <div class="tab-body">
                                                 <div class="active">
                                                 </div>
@@ -222,10 +176,7 @@ if (isset($_POST["submit"])) {
                                                 </div>
                                             </div>
                                         </div>
-
-
                                         <div id="accordionExample" class="accordion shadow circullum">
-
                                             <?php
                                             $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
                                             $query = $db_r->prepare($sql);
@@ -279,61 +230,10 @@ if (isset($_POST["submit"])) {
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <!-- <hr>
-                                                    <button type="button" class="btn btn-outline-theme deleteBtn"
-                                                        id="deleteLect">Delete</button> -->
                                                 </div>
                                             </div>
                                             <?php }
                                             } ?>
-
-                                            <!-- Part 3 -->
-                                            <!-- <div class="card">
-                                                <div id="headingThree" class="card-header bg-white shadow-sm border-0">
-                                                    <h6 class="mb-0 accordion_title"><a href="#" data-toggle="collapse"
-                                                            data-target="#collapseThree" aria-expanded="false"
-                                                            aria-controls="collapseThree"
-                                                            class="d-block position-relative collapsed text-dark collapsible-link py-2">Lecture
-                                                            1: Skibidibaba</a></h6>
-                                                </div>
-                                                <div id="collapseThree" aria-labelledby="headingThree"
-                                                    data-parent="#accordionExample" class="collapse">
-                                                    <div class="card-body pl-3 pr-3">
-                                                        <ul class="lectures_lists">
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 01
-                                                                </div>Web
-                                                                Designing Beginner
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 02
-                                                                </div>
-                                                                Startup Designing with HTML5 & CSS3
-                                                            </li>
-                                                            <li>
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 03
-                                                                </div>How
-                                                                To Call Google Map iFrame
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 04
-                                                                </div>
-                                                                Create Drop Down Navigation Using CSS3
-                                                            </li>
-                                                            <li class="unview">
-                                                                <div class="lectures_lists_title"><i
-                                                                        class="ti-control-play"></i>Lecture: 05
-                                                                </div>How
-                                                                to Create Sticky Navigation Using JS
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -344,12 +244,9 @@ if (isset($_POST["submit"])) {
             </div>
     </div>
     <!-- /Row -->
-
     </div>
-
     </div>
     <!-- Row -->
-
     </div>
     </section>
     <!-- ============================ Dashboard: My Order Start End ================================== -->
@@ -395,7 +292,6 @@ if (isset($_POST["submit"])) {
     <!--end popup window -->
 
     <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
 
     </div>
     <!-- ============================================================== -->

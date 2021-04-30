@@ -18,9 +18,7 @@ $student_file = $stmt->fetch();
 
 
 <body class="red-skin gray">
-
     <?php include 'includes/nav.php'; ?>
-
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -28,49 +26,34 @@ $student_file = $stmt->fetch();
         <div class="preloader"><span></span><span></span>
         </div>
     </div>
-
-
     <!-- ============================================================== -->
     <!-- Main wrapper - style you can find in pages.scss -->
     <!-- ============================================================== -->
     <div id="main-wrapper">
-
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
-
             <div class="container">
-
-
-                <div class="row justify-content-center">
-
-                    <div class="col-lg-9 col-md-9 col-sm-12">
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
                                 <div class="dashboard_container">
-
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
                                             <?php
-
                                             $sql1 = "SELECT class_name,class_instructor from class where class_id=?";
                                             $query1 = $db_r->prepare($sql1);
                                             $query1->execute([$class_id]);
                                             $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-
                                             if ($results1) {
                                                 foreach ($results1 as $result1) {               ?>
                                             <h1><?php echo htmlentities($result1->class_name); ?></h1>
                                             <h4 class="edu_title">Dr.
                                                 <?php echo htmlentities($result1->class_instructor); ?></h4>
                                             <?php
-
                                                     $sql2 = "SELECT email from users where user_id=?";
                                                     $query2 = $db_r->prepare($sql2);
                                                     $query2->execute([$user_id]);
                                                     $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
-
                                                     if ($results2) {
                                                         foreach ($results2 as $result2) {               ?>
                                             <span
@@ -80,17 +63,11 @@ $student_file = $stmt->fetch();
                                                 }
                                             } ?>
                                         </div>
-
-
                                     </div>
                                 </div>
-
-
-
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
-
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
@@ -104,22 +81,14 @@ $student_file = $stmt->fetch();
                                                     <a href="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">Lecture
                                                         Notes</a>
                                                 </div>
-
                                             </div>
                                             <div class="tab-indicator" style="left: calc(33.3333%);"></div>
-
                                             <div class="tab-body">
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -127,25 +96,17 @@ $student_file = $stmt->fetch();
                                 </nav>
                             </div>
                         </div>
-
                         <!-- /tabs-->
                         <!-- /Row -->
-
                         <!-- Row -->
                         <div class="row">
-
                             <!-- ============================ Page Title Start================================== -->
-
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <!-- due this week -->
-
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
-
                                         <div class="row align-items-center">
-
                                             <div class="col-lg-8 col-md-7">
                                                 <div class="ed_detail_wrap">
                                                     <div class="ed_header_caption">
@@ -164,13 +125,9 @@ $student_file = $stmt->fetch();
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <!-- due this week -->
-
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
                                         <div class="edu_cat_icons">
@@ -185,16 +142,10 @@ $student_file = $stmt->fetch();
                                             </ul>
                                         </div>
                                     </div>
-
-
-
                                 </div>
-
-
                                 <div class="edu_wraper border">
                                     <h4 class="edu_title">Assignments</h4>
                                     <div id="accordionExample" class="accordion shadow circullum">
-
                                         <!-- Part 1 -->
                                         <div class="card">
                                             <div id="headingOne" class="card-header bg-white shadow-sm border-0">
@@ -207,7 +158,6 @@ $student_file = $stmt->fetch();
                                             <div id="collapseOne" aria-labelledby="headingOne"
                                                 data-parent="#accordionExample" class="collapse show">
                                                 <div class="card-body pl-3 pr-3">
-
                                                 </div>
                                             </div>
                                         </div>
@@ -215,16 +165,10 @@ $student_file = $stmt->fetch();
                                 </div>
                             </div>
                         </div>
-                    </div>
                     <!-- Row -->
-
-                </div>
         </section>
         <!-- ============================ Dashboard: My Order Start End ================================== -->
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
     </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
