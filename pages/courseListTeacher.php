@@ -4,11 +4,8 @@
     </div>
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
-
         <section class="gray pt-0">
-
             <div class="container">
-
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -25,7 +22,6 @@
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -66,6 +62,11 @@
                                         foreach ($rows as $row) {
                                             $course_img = 'assets/files/course_images' . '/' . $row["class_secret"] . '.png';
                                             if (!file_exists($course_img)) $gstorage->download($row["course_img_path"], $course_img);
+
+                                            $sqlcat = "SELECT * FROM categories WHERE class_id = ?";
+                                            $querycat = $db_r->prepare($sqlcat);
+                                            $querycat->execute([$row['class_id']]);
+                                            $categories = $querycat->fetchAll();
                                         ?>
 
                                         <!-- Single Course -->
@@ -86,7 +87,17 @@
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo $row['class_name']; ?></h4>
                                                             <ul class="cources_facts_list">
-                                            									<li class="facts-3"><?php echo $row["categories"]; ?></li>
+                                                              <?php
+                                                              $count = 1;
+                                                              foreach ($categories as $category) {
+                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
+                                                                $count = $count + 1;
+                                                                if ($count == 6) {
+                                                                  $count = 5;
+                                                                }
+                                                              }
+                                                              ?>
+
                                             								</ul>
                                                     </div>
                                                 </div>
@@ -126,61 +137,4 @@
         </section>
 
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-
-
     </div>
-
-    <!-- Log In Modal -->
-    <div class="modal fade" id="create-class" tabindex="-1" role="dialog" aria-labelledby="registermodal"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="width:800px;">
-            <div class="modal-content" id="registermodal" style="width:800px;">
-                <span class="mod-close" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
-                <div class="modal-body">
-                    <h4 class="modal-header-title">Create New Class</h4>
-                    <div class="login-form">
-                        <form>
-
-                            <div class="form-group">
-                                <label>User Name</label>
-                                <input type="text" class="form-control" placeholder="Username">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input type="password" class="form-control" placeholder="*******">
-                            </div>
-
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-md full-width pop-login">Login</button>
-                            </div>
-
-                        </form>
-                    </div>
-
-                    <div class="social-login mb-3">
-                        <ul>
-                            <li>
-                                <input id="reg" class="checkbox-custom" name="reg" type="checkbox">
-                                <label for="reg" class="checkbox-custom-label">Save Password</label>
-                            </li>
-                            <li class="right"><a href="#" class="theme-cl">Forget Password?</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="modal-divider"><span>Or login via</span></div>
-                    <div class="social-login ntr mb-3">
-                        <ul>
-                            <li><a href="#" class="btn connect-fb"><i class="ti-facebook"></i>Facebook</a></li>
-                            <li><a href="#" class="btn connect-google"><i class="ti-google"></i>Google</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="text-center">
-                        <p class="mt-2">Haven't Any Account? <a href="register.html" class="link">Click here</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal -->

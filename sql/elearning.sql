@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 29, 2021 at 07:15 AM
+-- Generation Time: Apr 30, 2021 at 03:27 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -29,7 +29,7 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
@@ -50,10 +50,29 @@ CREATE TABLE `assignments` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `categories`
+--
+-- Creation: Apr 30, 2021 at 03:25 PM
+-- Last update: Apr 30, 2021 at 03:24 PM
+--
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE `categories` (
+  `class_id` int(255) NOT NULL,
+  `category_name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- RELATIONSHIPS FOR TABLE `categories`:
+--
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `class`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
--- Last update: Apr 29, 2021 at 06:56 AM
+-- Creation: Apr 30, 2021 at 03:27 PM
+-- Last update: Apr 30, 2021 at 03:27 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -81,7 +100,8 @@ CREATE TABLE `class` (
 --
 -- Table structure for table `class_enrolled`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
+-- Last update: Apr 30, 2021 at 03:24 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -116,7 +136,7 @@ CREATE TABLE `class_enrolled_count` (
 --
 -- Table structure for table `comments`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
+-- Creation: Apr 30, 2021 at 03:27 PM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -141,7 +161,7 @@ CREATE TABLE `comments` (
 --
 -- Table structure for table `files`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
 --
 
 DROP TABLE IF EXISTS `files`;
@@ -164,8 +184,7 @@ CREATE TABLE `files` (
 --
 -- Table structure for table `files_lectures`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
--- Last update: Apr 29, 2021 at 07:07 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
 --
 
 DROP TABLE IF EXISTS `files_lectures`;
@@ -188,7 +207,7 @@ CREATE TABLE `files_lectures` (
 --
 -- Table structure for table `gradeass`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
+-- Creation: Apr 30, 2021 at 03:26 PM
 --
 
 DROP TABLE IF EXISTS `gradeass`;
@@ -209,8 +228,7 @@ CREATE TABLE `gradeass` (
 --
 -- Table structure for table `lectures`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
--- Last update: Apr 29, 2021 at 07:07 AM
+-- Creation: Apr 30, 2021 at 03:26 PM
 --
 
 DROP TABLE IF EXISTS `lectures`;
@@ -230,8 +248,7 @@ CREATE TABLE `lectures` (
 --
 -- Table structure for table `posts`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
--- Last update: Apr 29, 2021 at 07:07 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -258,7 +275,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `student_files`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -285,8 +302,8 @@ CREATE TABLE `student_files` (
 --
 -- Table structure for table `users`
 --
--- Creation: Apr 29, 2021 at 06:46 AM
--- Last update: Apr 29, 2021 at 06:55 AM
+-- Creation: Apr 30, 2021 at 03:25 PM
+-- Last update: Apr 30, 2021 at 03:24 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -475,13 +492,13 @@ ALTER TABLE `users`
 -- Constraints for table `assignments`
 --
 ALTER TABLE `assignments`
-  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+  ADD CONSTRAINT `assignments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `class`
 --
 ALTER TABLE `class`
-  ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `class_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `class_enrolled`
@@ -494,32 +511,32 @@ ALTER TABLE `class_enrolled`
 -- Constraints for table `comments`
 --
 ALTER TABLE `comments`
-  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`),
-  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `files`
 --
 ALTER TABLE `files`
-  ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`assignments_id`) REFERENCES `assignments` (`assignment_id`);
+  ADD CONSTRAINT `files_ibfk_1` FOREIGN KEY (`assignments_id`) REFERENCES `assignments` (`assignment_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `files_lectures`
 --
 ALTER TABLE `files_lectures`
-  ADD CONSTRAINT `files_lectures_ibfk_1` FOREIGN KEY (`lecture_id`) REFERENCES `lectures` (`lecture_id`);
+  ADD CONSTRAINT `files_lectures_ibfk_1` FOREIGN KEY (`lecture_id`) REFERENCES `lectures` (`lecture_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `gradeass`
 --
 ALTER TABLE `gradeass`
-  ADD CONSTRAINT `gradeass_ibfk_1` FOREIGN KEY (`student_file_id`) REFERENCES `student_files` (`student_file_id`);
+  ADD CONSTRAINT `gradeass_ibfk_1` FOREIGN KEY (`student_file_id`) REFERENCES `student_files` (`student_file_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `lectures`
 --
 ALTER TABLE `lectures`
-  ADD CONSTRAINT `lectures_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`);
+  ADD CONSTRAINT `lectures_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `posts`
@@ -532,8 +549,8 @@ ALTER TABLE `posts`
 -- Constraints for table `student_files`
 --
 ALTER TABLE `student_files`
-  ADD CONSTRAINT `student_files_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `student_files_ibfk_2` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`assignment_id`);
+  ADD CONSTRAINT `student_files_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `student_files_ibfk_2` FOREIGN KEY (`assignment_id`) REFERENCES `assignments` (`assignment_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -40,8 +40,11 @@
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="banner-search-2 transparent">
                             <h1 class="big-header-capt cl_2 mb-2 f_2">!Hajimaaa<br>Elearning Platform</h1>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
+                            <p>
+                              "There is no end to education. It is not that you read a book, pass an examination, and finish with education.
+                              The whole of life, from the moment you are born to the moment you die, is a process of learning."
+                              <p>- Jiddu Krishnamurti</p>
+                            </p>
                             <div class="mt-4">
                                 <a href="?p=login" class="btn btn-theme btn-lg"> Join Us! </a>
                             </div>
