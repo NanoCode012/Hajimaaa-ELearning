@@ -21,9 +21,6 @@ $num_students_not_done = $stmt->rowCount();
 ?>
 
 <body class="red-skin gray">
-
-
-
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -40,60 +37,16 @@ $num_students_not_done = $stmt->rowCount();
 
         <!-- ============================ Dashboard: My Order Start ================================== -->
         <section class="gray pt-0">
-
             <div class="container">
-
-
                 <div class="row justify-content-center">
-
                     <div class="col-lg-12 col-md-12 col-sm-12">
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <div class="dashboard_container">
-
-                                    <div class="dashboard_container_header">
-                                        <div class="dashboard_fl_1">
-                                            <?php
-
-                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=?";
-                                            $query1 = $db_r->prepare($sql1);
-                                            $query1->execute([$class_id]);
-                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-
-                                            if ($results1) {
-                                                foreach ($results1 as $result1) {               ?>
-                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
-                                            <h4 class="edu_title">Dr.
-                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
-                                            <?php
-
-                                                    $sql2 = "SELECT email from users where user_id=?";
-                                                    $query2 = $db_r->prepare($sql2);
-                                                    $query2->execute([$user_id]);
-                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
-
-                                                    if ($results2) {
-                                                        foreach ($results2 as $result2) {               ?>
-                                            <span
-                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
-                                            <?php }
-                                                    }
-                                                }
-                                            } ?>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-
-
-
+                                <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
-
                                         <div class="tabs">
                                             <div class="tab-header">
                                                 <div>
@@ -113,16 +66,10 @@ $num_students_not_done = $stmt->rowCount();
 
                                             <div class="tab-body">
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                                 <div class="active">
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -130,37 +77,17 @@ $num_students_not_done = $stmt->rowCount();
                                 </nav>
                             </div>
                         </div>
-
                         <!-- /tabs-->
                         <!-- /Row -->
-
-
                         <!-- Row -->
                         <div class="row">
-
-
-
-
-
-
-
-
-
-
-
-
                             <!-- ============================ Page Title Start================================== -->
-
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <!-- due this week -->
-
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
-
                                         <div class="row align-items-center">
-
                                             <div class="col-lg-8 col-md-7">
                                                 <div class="ed_detail_wrap">
                                                     <div class="ed_header_caption">
@@ -176,9 +103,7 @@ $num_students_not_done = $stmt->rowCount();
 
                                                 </div>
                                             </div>
-
                                             <div class="input-group-append">
-
                                                 <button class="btn btn-outline-secondary"
                                                     onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= $_GET['assignment_id'] ?>';"
                                                     type="button">
@@ -186,14 +111,12 @@ $num_students_not_done = $stmt->rowCount();
                                                         <?php echo $num_students - $num_students_not_done; ?></h1>
                                                     <span class="theme-cl">Done</span>
                                                 </button>
-
                                             </div>
                                             <div class="input-group-append">
                                                 <div class="text-center">
                                                     <h1 class="ed_title">
                                                         <?php echo $num_students_not_done; ?></h1>
                                                     <span class="ed_title">Not Done</span>
-
                                                 </div>
                                             </div>
                                         </div>

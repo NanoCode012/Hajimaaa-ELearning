@@ -12,9 +12,6 @@
             <h4 class="edu_title">Instructor: <?php echo $get['class_instructor'] ?>
             </h4>
             <span class="dashboard_instructor">Contact: Email@email.com</span>
-
         </div>
-
-
     </div>
 </div>
