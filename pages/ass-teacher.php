@@ -246,7 +246,7 @@ if (isset($_POST['create'])) {
                                                 </li>
                                                 <li class="list-inline-item">
 
-                                                    
+
                                                 </li>
                                             </ul>
                                         </div>
@@ -381,7 +381,7 @@ if (isset($_POST['create'])) {
                                         if ($query->rowCount() > 0) {
                                             foreach ($results as $result) {               ?>
 
-                                        <div onclick="location.href='#';" style="cursor: pointer;"
+                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';" style="cursor: pointer;"
                                             class="dashboard_single_course ass_hover_effect">
 
 
@@ -496,7 +496,7 @@ if (isset($_POST['create'])) {
                                             foreach ($results as $result) {               ?>
 
 
-                                        <div onclick="location.href='#';" style="cursor: pointer;"
+                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';" style="cursor: pointer;"
                                             class="dashboard_single_course ass_hover_effect">
 
 
