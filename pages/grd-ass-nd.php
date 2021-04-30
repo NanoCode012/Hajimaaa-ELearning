@@ -211,11 +211,6 @@ $num_students_not_done = $stmt->rowCount();
                                                 ?>
                                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                                     <div class="edu_cat_2 cat-2">
-                                                        <div class="edu_cat_icons">
-                                                            <a class="pic-main" href="#"><img
-                                                                    src="https://via.placeholder.com/70x70"
-                                                                    class="img-fluid" alt="" /></a>
-                                                        </div>
                                                         <div class="edu_cat_data">
                                                             <h4 class="title"><a
                                                                     href="?p=std-nd&&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= $_GET['assignment_id'] ?>&student_id=<?= $row['user_id'] ?>">
