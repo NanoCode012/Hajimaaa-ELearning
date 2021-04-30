@@ -124,42 +124,25 @@ if (isset($_POST["submit"])) {
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                                <div class="dashboard_container">
+                              <div class="dashboard_container">
+                                  <?php
+                                  $class_id = $_GET['class_id'];
+                                  $stmt = $db_r->prepare('SELECT class_name,class_code,class_instructor FROM class WHERE class_id=?');
+                                  $stmt->execute([$class_id]);
+                                  $get = $stmt->fetch();
+                                  ?>
+                                  <div class="dashboard_container_header">
+                                      <div class="dashboard_fl_1">
+                                          <h1><?php echo $get['class_code']; ?> <?php echo $get['class_name']; ?></h1>
+                                          <h4 class="edu_title">Instructor: <?php echo $get['class_instructor'] ?>
+                                          </h4>
+                                          <span class="dashboard_instructor">Contact: Email@email.com</span>
 
-                                    <div class="dashboard_container_header">
-                                        <div class="dashboard_fl_1">
-                                            <?php
-
-                                            $sql1 = "SELECT class_name,class_instructor from class where class_id=1;";
-                                            $query1 = $db_r->prepare($sql1);
-                                            $query1->execute();
-                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
-
-                                            if ($results1) {
-                                                foreach ($results1 as $result1) {               ?>
-                                            <h1><?php echo htmlentities($result1->class_name); ?></h1>
-                                            <h4 class="edu_title">Dr.
-                                                <?php echo htmlentities($result1->class_instructor); ?></h4>
-                                            <?php
-
-                                                    $sql2 = "SELECT email from users where user_id=2;";
-                                                    $query2 = $db_r->prepare($sql2);
-                                                    $query2->execute();
-                                                    $results2 = $query2->fetchAll(PDO::FETCH_OBJ);
-
-                                                    if ($results2) {
-                                                        foreach ($results2 as $result2) {               ?>
-                                            <span
-                                                class="dashboard_instructor"><?php echo htmlentities($result2->email); ?></span>
-                                            <?php }
-                                                    }
-                                                }
-                                            } ?>
-                                        </div>
+                                      </div>
 
 
-                                    </div>
-                                </div>
+                                  </div>
+                              </div>
 
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
