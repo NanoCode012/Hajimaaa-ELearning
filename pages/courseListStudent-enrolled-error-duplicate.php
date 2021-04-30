@@ -144,7 +144,7 @@
                     <div class="login-form">
                         <form action="?p=enrollClass" method="post">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="class_secret" placeholder="Enter Course 10-digit Code">
+                                <input type="text" class="form-control" name="class_secret" placeholder="Enter Course 10-digit Code" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
