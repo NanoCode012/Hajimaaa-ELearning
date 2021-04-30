@@ -49,19 +49,19 @@
 
                       <div class="form-group col-md-6">
                         <label>Course Title</label>
-                        <input type="text" class="form-control" placeholder="Course Title" name="course_title">
+                        <input type="text" class="form-control" placeholder="Course Title" name="course_title" required>
                       </div>
 
                       <div class="form-group col-md-6">
                         <label>Course Code</label>
-                        <input type="text" class="form-control" placeholder="Course Code" name="course_code">
+                        <input type="text" class="form-control" placeholder="Course Code" name="course_code" required>
                       </div>
 
                       <div class="form-group col-md-12">
                         <label>Course Image</label>
                         <div class="dropzone dz-clickable primary-dropzone">
                           <div class="dz-default dz-message">
-                            <input name="course_cover" id="fileToUpload" type="file">
+                            <input name="course_cover" id="fileToUpload" type="file" required>
                           </div>
                         </div>
                       </div>
@@ -89,11 +89,11 @@
                     <div class="form-row">
                       <div class="form-group col-md-12">
                         <label>About Course</label>
-                        <textarea class="form-control" placeholder="Description" name="course_description"></textarea>
+                        <textarea class="form-control" placeholder="Description" name="course_description" required></textarea>
                       </div>
                       <div class="form-group col-md-12">
                         <label>Category</label>
-                        <select class="form-control styled-select" multiple name="categorySelect[]">
+                        <select class="form-control styled-select" multiple name="categorySelect[]" required>
                           <option value="Computer Science">Computer Science</option>
                           <option value="Programming Language">Programming Language</option>
                           <option value="Web Development">Web Development</option>
@@ -121,7 +121,7 @@
           <!-- /Row -->
           <div class="row">
             <div class="form-group col-lg-12 col-md-12">
-              <button class="btn btn-theme" name="submit" type="submit">Save Course</button>
+              <button class="btn btn-theme" type="submit">Save Course</button>
             </div>
           </div>
         </form>
