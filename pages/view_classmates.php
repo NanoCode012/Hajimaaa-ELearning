@@ -3,15 +3,11 @@
 $class_id =  $_GET["class_id"];
 
 ?>
-
 <body class="red-skin">
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
-
         <section class="gray pt-0">
-
             <div class="container">
-
                 <!-- Row -->
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -28,7 +24,6 @@ $class_id =  $_GET["class_id"];
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -41,17 +36,6 @@ $class_id =  $_GET["class_id"];
                                         </div>
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
-                                              <li class="list-inline-item">
-                                                <div class="dropdown show form-inline">
-                            											<a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            											Filter By
-                            											</a>
-                            											<div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                            											<a class="dropdown-item" href="?p=student_list_name">Name</a>
-                            											<a class="dropdown-item" href="?p=student_list">Enrollment Order</a>
-                            											</div>
-                            										</div>
-                                              </li>
                                                 <li class="list-inline-item">
                                                     <form class="form-inline my-2 my-lg-">
                                                         <input class="form-control" type="search" placeholder="Search Students" aria-label="Search">

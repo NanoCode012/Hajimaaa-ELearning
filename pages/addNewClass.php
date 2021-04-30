@@ -84,8 +84,8 @@ $instructor_id = $class["instructor_id"];
 foreach ($categories as $category) {
     //echo "$category\n";
     $category = $category."";
-    $sql = "INSERT INTO `categories`(`class_id`, `instructor_id`, `category_name`) VALUES (?, ?, ?)";
-    $db_w->prepare($sql)->execute([$class_id, $instructor_id, $category]);
+    $sql = "INSERT INTO `categories`(`class_id`, `category_name`) VALUES (?,?)";
+    $db_w->prepare($sql)->execute([$class_id, $category]);
 }
 
 header("Location: ?p=courseListTeacher");
