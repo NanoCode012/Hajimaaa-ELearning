@@ -1,7 +1,11 @@
+<?php
+$category = $_GET["category"];
+?>
+
 <body class="red-skin">
-    <div id="preloader">
+    <!-- <div id="preloader">
         <div class="preloader"><span></span><span></span></div>
-    </div>
+    </div> -->
     <div id="main-wrapper">
         <?php include 'includes/nav.php'; ?>
         <section class="gray pt-0">
@@ -70,9 +74,10 @@
                                     </div>
                                     <div class="dashboard_container_body">
                                         <?php
-                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.instructor_id = ? AND c.class_id = ce.class_id";
-                                        $query = $db_r->prepare($sql);
-                                        $query->execute([$_SESSION['user_id']]);
+                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce
+                                                where c.instructor_id = ? AND c.class_id = ce.class_id AND
+                                                c.class_id IN (SELECT class_id FROM categories WHERE category_name = ?)";                                        $query = $db_r->prepare($sql);
+                                        $query->execute([$_SESSION['user_id'], $category]);
                                         $rows = $query->fetchAll();
                                         include 'includes/utils/gcloud.php';
                                         $gstorage = new GStorage();
@@ -85,7 +90,6 @@
                                             $querycat->execute([$row['class_id']]);
                                             $categories = $querycat->fetchAll();
                                         ?>
-
                                         <!-- Single Course -->
                                         <div class="dashboard_single_course">
                                             <div class="dashboard_single_course_thumb">
@@ -114,7 +118,6 @@
                                                                 }
                                                               }
                                                               ?>
-
                                             								</ul>
                                                     </div>
                                                 </div>
@@ -127,31 +130,21 @@
                                                           <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=student_list&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
                                                                     Enrolled</a></li>
                                                           <li class="list-inline-item"></i>Class Secret: <?php echo $row["class_secret"]; ?></li>
-                                                            <!-- <li class="list-inline-item"><i
-                                                                    class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
-                                                                                                    ?>
-                                                                Assignments Remaining</li> -->
                                                         </ul>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <?php }  ?>
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- /Row -->
-
                     </div>
-
                 </div>
                 <!-- Row -->
-
             </div>
         </section>
-
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
     </div>

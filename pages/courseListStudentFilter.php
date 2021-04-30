@@ -72,9 +72,10 @@ $category = $_GET["category"];
                                         <?php
                                         $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce
                                         where c.class_id IN
-                                        (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
+                                        (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id AND
+                                        c.class_id IN (SELECT class_id FROM categories WHERE category_name = ?)";
                                         $query = $db_r->prepare($sql);
-                                        $query->execute([$_SESSION['user_id']]);
+                                        $query->execute([$_SESSION['user_id'], $category]);
                                         $rows = $query->fetchAll();
                                         include 'includes/utils/gcloud.php';
                                         $gstorage = new GStorage();

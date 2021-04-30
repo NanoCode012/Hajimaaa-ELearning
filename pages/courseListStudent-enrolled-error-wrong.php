@@ -32,24 +32,45 @@
 
                                 <!-- Course Style 1 For Student -->
                                 <div class="dashboard_container">
-                                    <div class="dashboard_container_header">
-                                        <div class="dashboard_fl_1">
-                                            <h4>All Courses</h4>
+                                  <div class="dashboard_container_header">
+                                      <div class="dashboard_fl_1">
+                                          <h4>All Courses</h4>
+                                      </div>
+                                      <div style="padding:5px;">
+                                        <button data-toggle="modal" data-target="#enrollNew" class="btn btn-theme btn-rounded">Enroll new class</button>
+                                      </div>
+                                      <div style="padding:5px;">
+                                        <div class="dropdown show form-inline">
+                                          <a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Filter By
+                                          </a>
+                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Science">Science</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Math">Math</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Computer Science">Computer Science</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Programming Language">Programming Language</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Web Development">Web Development</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Mobile Development">Mobile Development</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Artificial Intelligence">Artificial Intelligence</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Network and Security">Network and Security</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Hardware">Hardware</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Electronics">Electronics</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Electrical Engineering">Electrical Engineering</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Civil Engineering">Civil Engineering</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Art and Design">Languages</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Business and Management">Art and Design</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Science">Business and Management</a>
+                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=TU Subject">TU Subject</a>
+                                          </div>
                                         </div>
-                                        <div class="dashboard_fl_2">
-                                            <ul class="mb0">
-                                                <li class="list-inline-item">
-                                                    <button data-toggle="modal" data-target="#enrollNew" class="btn btn-theme btn-rounded">Enroll new class</button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <form class="form-inline my-2 my-lg-0">
-                                                        <input class="form-control" type="search" placeholder="Search Courses" aria-label="Search">
-                                                        <button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                      </div>
+                                      <div style="padding:5px;">
+                                        <form action="?p=search_course_student" method="post" class="form-inline my-2 my-lg-0">
+                                            <input class="form-control" name="search" type="search" placeholder="Search Courses" aria-label="Search">
+                                            <button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
+                                        </form>
+                                      </div>
+                                  </div>
                                     <div class="dashboard_container_body">
                                         <?php
                                         $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce where c.class_id IN (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id";
