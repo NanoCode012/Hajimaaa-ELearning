@@ -37,10 +37,6 @@ $class_id =  $_GET["class_id"];
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-                                                    <form class="form-inline my-2 my-lg-">
-                                                        <input class="form-control" type="search" placeholder="Search Students" aria-label="Search">
-                                                        <button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
-                                                    </form>
                                                 </li>
                                             </ul>
                                         </div>
