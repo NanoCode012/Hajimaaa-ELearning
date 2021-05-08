@@ -5,3 +5,4 @@ if (isset($id)) {
     $db_w->prepare($q0)->execute([$id]);
     header("Location: ?p=view-post&post_id=" . $_GET['post_id'] . "&class_id=" . $_GET['class_id']);
 }
+exit();

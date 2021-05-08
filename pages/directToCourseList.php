@@ -16,5 +16,4 @@ if ($user) {
     header("Location: ?p=courseListTeacher");
   }
 }
-
-?>
+exit();
