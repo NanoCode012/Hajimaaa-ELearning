@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 08, 2021 at 02:14 PM
+-- Generation Time: May 08, 2021 at 02:17 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -206,7 +206,7 @@ CREATE TABLE `files_lectures` (
 --
 -- Table structure for table `gradeass`
 --
--- Creation: May 08, 2021 at 02:14 PM
+-- Creation: May 08, 2021 at 02:16 PM
 --
 
 DROP TABLE IF EXISTS `gradeass`;
@@ -393,7 +393,7 @@ ALTER TABLE `files_lectures`
 -- Indexes for table `gradeass`
 --
 ALTER TABLE `gradeass`
-  ADD KEY `student_file_id` (`student_file_id`);
+  ADD PRIMARY KEY (`student_file_id`);
 
 --
 -- Indexes for table `lectures`
