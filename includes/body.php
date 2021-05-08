@@ -12,8 +12,14 @@ if (file_exists('pages/' . $page . '.php')) {
     } else {
 
         # Retrive POST/FILES variable from SESSION if it is set
-        if (isset($_SESSION['POST'])) $_POST = $_SESSION['POST'];
-        if (isset($_SESSION['FILES'])) $_FILES = $_SESSION['FILES'];
+        if (isset($_SESSION['POST'])) {
+            $_POST = $_SESSION['POST'];
+            unset($_SESSION['POST']);
+        }
+        if (isset($_SESSION['FILES'])) {
+            $_FILES = $_SESSION['FILES'];
+            unset($_SESSION['FILES']);
+        }
 
         include 'pages/' . $page . '.php';
     }
