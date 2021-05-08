@@ -182,7 +182,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Post </h5>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="?p=Create_post">
+                    <form method="post" action="?p=create_post">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Post title:</label>
                             <input type="text" class="form-control popuptarea" id="recipient-name" name="title">
