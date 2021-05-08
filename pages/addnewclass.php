@@ -90,5 +90,5 @@ foreach ($categories as $category) {
     $db_w->prepare($sql)->execute([$class_id, $category]);
 }
 
-header("Location: ?p=courseListTeacher");
+header("Location: ?p=courselistteacher");
 exit();
