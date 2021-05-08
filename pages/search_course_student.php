@@ -36,12 +36,16 @@ $keyword = $_POST['search'];
                                         <div class="dashboard_fl_2">
                                             <ul class="mb0">
                                                 <li class="list-inline-item">
-                                                    <button data-toggle="modal" data-target="#enrollNew" class="btn btn-theme btn-rounded">Enroll new class</button>
+                                                    <button data-toggle="modal" data-target="#enrollNew"
+                                                        class="btn btn-theme btn-rounded">Enroll new class</button>
                                                 </li>
                                                 <li class="list-inline-item">
-                                                    <form action="?p=search_course_student" method="post" class="form-inline my-2 my-lg-0">
-                                                        <input class="form-control" name="search" type="search" placeholder="Search Courses" aria-label="Search">
-                                                        <button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
+                                                    <form action="?p=search_course_student" method="post"
+                                                        class="form-inline my-2 my-lg-0">
+                                                        <input class="form-control" name="search" type="search"
+                                                            placeholder="Search Courses" aria-label="Search">
+                                                        <button class="btn my-2 my-sm-0" type="submit"><i
+                                                                class="ti-search"></i></button>
                                                     </form>
                                                 </li>
                                             </ul>
@@ -69,47 +73,53 @@ $keyword = $_POST['search'];
                                             $querycat->execute([$row['class_id']]);
                                             $categories = $querycat->fetchAll();
                                         ?>
-                                            <!-- Single Course -->
-                                            <div class="dashboard_single_course">
-                                                <div class="dashboard_single_course_thumb">
-                                                    <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
-                                                    <div class="dashboard_action">
-                                                        <a href="?p=unenroll_course&class_id=<?php echo $row['class_id']?>" class="btn btn-ect">Unenroll</a>
-                                                        <a href="?p=now-student&class_id=<?= $row['class_id'] ?>" class="btn btn-ect">View</a>
+                                        <!-- Single Course -->
+                                        <div class="dashboard_single_course">
+                                            <div class="dashboard_single_course_thumb">
+                                                <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
+                                                <div class="dashboard_action">
+                                                    <a href="?p=unenroll_course&class_id=<?php echo $row['class_id'] ?>"
+                                                        class="btn btn-ect">Unenroll</a>
+                                                    <a href="?p=now-student&class_id=<?= $row['class_id'] ?>"
+                                                        class="btn btn-ect">View</a>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_single_course_caption">
+                                                <div class="dashboard_single_course_head">
+                                                    <div class="dashboard_single_course_head_flex">
+                                                        <span
+                                                            class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
+                                                        <h4 class="dashboard_course_title">
+                                                            <?php echo $row['class_name']; ?></h4>
+                                                        <ul class="cources_facts_list">
+                                                            <?php
+                                                                $count = 1;
+                                                                foreach ($categories as $category) {
+                                                                    echo '<li class="facts-' . $count . '">' . $category["category_name"] . '</li>';
+                                                                    $count = $count + 1;
+                                                                    if ($count == 6) {
+                                                                        $count = 5;
+                                                                    }
+                                                                }
+                                                                ?>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <div class="dashboard_single_course_caption">
-                                                    <div class="dashboard_single_course_head">
-                                                        <div class="dashboard_single_course_head_flex">
-                                                            <span class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
-                                                            <h4 class="dashboard_course_title"><?php echo $row['class_name']; ?></h4>
-                                                            <ul class="cources_facts_list">
-                                                              <?php
-                                                              $count = 1;
-                                                              foreach ($categories as $category) {
-                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
-                                                                $count = $count + 1;
-                                                                if ($count == 6) {
-                                                                  $count = 5;
-                                                                }
-                                                              }
-                                                              ?>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dashboard_single_course_des">
-                                                        <p><?php echo $row['class_description']; ?></p>
-                                                    </div>
-                                                    <div class="dashboard_single_course_progress">
-                                                        <div class="dashboard_single_course_progress_2">
-                                                            <ul class="m-0">
-                                                                <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=view_classmates&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
+                                                <div class="dashboard_single_course_des">
+                                                    <p><?php echo $row['class_description']; ?></p>
+                                                </div>
+                                                <div class="dashboard_single_course_progress">
+                                                    <div class="dashboard_single_course_progress_2">
+                                                        <ul class="m-0">
+                                                            <li class="list-inline-item"><i class="ti-user mr-1"></i> <a
+                                                                    href="?p=view_classmates&class_id=<?php echo $row['class_id'] ?>">
+                                                                    <?php echo $row['class_count']; ?>
                                                                     Enrolled</a></li>
-                                                            </ul>
-                                                        </div>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         <?php }  ?>
                                     </div>
                                 </div>
@@ -132,9 +142,10 @@ $keyword = $_POST['search'];
                 <div class="modal-body">
                     <h4 class="modal-header-title">Enroll New Class</h4>
                     <div class="login-form">
-                        <form action="?p=enrollClass" method="post">
+                        <form action="?p=enrollclass" method="post">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="class_secret" placeholder="Enter Course 10-digit Code">
+                                <input type="text" class="form-control" name="class_secret"
+                                    placeholder="Enter Course 10-digit Code">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>

@@ -115,7 +115,7 @@ if (isset($_POST["submit"])) {
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                              <?php include 'includes/classhead.php'; ?>
+                                <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
@@ -261,7 +261,7 @@ if (isset($_POST["submit"])) {
 
                 </div>
                 <form method="post" enctype="multipart/form-data"
-                    action="?p=lectureTeacher&class_id=<?= $_GET['class_id'] ?>">
+                    action="?p=lectureteacher&class_id=<?= $_GET['class_id'] ?>">
                     <div class="modal-body">
                         <!-- <form method="POST" enctype="multipart/form-data"> -->
                         <div class="form-group">

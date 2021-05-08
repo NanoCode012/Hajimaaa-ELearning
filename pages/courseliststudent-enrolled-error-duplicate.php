@@ -19,57 +19,91 @@
                         </div>
                         <!-- /Row -->
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                          <h4 class="alert-heading">Enroll New Class Failed</h4>
-                          <p>The class you are trying to enroll is already enrolled. Please check your course list again.
-                          You can click the x on the top right hand corner to dismiss this text.</p>
-                          <button class="close" style="color:black;" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
+                            <h4 class="alert-heading">Enroll New Class Failed</h4>
+                            <p>The class you are trying to enroll is already enrolled. Please check your course list
+                                again.
+                                You can click the x on the top right hand corner to dismiss this text.</p>
+                            <button class="close" style="color:black;" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <!-- Course Style 1 For Student -->
                                 <div class="dashboard_container">
-                                  <div class="dashboard_container_header">
-                                      <div class="dashboard_fl_1">
-                                          <h4>All Courses</h4>
-                                      </div>
-                                      <div style="padding:5px;">
-                                        <button data-toggle="modal" data-target="#enrollNew" class="btn btn-theme btn-rounded">Enroll new class</button>
-                                      </div>
-                                      <div style="padding:5px;">
-                                        <div class="dropdown show form-inline">
-                                          <a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Filter By
-                                          </a>
-                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Science">Science</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Math">Math</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Computer Science">Computer Science</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Programming Language">Programming Language</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Web Development">Web Development</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Mobile Development">Mobile Development</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Artificial Intelligence">Artificial Intelligence</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Network and Security">Network and Security</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Hardware">Hardware</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Electronics">Electronics</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Electrical Engineering">Electrical Engineering</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Civil Engineering">Civil Engineering</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Art and Design">Languages</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Business and Management">Art and Design</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=Science">Business and Management</a>
-                                            <a class="dropdown-item" href="?p=courseListStudentFilter&category=TU Subject">TU Subject</a>
-                                          </div>
+                                    <div class="dashboard_container_header">
+                                        <div class="dashboard_fl_1">
+                                            <h4>All Courses</h4>
                                         </div>
-                                      </div>
-                                      <div style="padding:5px;">
-                                        <form action="?p=search_course_student" method="post" class="form-inline my-2 my-lg-0">
-                                            <input class="form-control" name="search" type="search" placeholder="Search Courses" aria-label="Search">
-                                            <button class="btn my-2 my-sm-0" type="submit"><i class="ti-search"></i></button>
-                                        </form>
-                                      </div>
-                                  </div>
+                                        <div style="padding:5px;">
+                                            <button data-toggle="modal" data-target="#enrollNew"
+                                                class="btn btn-theme btn-rounded">Enroll new class</button>
+                                        </div>
+                                        <div style="padding:5px;">
+                                            <div class="dropdown show form-inline">
+                                                <a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#"
+                                                    role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Filter By
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Science">Science</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Math">Math</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Computer Science">Computer
+                                                        Science</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Programming Language">Programming
+                                                        Language</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Web Development">Web
+                                                        Development</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Mobile Development">Mobile
+                                                        Development</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Artificial Intelligence">Artificial
+                                                        Intelligence</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Network and Security">Network
+                                                        and Security</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Hardware">Hardware</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Electronics">Electronics</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Electrical Engineering">Electrical
+                                                        Engineering</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Civil Engineering">Civil
+                                                        Engineering</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Art and Design">Languages</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Business and Management">Art
+                                                        and Design</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=Science">Business and
+                                                        Management</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseListStudentFilter&category=TU Subject">TU
+                                                        Subject</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="padding:5px;">
+                                            <form action="?p=search_course_student" method="post"
+                                                class="form-inline my-2 my-lg-0">
+                                                <input class="form-control" name="search" type="search"
+                                                    placeholder="Search Courses" aria-label="Search">
+                                                <button class="btn my-2 my-sm-0" type="submit"><i
+                                                        class="ti-search"></i></button>
+                                            </form>
+                                        </div>
+                                    </div>
                                     <div class="dashboard_container_body">
 
                                         <?php
@@ -88,47 +122,53 @@
                                             $querycat->execute([$row['class_id']]);
                                             $categories = $querycat->fetchAll();
                                         ?>
-                                            <!-- Single Course -->
-                                            <div class="dashboard_single_course">
-                                                <div class="dashboard_single_course_thumb">
-                                                    <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
-                                                    <div class="dashboard_action">
-                                                        <a href="?p=unenroll_course&class_id=<?php echo $row['class_id']?>" class="btn btn-ect">Unenroll</a>
-                                                        <a href="?p=now-student&class_id=<?= $row['class_id'] ?>" class="btn btn-ect">View</a>
+                                        <!-- Single Course -->
+                                        <div class="dashboard_single_course">
+                                            <div class="dashboard_single_course_thumb">
+                                                <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
+                                                <div class="dashboard_action">
+                                                    <a href="?p=unenroll_course&class_id=<?php echo $row['class_id'] ?>"
+                                                        class="btn btn-ect">Unenroll</a>
+                                                    <a href="?p=now-student&class_id=<?= $row['class_id'] ?>"
+                                                        class="btn btn-ect">View</a>
+                                                </div>
+                                            </div>
+                                            <div class="dashboard_single_course_caption">
+                                                <div class="dashboard_single_course_head">
+                                                    <div class="dashboard_single_course_head_flex">
+                                                        <span
+                                                            class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
+                                                        <h4 class="dashboard_course_title">
+                                                            <?php echo $row['class_name']; ?></h4>
+                                                        <ul class="cources_facts_list">
+                                                            <?php
+                                                                $count = 1;
+                                                                foreach ($categories as $category) {
+                                                                    echo '<li class="facts-' . $count . '">' . $category["category_name"] . '</li>';
+                                                                    $count = $count + 1;
+                                                                    if ($count == 6) {
+                                                                        $count = 5;
+                                                                    }
+                                                                }
+                                                                ?>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <div class="dashboard_single_course_caption">
-                                                    <div class="dashboard_single_course_head">
-                                                        <div class="dashboard_single_course_head_flex">
-                                                            <span class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
-                                                            <h4 class="dashboard_course_title"><?php echo $row['class_name']; ?></h4>
-                                                            <ul class="cources_facts_list">
-                                                              <?php
-                                                              $count = 1;
-                                                              foreach ($categories as $category) {
-                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
-                                                                $count = $count + 1;
-                                                                if ($count == 6) {
-                                                                  $count = 5;
-                                                                }
-                                                              }
-                                                              ?>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dashboard_single_course_des">
-                                                        <p><?php echo $row['class_description']; ?></p>
-                                                    </div>
-                                                    <div class="dashboard_single_course_progress">
-                                                        <div class="dashboard_single_course_progress_2">
-                                                            <ul class="m-0">
-                                                              <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=view_classmates&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
-                                                                  Enrolled</a></li>
-                                                            </ul>
-                                                        </div>
+                                                <div class="dashboard_single_course_des">
+                                                    <p><?php echo $row['class_description']; ?></p>
+                                                </div>
+                                                <div class="dashboard_single_course_progress">
+                                                    <div class="dashboard_single_course_progress_2">
+                                                        <ul class="m-0">
+                                                            <li class="list-inline-item"><i class="ti-user mr-1"></i> <a
+                                                                    href="?p=view_classmates&class_id=<?php echo $row['class_id'] ?>">
+                                                                    <?php echo $row['class_count']; ?>
+                                                                    Enrolled</a></li>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         <?php }  ?>
                                     </div>
                                 </div>
@@ -150,9 +190,10 @@
                 <div class="modal-body">
                     <h4 class="modal-header-title">Enroll New Class</h4>
                     <div class="login-form">
-                        <form action="?p=enrollClass" method="post">
+                        <form action="?p=enrollclass" method="post">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="class_secret" placeholder="Enter Course 10-digit Code" required>
+                                <input type="text" class="form-control" name="class_secret"
+                                    placeholder="Enter Course 10-digit Code" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>
