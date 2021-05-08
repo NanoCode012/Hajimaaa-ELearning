@@ -89,5 +89,4 @@ foreach ($categories as $category) {
 }
 
 header("Location: ?p=courseListTeacher");
-
-?>
+exit();
