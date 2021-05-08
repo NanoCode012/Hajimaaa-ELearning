@@ -3,6 +3,7 @@ if (file_exists('pages/' . $page . '.php')) {
     // To sync url with page
     if (!isset($_GET['p']) || $_GET['p'] != $page) {
         header('Location: index.php?p=' . $page);
+        exit();
     } else {
         include 'pages/' . $page . '.php';
     }

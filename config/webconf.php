@@ -5,7 +5,7 @@ if (isset($_SESSION['user_id'])) {
     if (!isset($_GET['p'])) {
         $page = 'profile';
     } else {
-        $page = $_GET['p'];
+        $page = strtolower($_GET['p']);
     }
 }
 // If not logged in
