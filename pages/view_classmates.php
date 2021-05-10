@@ -72,7 +72,7 @@ $class_id =  $_GET["class_id"];
                                                       $fullname = ''.$firstname.' '.$lastname;
                                                     ?>
                         														<tr>
-                        															<th scope="row">1</th>
+                        															<th scope="row"><?php echo $count; ?></th>
                                                       <th scope="row"><?php echo $fullname?></th>
                         															<td>
                         																<div class="dash_action_link">
