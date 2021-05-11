@@ -257,7 +257,7 @@ if (isset($_POST["submit"])) {
         <div class="modal-dialog " role="document">
             <div class="modal-content popupform">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">[COURSE NAME]: Upload Lecture</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Lecture</h5>
 
                 </div>
                 <form method="post" enctype="multipart/form-data"
