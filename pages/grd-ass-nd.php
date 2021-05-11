@@ -1,6 +1,6 @@
 <?php
 $class_id = $_GET['class_id'];
-$assignment_id = $_GET['class_id'];
+$assignment_id = $_GET['assignment_id'];
 $user_id = $_SESSION["user_id"];
 
 $query = 'SELECT a.*, p.* FROM assignments a, posts p WHERE a.assignment_id = ? AND p.post_id = a.post_id';
@@ -122,33 +122,33 @@ $num_students_not_done = $stmt->rowCount();
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="dashboard_container">
-                                        <div class="dashboard_container_header">
-                                            <div class="row">
-                                                <!-- seagreen-->
-                                                <?php
-                                                foreach ($students_not_done as $row) {
-                                                ?>
-                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                    <div class="edu_cat_2 cat-2">
-                                                        <div class="edu_cat_data">
-                                                            <h4 class="title"><a
-                                                                    href="?p=std-nd&&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= $_GET['assignment_id'] ?>&student_id=<?= $row['user_id'] ?>">
-                                                                    <?= $row['firstname'] ?> <?= $row['lastname'] ?>
+                                <div class="dashboard_container">
+                                    <div class="dashboard_container_header">
+                                        <div class="row">
+                                            <!-- seagreen-->
+                                            <?php
+                                            foreach ($students_not_done as $row) {
+                                            ?>
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <div class="edu_cat_2 cat-2">
+                                                    <div class="edu_cat_data">
+                                                        <h4 class="title"><a
+                                                                href="?p=std-nd&&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= $_GET['assignment_id'] ?>&student_id=<?= $row['user_id'] ?>">
+                                                                <?= $row['firstname'] ?> <?= $row['lastname'] ?>
 
-                                                                </a></h4>
-                                                            <ul class="meta">
-                                                                <li class="video"><i class="fas fa-star filled"></i>Not
-                                                                    Done
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                                            </a></h4>
+                                                        <ul class="meta">
+                                                            <li class="video"><i class="fas fa-star filled"></i>Not
+                                                                Done
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <?php } ?>
                                             </div>
+                                            <?php } ?>
                                         </div>
                                     </div>
+                                </div>
                                 <!-- /Row -->
                             </div>
                         </div>
