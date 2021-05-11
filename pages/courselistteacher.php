@@ -32,35 +32,66 @@
                                             <h4>All Courses</h4>
                                         </div>
                                         <div style="padding:5px;">
-                                          <a href="?p=createClass" class="btn btn-theme btn-rounded">Create new class</a>
+                                            <a href="?p=createClass" class="btn btn-theme btn-rounded">Create new
+                                                class</a>
                                         </div>
                                         <div style="padding:5px;">
-                                          <div class="dropdown show form-inline">
-                                            <a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                              Filter By
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Science">Science</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Math">Math</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Computer Science">Computer Science</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Programming Language">Programming Language</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Web Development">Web Development</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Mobile Development">Mobile Development</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Artificial Intelligence">Artificial Intelligence</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Network and Security">Network and Security</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Hardware">Hardware</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Electronics">Electronics</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Electrical Engineering">Electrical Engineering</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Civil Engineering">Civil Engineering</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Art and Design">Languages</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Business and Management">Art and Design</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=Science">Business and Management</a>
-                                              <a class="dropdown-item" href="?p=courseListTeacherFilter&category=TU Subject">TU Subject</a>
+                                            <div class="dropdown show form-inline">
+                                                <a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#"
+                                                    role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Filter By
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Science">Science</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Math">Math</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Computer Science">Computer
+                                                        Science</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Programming Language">Programming
+                                                        Language</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Web Development">Web
+                                                        Development</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Mobile Development">Mobile
+                                                        Development</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Artificial Intelligence">Artificial
+                                                        Intelligence</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Network and Security">Network
+                                                        and Security</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Hardware">Hardware</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Electronics">Electronics</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Electrical Engineering">Electrical
+                                                        Engineering</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Civil Engineering">Civil
+                                                        Engineering</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Art and Design">Languages</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Business and Management">Art
+                                                        and Design</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=Science">Business and
+                                                        Management</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courselistteacherfilter&category=TU Subject">TU
+                                                        Subject</a>
+                                                </div>
                                             </div>
-                                          </div>
                                         </div>
                                         <div style="padding:5px;">
-                                            <form action="?p=search_course_teacher" method="post" class="form-inline my-2 my-lg-0">
+                                            <form action="?p=search_course_teacher" method="post"
+                                                class="form-inline my-2 my-lg-0">
                                                 <input class="form-control" name="search" type="search"
                                                     placeholder="Search Courses" aria-label="Search">
                                                 <button class="btn my-2 my-sm-0" type="submit"><i
@@ -91,7 +122,8 @@
                                             <div class="dashboard_single_course_thumb">
                                                 <img src="<?php echo $course_img; ?>" class="img-fluid" alt="" />
                                                 <div class="dashboard_action">
-                                                    <a href="?p=delete_class&class_id=<?php echo $row['class_id']?>" class="btn btn-ect">Delete</a>
+                                                    <a href="?p=delete_class&class_id=<?php echo $row['class_id'] ?>"
+                                                        class="btn btn-ect">Delete</a>
                                                     <a href="?p=now-teacher&class_id=<?= $row['class_id'] ?>"
                                                         class="btn btn-ect">View</a>
                                                 </div>
@@ -103,19 +135,19 @@
                                                             class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo $row['class_name']; ?></h4>
-                                                            <ul class="cources_facts_list">
-                                                              <?php
-                                                              $count = 1;
-                                                              foreach ($categories as $category) {
-                                                                echo '<li class="facts-' . $count . '">'. $category["category_name"] . '</li>';
-                                                                $count = $count + 1;
-                                                                if ($count == 6) {
-                                                                  $count = 5;
+                                                        <ul class="cources_facts_list">
+                                                            <?php
+                                                                $count = 1;
+                                                                foreach ($categories as $category) {
+                                                                    echo '<li class="facts-' . $count . '">' . $category["category_name"] . '</li>';
+                                                                    $count = $count + 1;
+                                                                    if ($count == 6) {
+                                                                        $count = 5;
+                                                                    }
                                                                 }
-                                                              }
-                                                              ?>
+                                                                ?>
 
-                                            								</ul>
+                                                        </ul>
                                                     </div>
                                                 </div>
                                                 <div class="dashboard_single_course_des">
@@ -124,9 +156,12 @@
                                                 <div class="dashboard_single_course_progress">
                                                     <div class="dashboard_single_course_progress_2">
                                                         <ul class="m-0">
-                                                          <li class="list-inline-item"><i class="ti-user mr-1"></i> <a href="?p=student_list&class_id=<?php echo $row['class_id']?>"> <?php echo $row['class_count']; ?>
+                                                            <li class="list-inline-item"><i class="ti-user mr-1"></i> <a
+                                                                    href="?p=student_list&class_id=<?php echo $row['class_id'] ?>">
+                                                                    <?php echo $row['class_count']; ?>
                                                                     Enrolled</a></li>
-                                                          <li class="list-inline-item"></i>Class Secret: <?php echo $row["class_secret"]; ?></li>
+                                                            <li class="list-inline-item"></i>Class Secret:
+                                                                <?php echo $row["class_secret"]; ?></li>
                                                             <!-- <li class="list-inline-item"><i
                                                                     class="ti-comment-alt mr-1"></i><?php //echo $row['class_ass'];
                                                                                                     ?>

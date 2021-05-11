@@ -46,47 +46,47 @@ $category = $_GET["category"];
                                                 </a>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Science">Science</a>
+                                                        href="?p=courseliststudentfilter&category=Science">Science</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Math">Math</a>
+                                                        href="?p=courseliststudentfilter&category=Math">Math</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Computer Science">Computer
+                                                        href="?p=courseliststudentfilter&category=Computer Science">Computer
                                                         Science</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Programming Language">Programming
+                                                        href="?p=courseliststudentfilter&category=Programming Language">Programming
                                                         Language</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Web Development">Web
+                                                        href="?p=courseliststudentfilter&category=Web Development">Web
                                                         Development</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Mobile Development">Mobile
+                                                        href="?p=courseliststudentfilter&category=Mobile Development">Mobile
                                                         Development</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Artificial Intelligence">Artificial
+                                                        href="?p=courseliststudentfilter&category=Artificial Intelligence">Artificial
                                                         Intelligence</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Network and Security">Network
+                                                        href="?p=courseliststudentfilter&category=Network and Security">Network
                                                         and Security</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Hardware">Hardware</a>
+                                                        href="?p=courseliststudentfilter&category=Hardware">Hardware</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Electronics">Electronics</a>
+                                                        href="?p=courseliststudentfilter&category=Electronics">Electronics</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Electrical Engineering">Electrical
+                                                        href="?p=courseliststudentfilter&category=Electrical Engineering">Electrical
                                                         Engineering</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Civil Engineering">Civil
+                                                        href="?p=courseliststudentfilter&category=Civil Engineering">Civil
                                                         Engineering</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Art and Design">Languages</a>
+                                                        href="?p=courseliststudentfilter&category=Art and Design">Languages</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Business and Management">Art
+                                                        href="?p=courseliststudentfilter&category=Business and Management">Art
                                                         and Design</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=Science">Business and
+                                                        href="?p=courseliststudentfilter&category=Science">Business and
                                                         Management</a>
                                                     <a class="dropdown-item"
-                                                        href="?p=courseListStudentFilter&category=TU Subject">TU
+                                                        href="?p=courseliststudentfilter&category=TU Subject">TU
                                                         Subject</a>
                                                 </div>
                                             </div>
