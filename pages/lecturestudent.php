@@ -29,7 +29,7 @@
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                              <?php include 'includes/classhead.php'; ?>
+                                <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
@@ -94,9 +94,9 @@
                                             <?php
                                             include 'includes/utils/gcloud.php';
                                             $gstorage = new GStorage();
-                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=?";
                                             $query = $db_r->prepare($sql);
-                                            $query->execute();
+                                            $query->execute([$_GET['class_id']]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
 
                                             if ($query->rowCount() > 0) {
