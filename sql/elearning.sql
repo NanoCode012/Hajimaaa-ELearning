@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 08, 2021 at 02:17 PM
+-- Generation Time: May 11, 2021 at 06:26 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -30,6 +30,7 @@ USE `elearning`;
 -- Table structure for table `assignments`
 --
 -- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:29 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
@@ -72,7 +73,6 @@ CREATE TABLE `categories` (
 -- Table structure for table `class`
 --
 -- Creation: May 08, 2021 at 02:14 PM
--- Last update: May 08, 2021 at 01:53 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -101,6 +101,7 @@ CREATE TABLE `class` (
 -- Table structure for table `class_enrolled`
 --
 -- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:29 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -161,6 +162,7 @@ CREATE TABLE `comments` (
 -- Table structure for table `files`
 --
 -- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:29 PM
 --
 
 DROP TABLE IF EXISTS `files`;
@@ -184,6 +186,7 @@ CREATE TABLE `files` (
 -- Table structure for table `files_lectures`
 --
 -- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:21 PM
 --
 
 DROP TABLE IF EXISTS `files_lectures`;
@@ -228,6 +231,7 @@ CREATE TABLE `gradeass` (
 -- Table structure for table `lectures`
 --
 -- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:21 PM
 --
 
 DROP TABLE IF EXISTS `lectures`;
@@ -248,6 +252,7 @@ CREATE TABLE `lectures` (
 -- Table structure for table `posts`
 --
 -- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 06:26 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -257,7 +262,7 @@ CREATE TABLE `posts` (
   `user_id` int(11) NOT NULL,
   `post_type` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
