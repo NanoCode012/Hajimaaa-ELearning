@@ -11,7 +11,7 @@ if (isset($_POST['create'])) {
 
     $title = $_POST['title'];
     $description = $_POST['description'];
-    $sqlp = "INSERT INTO  posts(class_id,user_id, title,description,post_type) VALUES(:class_id,:user_id, :title,:description,2)";
+    $sqlp = "INSERT INTO  posts(class_id,user_id, title,description,post_type) VALUES(:class_id,:user_id, :title,:description,1)";
     $queryp = $db_w->prepare($sqlp);
     $queryp->bindParam(':class_id', $class_id, PDO::PARAM_STR);
     $queryp->bindParam(':user_id', $user_id, PDO::PARAM_INT);
@@ -111,7 +111,7 @@ if (isset($_POST['create'])) {
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                              <?php include 'includes/classhead.php'; ?>
+                                <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
@@ -165,7 +165,7 @@ if (isset($_POST['create'])) {
                                             </ul>
                                         </div>
                                     </div>
-                                  </div>
+                                </div>
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
@@ -297,8 +297,8 @@ if (isset($_POST['create'])) {
                                         if ($query->rowCount() > 0) {
                                             foreach ($results as $result) {               ?>
 
-                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';" style="cursor: pointer;"
-                                            class="dashboard_single_course ass_hover_effect">
+                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';"
+                                            style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
                                             <div class="dashboard_single_course_caption">
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
@@ -392,8 +392,8 @@ if (isset($_POST['create'])) {
                                         if ($query->rowCount() > 0) {
                                             foreach ($results as $result) {               ?>
 
-                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';" style="cursor: pointer;"
-                                            class="dashboard_single_course ass_hover_effect">
+                                        <div onclick="location.href='?p=grd-ass-d&class_id=<?= $_GET['class_id'] ?>&assignment_id=<?= htmlentities($result->assignment_id) ?>';"
+                                            style="cursor: pointer;" class="dashboard_single_course ass_hover_effect">
                                             <div class="dashboard_single_course_caption">
                                                 <div class="dashboard_single_course_head">
                                                     <div class="dashboard_single_course_head_flex">
