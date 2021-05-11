@@ -178,7 +178,7 @@ if (isset($_POST["submit"])) {
                                         </div>
                                         <div id="accordionExample" class="accordion shadow circullum">
                                             <?php
-                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=?";
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=? ORDER BY p.time_created DESC";
                                             $query = $db_r->prepare($sql);
                                             $query->execute([$_GET['class_id']]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
