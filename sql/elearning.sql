@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 11, 2021 at 06:26 PM
+-- Generation Time: May 11, 2021 at 06:35 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -306,7 +306,7 @@ CREATE TABLE `student_files` (
 --
 -- Table structure for table `users`
 --
--- Creation: May 08, 2021 at 02:14 PM
+-- Creation: May 11, 2021 at 06:34 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -324,7 +324,8 @@ CREATE TABLE `users` (
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
-  `about` varchar(255) DEFAULT NULL
+  `about` varchar(255) DEFAULT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
