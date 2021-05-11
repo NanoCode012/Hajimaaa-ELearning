@@ -181,6 +181,8 @@ if (isset($_POST['submit'])) {
 
                                                 <?php if ($student_file['file_name']) {
                                                     if (!file_exists('assets/files/student_files/' . $student_file['file_name'])) {
+                                                        include_once 'includes/utils/gcloud.php';
+                                                        $gstorage = new GStorage();
                                                         $gstorage->download($student_file['file_path'], 'assets/files/student_files/' . $student_file['file_name']);
                                                     }
                                                 ?>
