@@ -7,7 +7,7 @@ if (isset($_POST["submit"])) {
     $title = $_POST['title'];
     $sqlp = "INSERT INTO  posts(class_id,user_id,post_type, title) VALUES(?, ?, ?, ?)";
     $queryp = $db_w->prepare($sqlp);
-    $queryp->execute([$_GET['class_id'], $_SESSION['user_id'], 2, $title]);
+    $queryp->execute([$_POST['class_id'], $_SESSION['user_id'], 2, $title]);
     $lastInsertId = $db_w->lastInsertId();
 
     $sqlp = "INSERT INTO  lectures(post_id) VALUES(:lastInsertId)";
@@ -178,9 +178,9 @@ if (isset($_POST["submit"])) {
                                         </div>
                                         <div id="accordionExample" class="accordion shadow circullum">
                                             <?php
-                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=1";
+                                            $sql = "SELECT l.lecture_id,p.title from lectures l,posts p where l.post_id=p.post_id and class_id=?";
                                             $query = $db_r->prepare($sql);
-                                            $query->execute();
+                                            $query->execute([$_GET['class_id']]);
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
 
                                             if ($query->rowCount() > 0) {
@@ -257,7 +257,7 @@ if (isset($_POST["submit"])) {
         <div class="modal-dialog " role="document">
             <div class="modal-content popupform">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">[COURSE NAME]: Upload Lecture</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Lecture</h5>
 
                 </div>
                 <form method="post" enctype="multipart/form-data"
@@ -281,6 +281,7 @@ if (isset($_POST["submit"])) {
                         <!-- </form> -->
                     </div>
                     <div class="modal-footer">
+                        <input name="class_id" type="hidden" value="<?= $_GET['class_id']; ?>">
                         <button type="button" class="btn btn-theme-2 popupbtn" data-dismiss="modal">Close</button>
                         <button type="submit" name="submit" value="Upload"
                             class="btn btn-theme popupbtn">Upload</button>
