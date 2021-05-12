@@ -23,3 +23,15 @@ Please read instructions under the `_documentation` folder or at [DistributedSet
 
 ## License
 Do not share to others without permission!
+
+## Credits
+
+[NanoCode012](https://github.com/NanoCode012)
+
+[Passaraink](https://github.com/passaraink)
+
+[Himaw](https://github.com/Himaw)
+
+[Darchilll](https://github.com/Darchilll)
+
+[Zodiacstxr](https://github.com/zodiacstxr)
