@@ -339,6 +339,9 @@ if (isset($_POST['create'])) {
                                                                                 $x = 0;
                                                                                 foreach ($resultsf as $resultf) {
                                                                                     $x++;
+                                                                                    if (!file_exists('assets/files/assignments/' . $resultf->file_name)) {
+                                                                                        $gstorage->download($resultf->file_path, 'assets/files/assignments/' . $resultf->file_name);
+                                                                                    }
                                                                             ?>
                                                                     <a class="list-inline-item " target="_blank"
                                                                         href="assets/files/assignments/<?php echo $resultf->file_name; ?>"><i
@@ -430,6 +433,9 @@ if (isset($_POST['create'])) {
                                                                                 $x = 0;
                                                                                 foreach ($resultsf as $resultf) {
                                                                                     $x++;
+                                                                                    if (!file_exists('assets/files/assignments/' . $resultf->file_name)) {
+                                                                                        $gstorage->download($resultf->file_path, 'assets/files/assignments/' . $resultf->file_name);
+                                                                                    }
                                                                             ?>
                                                                     <a class="list-inline-item " target="_blank"
                                                                         href="assets/files/assignments/<?php echo $resultf->file_name; ?>"><i
