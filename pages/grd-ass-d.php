@@ -13,9 +13,9 @@ $stmt = $db_r->prepare($query);
 $stmt->execute([$class_id]);
 $num_students = $stmt->fetchColumn();
 
-$query = 'SELECT sf.*, u.* FROM student_files sf, users u WHERE sf.assignment_id = ? AND sf.student_id = u.user_id';
+$query = 'SELECT sf.*, u.* FROM student_files sf, users u, class_enrolled c WHERE sf.assignment_id = ? AND sf.student_id = u.user_id AND c.user_id = u.user_id AND c.class_id = ?';
 $stmt = $db_r->prepare($query);
-$stmt->execute([$assignment_id]);
+$stmt->execute([$assignment_id, $class_id]);
 $student_files = $stmt->fetchAll();
 $num_students_done = $stmt->rowCount();
 ?>
