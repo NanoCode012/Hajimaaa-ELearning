@@ -1,6 +1,11 @@
 # Hajimaaa-ELearning
 An e-learning platform built for both centralized and distributed solutions.
 
+## Distributed setup
+
+Tested on Ubuntu 20.04 VM using Google Cloud Platform.
+
+Please read instructions under the `_documentation` folder or at [DistributedSetup repo](https://github.com/NanoCode012/DistributedSetup).
 ## Setup 
 
 1. Copy `conf.php.sample` to `conf.php` and modify the values
