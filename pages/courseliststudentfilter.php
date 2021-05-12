@@ -1,5 +1,7 @@
 <?php
-$keyword = $_POST['search'];
+
+$category = $_GET["category"];
+
 ?>
 
 <body class="red-skin">
@@ -22,45 +24,91 @@ $keyword = $_POST['search'];
                             </div>
                         </div>
                         <!-- /Row -->
-
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12">
-
                                 <!-- Course Style 1 For Student -->
                                 <div class="dashboard_container">
                                     <div class="dashboard_container_header">
                                         <div class="dashboard_fl_1">
                                             <h4>All Courses</h4>
                                         </div>
-                                        <div class="dashboard_fl_2">
-                                            <ul class="mb0">
-                                                <li class="list-inline-item">
-                                                    <button data-toggle="modal" data-target="#enrollNew"
-                                                        class="btn btn-theme btn-rounded">Enroll new class</button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <form action="?p=search_course_student" method="post"
-                                                        class="form-inline my-2 my-lg-0">
-                                                        <input class="form-control" name="search" type="search"
-                                                            placeholder="Search Courses" aria-label="Search">
-                                                        <button class="btn my-2 my-sm-0" type="submit"><i
-                                                                class="ti-search"></i></button>
-                                                    </form>
-                                                </li>
-                                            </ul>
+                                        <div style="padding:5px;">
+                                            <button data-toggle="modal" data-target="#enrollNew"
+                                                class="btn btn-theme btn-rounded">Enroll new class</button>
+                                        </div>
+                                        <div style="padding:5px;">
+                                            <div class="dropdown show form-inline">
+                                                <a class="btn btn-custom dropdown-toggle" style="width:160px;" href="#"
+                                                    role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                    Filter By
+                                                </a>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Science">Science</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Math">Math</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Computer Science">Computer
+                                                        Science</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Programming Language">Programming
+                                                        Language</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Web Development">Web
+                                                        Development</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Mobile Development">Mobile
+                                                        Development</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Artificial Intelligence">Artificial
+                                                        Intelligence</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Network and Security">Network
+                                                        and Security</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Hardware">Hardware</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Electronics">Electronics</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Electrical Engineering">Electrical
+                                                        Engineering</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Civil Engineering">Civil
+                                                        Engineering</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Art and Design">Languages</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Business and Management">Art
+                                                        and Design</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=Science">Business and
+                                                        Management</a>
+                                                    <a class="dropdown-item"
+                                                        href="?p=courseliststudentfilter&category=TU Subject">TU
+                                                        Subject</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="padding:5px;">
+                                            <form action="?p=search_course_student" method="post"
+                                                class="form-inline my-2 my-lg-0">
+                                                <input class="form-control" name="search" type="search"
+                                                    placeholder="Search Courses" aria-label="Search">
+                                                <button class="btn my-2 my-sm-0" type="submit"><i
+                                                        class="ti-search"></i></button>
+                                            </form>
                                         </div>
                                     </div>
                                     <div class="dashboard_container_body">
-
                                         <?php
-                                        $search = "%$keyword%";
-                                        $sql = "SELECT c.*, ce.num_students AS class_count
-                                        from class c, class_enrolled_count ce where c.class_id
-                                        IN (SELECT class_id FROM class_enrolled WHERE user_id = ?)
-                                        AND c.class_id = ce.class_id AND c.class_name LIKE ?";
+                                        $sql = "SELECT c.*, ce.num_students AS class_count from class c, class_enrolled_count ce
+                                        where c.class_id IN
+                                        (SELECT class_id FROM class_enrolled WHERE user_id = ?) AND c.class_id = ce.class_id AND
+                                        c.class_id IN (SELECT class_id FROM categories WHERE category_name = ?)";
                                         $query = $db_r->prepare($sql);
-                                        $query->execute([$_SESSION['user_id'], $search]);
+                                        $query->execute([$_SESSION['user_id'], $category]);
                                         $rows = $query->fetchAll();
                                         include 'includes/utils/gcloud.php';
                                         $gstorage = new GStorage();
@@ -91,6 +139,7 @@ $keyword = $_POST['search'];
                                                             class="dashboard_instructor"><?php echo $row['class_instructor']; ?></span>
                                                         <h4 class="dashboard_course_title">
                                                             <?php echo $row['class_name']; ?></h4>
+                                                        <?php echo $row['class_name']; ?></h4>
                                                         <ul class="cources_facts_list">
                                                             <?php
                                                                 $count = 1;
@@ -133,7 +182,6 @@ $keyword = $_POST['search'];
         </section>
         <a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
     </div>
-
     <!-- Start Modal -->
     <div class="modal fade" id="enrollNew" tabindex="-1" role="dialog" aria-labelledby="sign-up" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered login-pop-form" role="document">
@@ -145,7 +193,7 @@ $keyword = $_POST['search'];
                         <form action="?p=enrollclass" method="post">
                             <div class="form-group">
                                 <input type="text" class="form-control" name="class_secret"
-                                    placeholder="Enter Course 10-digit Code">
+                                    placeholder="Enter Course 10-digit Code" required>
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-md full-width pop-login">Enroll</button>

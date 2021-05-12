@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 30, 2021 at 03:27 PM
+-- Generation Time: May 11, 2021 at 06:35 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -29,7 +29,8 @@ USE `elearning`;
 --
 -- Table structure for table `assignments`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
+-- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:29 PM
 --
 
 DROP TABLE IF EXISTS `assignments`;
@@ -52,12 +53,12 @@ CREATE TABLE `assignments` (
 --
 -- Table structure for table `categories`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
--- Last update: Apr 30, 2021 at 03:24 PM
+-- Creation: May 08, 2021 at 02:14 PM
 --
 
 DROP TABLE IF EXISTS `categories`;
 CREATE TABLE `categories` (
+  `category_id` int(11) NOT NULL,
   `class_id` int(255) NOT NULL,
   `category_name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -71,8 +72,7 @@ CREATE TABLE `categories` (
 --
 -- Table structure for table `class`
 --
--- Creation: Apr 30, 2021 at 03:27 PM
--- Last update: Apr 30, 2021 at 03:27 PM
+-- Creation: May 08, 2021 at 02:14 PM
 --
 
 DROP TABLE IF EXISTS `class`;
@@ -100,8 +100,8 @@ CREATE TABLE `class` (
 --
 -- Table structure for table `class_enrolled`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
--- Last update: Apr 30, 2021 at 03:24 PM
+-- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:29 PM
 --
 
 DROP TABLE IF EXISTS `class_enrolled`;
@@ -136,7 +136,7 @@ CREATE TABLE `class_enrolled_count` (
 --
 -- Table structure for table `comments`
 --
--- Creation: Apr 30, 2021 at 03:27 PM
+-- Creation: May 08, 2021 at 02:14 PM
 --
 
 DROP TABLE IF EXISTS `comments`;
@@ -161,7 +161,8 @@ CREATE TABLE `comments` (
 --
 -- Table structure for table `files`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
+-- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:29 PM
 --
 
 DROP TABLE IF EXISTS `files`;
@@ -184,7 +185,8 @@ CREATE TABLE `files` (
 --
 -- Table structure for table `files_lectures`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
+-- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:21 PM
 --
 
 DROP TABLE IF EXISTS `files_lectures`;
@@ -207,7 +209,7 @@ CREATE TABLE `files_lectures` (
 --
 -- Table structure for table `gradeass`
 --
--- Creation: Apr 30, 2021 at 03:26 PM
+-- Creation: May 08, 2021 at 02:16 PM
 --
 
 DROP TABLE IF EXISTS `gradeass`;
@@ -228,7 +230,8 @@ CREATE TABLE `gradeass` (
 --
 -- Table structure for table `lectures`
 --
--- Creation: Apr 30, 2021 at 03:26 PM
+-- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 05:21 PM
 --
 
 DROP TABLE IF EXISTS `lectures`;
@@ -248,7 +251,8 @@ CREATE TABLE `lectures` (
 --
 -- Table structure for table `posts`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
+-- Creation: May 08, 2021 at 02:14 PM
+-- Last update: May 11, 2021 at 06:26 PM
 --
 
 DROP TABLE IF EXISTS `posts`;
@@ -258,7 +262,7 @@ CREATE TABLE `posts` (
   `user_id` int(11) NOT NULL,
   `post_type` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text,
   `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -275,7 +279,7 @@ CREATE TABLE `posts` (
 --
 -- Table structure for table `student_files`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
+-- Creation: May 08, 2021 at 02:14 PM
 --
 
 DROP TABLE IF EXISTS `student_files`;
@@ -302,8 +306,7 @@ CREATE TABLE `student_files` (
 --
 -- Table structure for table `users`
 --
--- Creation: Apr 30, 2021 at 03:25 PM
--- Last update: Apr 30, 2021 at 03:24 PM
+-- Creation: May 11, 2021 at 06:34 PM
 --
 
 DROP TABLE IF EXISTS `users`;
@@ -321,7 +324,8 @@ CREATE TABLE `users` (
   `city` varchar(255) DEFAULT NULL,
   `state` varchar(255) DEFAULT NULL,
   `zip` varchar(255) DEFAULT NULL,
-  `about` varchar(255) DEFAULT NULL
+  `about` varchar(255) DEFAULT NULL,
+  `time_created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -347,6 +351,12 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 ALTER TABLE `assignments`
   ADD PRIMARY KEY (`assignment_id`),
   ADD KEY `post_id` (`post_id`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`category_id`);
 
 --
 -- Indexes for table `class`
@@ -389,7 +399,7 @@ ALTER TABLE `files_lectures`
 -- Indexes for table `gradeass`
 --
 ALTER TABLE `gradeass`
-  ADD KEY `student_file_id` (`student_file_id`);
+  ADD PRIMARY KEY (`student_file_id`);
 
 --
 -- Indexes for table `lectures`
@@ -429,6 +439,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `assignments`
   MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `class`

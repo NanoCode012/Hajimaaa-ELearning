@@ -163,10 +163,9 @@ if (isset($_POST['create'])) {
                                             <div class="dashboard_container_body">
                                                 <!-- Single Course -->
                                                 <?php
-                                                $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=:class_id and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) ";
+                                                $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()) and class_id=? and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files WHERE student_id =?) ";
                                                 $query = $db_r->prepare($sql);
-                                                $query->bindParam(':class_id', $class_id, PDO::PARAM_STR);
-                                                $query->execute();
+                                                $query->execute([$class_id, $user_id]);
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 $y = array();
                                                 if ($query->rowCount() > 0) {
@@ -282,9 +281,9 @@ if (isset($_POST['create'])) {
                                             <div class="dashboard_container_body">
                                                 <!-- Single Course -->
                                                 <?php
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) and class_id=" . $class_id;
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) = YEARWEEK(NOW()+INTERVAL 7 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files WHERE student_id =?) and class_id=?";
                                                 $query = $db_r->prepare($sql);
-                                                $query->execute();
+                                                $query->execute([$user_id, $class_id]);
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
 
                                                 if ($query->rowCount() > 0) {
@@ -374,9 +373,9 @@ if (isset($_POST['create'])) {
                                                 <!-- Single Course -->
                                                 <?php
 
-                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files) and class_id=" . $class_id;
+                                                $sql = "SELECT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p where a.post_id=p.post_id and YEARWEEK(a.due_date) >= YEARWEEK(NOW()+INTERVAL 14 DAY) and a.assignment_id not in (SELECT DISTINCT assignment_id from student_files WHERE student_id =?) and class_id=?";
                                                 $query = $db_r->prepare($sql);
-                                                $query->execute();
+                                                $query->execute([$user_id, $class_id]);
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
 
                                                 if ($query->rowCount() > 0) {
@@ -469,9 +468,9 @@ if (isset($_POST['create'])) {
                                             <div class="dashboard_container_body">
                                                 <!-- Single Course -->
                                                 <?php
-                                                $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=" . $class_id;
+                                                $sql = "SELECT DISTINCT a.assignment_id,a.chapter,p.title,p.description from assignments a,posts p,student_files s where a.post_id=p.post_id and s.assignment_id=a.assignment_id and class_id=? and s.student_id = ?";
                                                 $query = $db_r->prepare($sql);
-                                                $query->execute();
+                                                $query->execute([$class_id, $user_id]);
                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                 if ($query->rowCount() > 0) {
                                                     foreach ($results as $result) {               ?>
@@ -526,48 +525,50 @@ if (isset($_POST['create'])) {
 
                                                                             if ($query1->rowCount() > 0) {
                                                                                 foreach ($results1 as $result1) {               ?>
-                                                                    <li class="list-inline-item" style="font-weight:bold;">Grade :
+                                                                    <li class="list-inline-item"
+                                                                        style="font-weight:bold;">Grade :
                                                                         <?php echo htmlentities($result1->marks); ?>
 
                                                                         <?php
-                                                                                $user_id = $_SESSION["user_id"];
-                                                                                $sql5 = "SELECT a_marks from assignments where assignment_id=:assid";
-                                                                                $query5 = $db_r->prepare($sql5);
+                                                                                        $user_id = $_SESSION["user_id"];
+                                                                                        $sql5 = "SELECT a_marks from assignments where assignment_id=:assid";
+                                                                                        $query5 = $db_r->prepare($sql5);
 
-                                                                                $query5->bindParam(':assid', $assid, PDO::PARAM_STR);
-                                                                                $query5->execute();
-                                                                                $results5 = $query5->fetchAll(PDO::FETCH_OBJ);
+                                                                                        $query5->bindParam(':assid', $assid, PDO::PARAM_STR);
+                                                                                        $query5->execute();
+                                                                                        $results5 = $query5->fetchAll(PDO::FETCH_OBJ);
 
-                                                                                if ($query5->rowCount() > 0) {
-                                                                                    foreach ($results5 as $result5) {               ?>
+                                                                                        if ($query5->rowCount() > 0) {
+                                                                                            foreach ($results5 as $result5) {               ?>
 
-                                                                         Out of <?php echo htmlentities($result5->a_marks); ?>
+                                                                        Out of
+                                                                        <?php echo htmlentities($result5->a_marks); ?>
 
-                                                                         <?php break;
-                                                                                     }
-                                                                                 } ?>
+                                                                        <?php break;
+                                                                                            }
+                                                                                        } ?>
                                                                     </li>
 
                                                                     <?php break;
                                                                                 }
                                                                             } ?>
-                                                                            <?php
-                                                                                    $user_id = $_SESSION["user_id"];
-                                                                                    $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=" . $assid;
-                                                                                    $query1 = $db_r->prepare($sql1);
-                                                                                    $query1->bindParam(':user_id', $user_id, PDO::PARAM_STR);
-                                                                                    $query1->execute();
-                                                                                    $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
+                                                                    <?php
+                                                                            $user_id = $_SESSION["user_id"];
+                                                                            $sql1 = "SELECT time_created from student_files where student_id=:user_id and assignment_id=" . $assid;
+                                                                            $query1 = $db_r->prepare($sql1);
+                                                                            $query1->bindParam(':user_id', $user_id, PDO::PARAM_STR);
+                                                                            $query1->execute();
+                                                                            $results1 = $query1->fetchAll(PDO::FETCH_OBJ);
 
-                                                                                    if ($query1->rowCount() > 0) {
-                                                                                        foreach ($results1 as $result1) {               ?>
-                                                                            <li class="list-inline-item">Submitted on
-                                                                                <?php echo htmlentities($result1->time_created); ?>
-                                                                            </li>
+                                                                            if ($query1->rowCount() > 0) {
+                                                                                foreach ($results1 as $result1) {               ?>
+                                                                    <li class="list-inline-item">Submitted on
+                                                                        <?php echo htmlentities($result1->time_created); ?>
+                                                                    </li>
 
-                                                                            <?php break;
-                                                                                        }
-                                                                                    } ?>
+                                                                    <?php break;
+                                                                                }
+                                                                            } ?>
                                                                 </ul>
                                                             </div>
                                                         </div>

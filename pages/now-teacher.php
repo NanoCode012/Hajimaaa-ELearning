@@ -30,7 +30,7 @@
                         <!-- Row -->
                         <div class="row">
                             <div class="col-lg-12 col-md-12 col-sm-12 pt-4 pb-4">
-                              <?php include 'includes/classhead.php'; ?>
+                                <?php include 'includes/classhead.php'; ?>
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <!-- tabs-->
@@ -92,7 +92,7 @@
                                     <div class="dashboard_container_body">
                                         <!-- Single Course -->
                                         <?php
-                                        $stmt = $db_r->prepare(' SELECT p.post_id, post_type, class_id,title,description,time_created,assignment_id,due_date FROM posts p LEFT JOIN Assignments a ON a.post_id=p.post_id WHERE class_id=? ORDER BY time_created  DESC');
+                                        $stmt = $db_r->prepare(' SELECT p.post_id, post_type, class_id,title,description,time_created,assignment_id,due_date FROM posts p LEFT JOIN assignments a ON a.post_id=p.post_id WHERE class_id=? ORDER BY time_created  DESC');
                                         $stmt->execute([$_GET['class_id']]);
                                         while ($row = $stmt->fetch()) {
                                         ?>
@@ -182,7 +182,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Post </h5>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="?p=Create_post">
+                    <form method="post" action="?p=create_post">
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Post title:</label>
                             <input type="text" class="form-control popuptarea" id="recipient-name" name="title">
