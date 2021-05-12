@@ -69,7 +69,9 @@
                                         <?php
                                         //$class_id=$_GET['class_id'];
                                         //$stmt = $db_r->query('SELECT * FROM posts WHERE class_id=$class_id ORDER BY time_created');
-                                        $stmt = $db_r->query('SELECT * FROM posts ORDER BY time_created DESC');
+                                        $sql = 'SELECT * FROM posts WHERE class_id = ? ORDER BY time_created DESC';
+                                        $stmt = $db_r->prepare($sql);
+                                        $stmt->execute([$_GET['class_id']]);
                                         while ($row = $stmt->fetch()) {
                                         ?>
                                         <a
